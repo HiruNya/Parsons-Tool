@@ -1,17 +1,17 @@
-.parsons-space {
-  max-width: 500px;
-}
+/*.parsons-space {*/
+/*  max-width: 500px;*/
+/*}*/
 
-.parsons-block {
-  border: solid black;
-  padding: 20px;
-}
+/*.parsons-block {*/
+/*  border: solid black;*/
+/*  padding: 20px;*/
+/*}*/
 
-.parsons-block.drag-over {
-  margin-top: 40px;
-}
+/*.parsons-block.drag-over {*/
+/*  margin-top: 40px;*/
+/*}*/
 
-.parsons-block.drag {
-  border-color: red;
-}
+/*.parsons-block.drag {*/
+/*  border-color: red;*/
+/*}*/
 

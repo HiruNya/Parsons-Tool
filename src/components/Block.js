@@ -1,39 +1,81 @@
+import { useRef } from 'react'
+import { useDrag, useDrop } from 'react-dnd'
 import "./block.css"
 
-export default ({
-    text,
-    id,
-    moveBefore,
-}) => <div
-        className={"parsons-block"}
-        draggable={true}
-        onDrag={e => {
-            e.target.classList.add('drag')
-        }}
-        onDragEnd={ e =>
-            e.target.classList.remove('drag')
-        }
-        onDragOver={e => {
-            e.preventDefault()
-            // console.log("drag-over", e.dataTransfer)
-        }}
-        onDragEnter={e => {
-            e.target.classList.add('drag-over')
-        }}
-        onDragExit={e => {
-            e.target.classList.remove('drag-over')
-        }}
-        onDragStart={e => {
-            e.dataTransfer.setData("id", id);
-            console.log("start", e.dataTransfer.getData("id"))
-        }}
-        onDrop={e => {
-            e.preventDefault();
-            e.target.classList.remove('drag-over')
-            const blockId = e.dataTransfer.getData("id");
-            console.log("drop", blockId)
-            moveBefore(blockId, id)
-        }}
-    >
-        { text }
-    </div>
+
+const style = {
+    border: '1px dashed gray',
+    padding: '0.5rem 1rem',
+    marginBottom: '.5rem',
+    backgroundColor: 'white',
+    cursor: 'move',
+}
+
+const Block = ({ id, text, index, moveCard }) => {
+    const ref = useRef(null)
+    // https://react-dnd.github.io/react-dnd/examples/sortable/simple
+    const [{ handlerId }, drop] = useDrop({
+        accept: "BLOCK",
+        collect(monitor) {
+            return {
+                handlerId: monitor.getHandlerId(),
+            }
+        },
+        hover(item, monitor) {
+            if (!ref.current) {
+                return
+            }
+            const dragIndex = item.index
+            const hoverIndex = index
+            // Don't replace items with themselves
+            if (dragIndex === hoverIndex) {
+                return
+            }
+            // Determine rectangle on screen
+            const hoverBoundingRect = ref.current?.getBoundingClientRect()
+            // Get vertical middle
+            const hoverMiddleY =
+                (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+            // Determine mouse position
+            const clientOffset = monitor.getClientOffset()
+            // Get pixels to the top
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+            // Only perform the move when the mouse has crossed half of the items height
+            // When dragging downwards, only move when the cursor is below 50%
+            // When dragging upwards, only move when the cursor is above 50%
+            // Dragging downwards
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return
+            }
+            // Dragging upwards
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return
+            }
+            // Time to actually perform the action
+            moveCard(dragIndex, hoverIndex)
+            // Note: we're mutating the monitor item here!
+            // Generally it's better to avoid mutations,
+            // but it's good here for the sake of performance
+            // to avoid expensive index searches.
+            item.index = hoverIndex
+        },
+    })
+    const [{ isDragging }, drag] = useDrag({
+        type: "BLOCK",
+        item: () => {
+            return { id, index }
+        },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    })
+    const opacity = isDragging ? 0 : 1
+    drag(drop(ref))
+    return (
+        <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>
+            {text}
+        </div>
+    )
+}
+
+export default Block;

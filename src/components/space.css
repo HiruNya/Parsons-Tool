@@ -1,0 +1,12 @@
+.parsons-space {
+  border-style: solid;
+}
+
+
+.parsons-space.matches {
+  border-color: green;
+}
+
+.parsons-space.not-matches {
+  border-color: red;
+}
