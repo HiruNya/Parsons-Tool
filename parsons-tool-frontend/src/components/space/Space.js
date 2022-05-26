@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import update from 'immutability-helper'
 
-import Block from './Block'
+import Block from '../blocks/Block'
 import "./space.css"
 import {hover} from "@testing-library/user-event/dist/hover";
 
