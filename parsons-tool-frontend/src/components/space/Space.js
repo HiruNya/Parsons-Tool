@@ -9,13 +9,25 @@ const style = {
     width: 400,
 }
 
-const INITIAL_CODE = 'print("Hello")\n' +
-    'print("Parsons")\n' +
-    'print("Problems")'
+const INITIAL_CODE = 'print($$fade$$)\n' +
+    'print("Par$$fade$$")\n' +
+    'print("$$fade$$blems")'
+
+const FADE_TOKEN = "$$fade$$";
+const mapLine = (text, id) => {
+    let parsedText = text;
+    const fadedIndices = []
+    while (parsedText.indexOf(FADE_TOKEN) >= 0) {
+        const i = parsedText.indexOf(FADE_TOKEN);
+        fadedIndices.push(i)
+        parsedText = parsedText.replace(FADE_TOKEN, "");
+    }
+    return {id, text: parsedText, fadedIndices};
+}
 
 const Space = () => {
 
-    const [cards, setCards] = useState(INITIAL_CODE.split("\n").map((text, id) => ({id, text})))
+    const [cards, setCards] = useState(INITIAL_CODE.split("\n").map(mapLine))
     const moveCard = useCallback((dragIndex, hoverIndex) => {
         console.log("Moved", cards[dragIndex].id, "to", cards[hoverIndex].id);
         setCards((prevCards) =>
@@ -37,6 +49,7 @@ const Space = () => {
                 id={card.id}
                 text={card.text}
                 moveCard={moveCard}
+                fadedIndices={card.fadedIndices}
             />
         )
     }, [])
