@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "workspaces": [
+    "parsons-tool-backend",
+    "parsons-tool-frontend"
+  ],
+  "scripts": {
+    "start-frontend": "cd parsons-tool-frontend/ && yarn start",
+    "start-backend": "cd parsons-tool-backend/ && yarn start"
+  }
+}
