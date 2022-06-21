@@ -1,7 +1,8 @@
 
-
 .problemList {
     margin: 12px auto;
     width: 100%;
     background-color: gainsboro;
+    display: flex;
+    flex-direction: row;
 }
