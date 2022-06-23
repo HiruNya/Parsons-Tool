@@ -12,10 +12,16 @@ function ProblemInfoCard({ problem }) {
           </h3>
         </div>
         <div className={styles.problemInfoDetails}>
-          <h3>
-            {problem.variations.map((variation) => " " + variation + ", ")}
-          </h3>
-          <h2>{problem.language}</h2>
+          <div className={styles.problemInfoDetailsTop}>
+            <h3>
+              {problem.variations.map((variation) => " " + variation + ", ")}
+            </h3>
+            <h2>{problem.language}</h2>
+          </div>
+          <div className={styles.problemInfoDetailsBottom}>
+            <button className={styles.infoBtn}>Info</button>
+            <button className={styles.addProblemBtn}>Add Problem</button>
+          </div>
         </div>
       </div>
     </>
