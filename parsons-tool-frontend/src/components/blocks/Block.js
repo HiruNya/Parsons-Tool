@@ -11,7 +11,7 @@ const style = {
     cursor: 'move',
 }
 
-const Block = ({ id, text, index, moveCard }) => {
+const Block = ({ id, text, index, moveCard, fadedIndices }) => {
     const ref = useRef(null)
     // https://react-dnd.github.io/react-dnd/examples/sortable/simple
     const [{ handlerId }, drop] = useDrop({
@@ -73,9 +73,23 @@ const Block = ({ id, text, index, moveCard }) => {
     drag(drop(ref))
     return (
         <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>
-            {text}
+            {toFadedChildren(text, fadedIndices)}
         </div>
     )
+}
+
+const toFadedChildren = (text, fadedIndices) => {
+    // expect the faded indices are in-order and properly merged if needed
+    const spans = [];
+    let lastIndex = 0;
+    for (let i = 0; i < fadedIndices.length; i++) {
+        const f = fadedIndices[i];
+        spans.push(text.slice(lastIndex, f));
+        spans.push(null);
+        lastIndex = f;
+    }
+    spans.push(text.slice(lastIndex, text.length));
+    return spans.map(span => (span && <span>{span}</span>) || <input type="text" style={{width: "10ch"}} />);
 }
 
 export default Block;
