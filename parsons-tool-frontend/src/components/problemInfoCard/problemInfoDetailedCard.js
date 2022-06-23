@@ -1,8 +1,13 @@
 import styles from "./problemInfoDetailedCard.module.css";
+import {useNavigate} from 'react-router-dom';
 
 
 export default function ProblemInfoDetailedCard({problem}) {
 
+    const navigate = useNavigate();
+    function goToSolve() {
+        navigate('/solve', {state: {problem}});
+    }
     return (
         <>
           <div className={styles.problemInfoCard}>
@@ -14,7 +19,7 @@ export default function ProblemInfoDetailedCard({problem}) {
                 {problem.description}
               </p>
             </div>
-            <button className={styles.solveBtn}>Solve</button>
+            <button className={styles.solveBtn} onClick={() => goToSolve()}>Solve</button>
           </div>
         </>
     );
