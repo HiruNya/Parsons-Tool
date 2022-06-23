@@ -7,6 +7,7 @@
     width: 90%;
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .tags {
@@ -19,5 +20,23 @@
 
 .problemInfoDetails {
     padding: 8px 8px;
-
 } 
+
+.problemInfoButton {
+    position: relative;
+    left: 80%;
+    top: -25%;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 50%;
+    padding: 4px 12px;
+    font-size: xx-large;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+.problemInfoButton:hover {
+    color: white;
+    border-color: white;
+    transform: scale(1.1);
+}

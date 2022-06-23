@@ -18,7 +18,9 @@ export default function ProblemInfoListCard({problem, setSelected}) {
               </h3>
               <h2>{problem.language}</h2>
             </div>
+            
           </div>
+          <button className={styles.problemInfoButton} onClick={() => setSelected(problem)}> &gt; </button>
         </>
       );
 }
