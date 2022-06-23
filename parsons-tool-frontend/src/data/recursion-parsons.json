@@ -1,0 +1,94 @@
+{
+    "problems": [
+      {
+        "id": "recursion1",
+        "name": "Fibonacci",
+        "description": "This is a simple implementation of finding the value of a number in the fibonacci sequence by providing the index of the value to find ",
+        "difficulty": "Easy",
+        "tags": ["recursive", "base case", "conditional"],
+        "variations": ["faded", "2d"],
+        "language": "C",
+        "author": "F.Fromont",
+        "problem": {
+          "blocks": [
+            {
+              "id": "r1b1",
+              "tokens": ["int", "Fibonacci", "(", "int ", "n", ")", "{"],
+              "fadedIndexes": [],
+              "answers": []
+            },
+            {
+              "id": "r1b2",
+              "tokens": ["if", "(", "n", "<=", "2", ")", "{"],
+              "fadedIndexes": [],
+              "answers": []
+            },
+            {
+              "id": "r1b3",
+              "tokens": ["return", "1", ";"],
+              "fadedIndexes": [],
+              "answers": []
+            },
+            {
+              "id": "r1b4",
+              "tokens": ["}", "else", "{"],
+              "fadedIndexes": [],
+              "answers": []
+            },
+            {
+              "id": "r1b5",
+              "tokens": ["return", "Fibonacci", "(", "n", "-", "1", ")", "+", "Fibonacci", "(", "n", "-", "2", ")", ";", "}}"],
+              "fadedIndexes": [],
+              "answers": []
+            }
+          ],
+          "solution": ["r1b1","r1b2","r1b3","r1b4","r1b5"]
+        }
+      },
+      {
+          "id": "recursion2",
+          "name": "Fibonacci 2.0 electric boogaloo",
+          "description": "This is a simple implementation of finding the value of a number in the fibonacci sequence by providing the index of the value to find, but this particular version is done in a slightly more memory optimised manner ",
+          "difficulty": "Easy",
+          "tags": ["recursive", "base case", "conditional"],
+          "variations": ["faded", "2d"],
+          "language": "C",
+          "author": "F.Fromont",
+          "problem": {
+            "blocks": [
+              {
+                "id": "r1b1",
+                "tokens": ["int", "Fibonacci", "(", "int ", "n", ")", "{"],
+                "fadedIndexes": [],
+                "answers": []
+              },
+              {
+                "id": "r1b2",
+                "tokens": ["if", "(", "n", "<=", "2", ")", "{"],
+                "fadedIndexes": [],
+                "answers": []
+              },
+              {
+                "id": "r1b3",
+                "tokens": ["return", "1", ";"],
+                "fadedIndexes": [],
+                "answers": []
+              },
+              {
+                "id": "r1b4",
+                "tokens": ["}", "else", "{"],
+                "fadedIndexes": [],
+                "answers": []
+              },
+              {
+                "id": "r1b5",
+                "tokens": ["return", "Fibonacci", "(", "n", "-", "1", ")", "+", "Fibonacci", "(", "n", "-", "2", ")", ";", "}}"],
+                "fadedIndexes": [],
+                "answers": []
+              }
+            ],
+            "solution": ["r1b1","r1b2","r1b3","r1b4","r1b5"]
+          }
+      }
+    ]
+  }
