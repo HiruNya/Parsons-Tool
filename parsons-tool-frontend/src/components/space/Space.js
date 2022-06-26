@@ -3,14 +3,13 @@ import update from 'immutability-helper'
 
 import Block from '../blocks/Block'
 import "./space.css"
-import {hover} from "@testing-library/user-event/dist/hover";
 
 const style = {
     width: 400,
 }
 
 const INITIAL_CODE = 'print($$fade$$)\n' +
-    'print("Par$$fade$$")\n' +
+    '  print("Par$$fade$$")\n' +
     'print("$$fade$$blems")'
 
 const FADE_TOKEN = "$$fade$$";
@@ -22,22 +21,58 @@ const mapLine = (text, id) => {
         fadedIndices.push(i)
         parsedText = parsedText.replace(FADE_TOKEN, "");
     }
-    return {id, text: parsedText, fadedIndices};
+    const indentation = Math.floor(countSpaces(parsedText) / 2);
+    return {id, text: parsedText, fadedIndices, indentation};
+}
+const countSpaces = (line) => {
+    let i = 0;
+    let count = 0;
+    walkLine: while (i < line.length) {
+        const c = line.charAt(i)
+        switch (c) {
+            case " ":
+                count++;
+                break;
+            case "\t":
+                count += 2;
+                break;
+            default:
+                break walkLine;
+        }
+        i++;
+    }
+    return count;
 }
 
 const Space = () => {
 
     const [cards, setCards] = useState(INITIAL_CODE.split("\n").map(mapLine))
-    const moveCard = useCallback((dragIndex, hoverIndex) => {
-        console.log("Moved", cards[dragIndex].id, "to", cards[hoverIndex].id);
-        setCards((prevCards) =>
-            update(prevCards, {
-                $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, prevCards[dragIndex]],
-                ],
+    const moveCard = useCallback((dragIndex, hoverIndex, indentationDiff) => {
+        if (hoverIndex) {
+            console.log("Moved", cards[dragIndex].id, "to", cards[hoverIndex].id, "+", indentationDiff);
+            setCards((prevCards) => {
+                const movedCard = prevCards[dragIndex];
+                movedCard.indentation = Math.max(0, movedCard.indentation + indentationDiff);
+                return update(prevCards, {
+                    $splice: [
+                        [dragIndex, 1],
+                        [hoverIndex, 0, movedCard],
+                    ],
+                });
             })
-        )
+        } else {
+            setCards((prevCards) => {
+                const c = update(prevCards, {
+                    [dragIndex]: {
+                        indentation: {
+                            // $apply: (prevIndent) => Math.min(Math.max(0, prevIndent + indentationDiff), 10)
+                            $set: Math.min(Math.max(0, indentationDiff), 10)
+                        }
+                    }
+                });
+                return c;
+            })
+        }
     }, [])
     console.log(cards.map(({id}) => id))
     const matches = (cards.find(({id}, i) => id !== i) === undefined)? "matches": "not-matches";
@@ -50,6 +85,7 @@ const Space = () => {
                 text={card.text}
                 moveCard={moveCard}
                 fadedIndices={card.fadedIndices}
+                indentation={card.indentation}
             />
         )
     }, [])

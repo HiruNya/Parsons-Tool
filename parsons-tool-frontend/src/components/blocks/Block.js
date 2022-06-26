@@ -9,9 +9,11 @@ const style = {
     marginBottom: '.5rem',
     backgroundColor: 'white',
     cursor: 'move',
+    display: 'flex',
+    justifyContent: 'left',
 }
 
-const Block = ({ id, text, index, moveCard, fadedIndices }) => {
+const Block = ({ id, text, index, moveCard, fadedIndices, indentation }) => {
     const ref = useRef(null)
     // https://react-dnd.github.io/react-dnd/examples/sortable/simple
     const [{ handlerId }, drop] = useDrop({
@@ -27,8 +29,13 @@ const Block = ({ id, text, index, moveCard, fadedIndices }) => {
             }
             const dragIndex = item.index
             const hoverIndex = index
+            console.log(monitor.getDifferenceFromInitialOffset().x)
+            const indentDiff = Math.floor(monitor.getDifferenceFromInitialOffset().x / 20);
             // Don't replace items with themselves
             if (dragIndex === hoverIndex) {
+                if (indentDiff !== 0) {
+                    moveCard(dragIndex, undefined, indentDiff);
+                }
                 return
             }
             // Determine rectangle on screen
@@ -44,15 +51,12 @@ const Block = ({ id, text, index, moveCard, fadedIndices }) => {
             // When dragging downwards, only move when the cursor is below 50%
             // When dragging upwards, only move when the cursor is above 50%
             // Dragging downwards
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                return
-            }
-            // Dragging upwards
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+            if ((dragIndex < hoverIndex && hoverClientY < hoverMiddleY)
+                || (dragIndex > hoverIndex && hoverClientY > hoverMiddleY)) {
                 return
             }
             // Time to actually perform the action
-            moveCard(dragIndex, hoverIndex)
+            moveCard(dragIndex, hoverIndex, indentDiff)
             // Note: we're mutating the monitor item here!
             // Generally it's better to avoid mutations,
             // but it's good here for the sake of performance
@@ -69,10 +73,10 @@ const Block = ({ id, text, index, moveCard, fadedIndices }) => {
             isDragging: monitor.isDragging(),
         }),
     })
-    const opacity = isDragging ? 0 : 1
+    const marginLeft = (indentation * 20) + "px"
     drag(drop(ref))
     return (
-        <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>
+        <div ref={ref} style={{ ...style, marginLeft }} data-handler-id={handlerId}>
             {toFadedChildren(text, fadedIndices)}
         </div>
     )
