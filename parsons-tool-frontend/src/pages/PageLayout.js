@@ -8,6 +8,7 @@ export default function PageLayout() {
         <nav>
           <NavLink to="">Home</NavLink>
           <NavLink to="problems">Solve</NavLink>
+          <NavLink to="student">Student Problems</NavLink>
         </nav>
         <div className="container">
           <Outlet />
