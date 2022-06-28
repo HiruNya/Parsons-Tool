@@ -1,14 +1,13 @@
 import { useState } from "react";
 import ProblemInfoDetailedCard from "../components/problemInfoCard/problemInfoDetailedCard";
 import ProblemInfoListCard from "../components/problemInfoCard/problemInfoListCard";
-import styles from "./studentBrowseProblems.module.css";
 
 export default function StudentBrowseProblems({ problems }) {
     const [selected, setSelected] = useState();
   
     return (
-    <div className={styles.studentProblemContainer}>
-      <div className={styles.studentProblemList}>
+    <div className="flex flex-row">
+      <div className="flex flex-col bg-sky-600 w-full mx-12 my-auto rounded-xl">
         {problems && problems.length > 0 ? (
           problems.map((problem, i) => (
             <ProblemInfoListCard problem={problem} setSelected={(problem) => setSelected(problem)}key={i} />
@@ -17,7 +16,7 @@ export default function StudentBrowseProblems({ problems }) {
           <p>No problems assigned</p>
         )}
       </div>
-      <div className={styles.problemInfoView}>
+      <div className="w-full">
         {
             selected ? (
                 <ProblemInfoDetailedCard problem={selected} />

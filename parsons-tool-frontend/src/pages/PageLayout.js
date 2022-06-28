@@ -10,7 +10,7 @@ export default function PageLayout() {
           <NavLink to="problems">Solve</NavLink>
           <NavLink to="student">Student Problems</NavLink>
         </nav>
-        <div className="container">
+        <div>
           <Outlet />
         </div>
       </div>
