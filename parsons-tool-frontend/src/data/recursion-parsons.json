@@ -37,7 +37,7 @@
             },
             {
               "id": "r1b5",
-              "text": "return Fibonacci (n - 1) + Fibonacci(n - 2);}}",
+              "text": "return Fibonacci (n - 1) + Fibonacci(n - 2);",
               "fadedIndices": [],
               "answers": []
             },
@@ -94,7 +94,7 @@
               },
               {
                 "id": "r1b5",
-                "text": "return Fibonacci (n - 1) + Fibonacci(n - 2);}}",
+                "text": "return Fibonacci (n - 1) + Fibonacci(n - 2);",
                 "fadedIndices": [],
                 "answers": []
               },
