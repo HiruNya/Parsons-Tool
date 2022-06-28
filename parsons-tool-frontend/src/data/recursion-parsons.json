@@ -13,36 +13,48 @@
           "blocks": [
             {
               "id": "r1b1",
-              "tokens": ["int", "Fibonacci", "(", "int ", "n", ")", "{"],
-              "fadedIndexes": [],
+              "text": "int Fibonacci(int n) {",
+              "fadedIndices": [],
               "answers": []
             },
             {
               "id": "r1b2",
-              "tokens": ["if", "(", "n", "<=", "2", ")", "{"],
-              "fadedIndexes": [],
+              "text": "if (n <= 2) {",
+              "fadedIndices": [],
               "answers": []
             },
             {
               "id": "r1b3",
-              "tokens": ["return", "1", ";"],
-              "fadedIndexes": [],
+              "text": "return 1;",
+              "fadedIndices": [],
               "answers": []
             },
             {
               "id": "r1b4",
-              "tokens": ["}", "else", "{"],
-              "fadedIndexes": [],
+              "text": "} else {",
+              "fadedIndices": [],
               "answers": []
             },
             {
               "id": "r1b5",
-              "tokens": ["return", "Fibonacci", "(", "n", "-", "1", ")", "+", "Fibonacci", "(", "n", "-", "2", ")", ";", "}}"],
-              "fadedIndexes": [],
+              "text": "return Fibonacci (n - 1) + Fibonacci(n - 2);}}",
+              "fadedIndices": [],
+              "answers": []
+            },
+            {
+              "id": "r1b6",
+              "text": "}",
+              "fadedIndices": [],
+              "answers": []
+            },
+            {
+              "id": "r1b7",
+              "text": "}",
+              "fadedIndices": [],
               "answers": []
             }
           ],
-          "solution": ["r1b1","r1b2","r1b3","r1b4","r1b5"]
+          "solution": ["r1b1","r1b2","r1b3","r1b4","r1b5","r1b6","r1b7"]
         }
       },
       {
@@ -58,36 +70,48 @@
             "blocks": [
               {
                 "id": "r1b1",
-                "tokens": ["int", "Fibonacci", "(", "int ", "n", ")", "{"],
-                "fadedIndexes": [],
+                "text": "int Fibonacci(int n) {",
+                "fadedIndices": [],
                 "answers": []
               },
               {
                 "id": "r1b2",
-                "tokens": ["if", "(", "n", "<=", "2", ")", "{"],
-                "fadedIndexes": [],
+                "text": "if (n <= 2) {",
+                "fadedIndices": [],
                 "answers": []
               },
               {
                 "id": "r1b3",
-                "tokens": ["return", "1", ";"],
-                "fadedIndexes": [],
+                "text": "return 1;",
+                "fadedIndices": [],
                 "answers": []
               },
               {
                 "id": "r1b4",
-                "tokens": ["}", "else", "{"],
-                "fadedIndexes": [],
+                "text": "} else {",
+                "fadedIndices": [],
                 "answers": []
               },
               {
                 "id": "r1b5",
-                "tokens": ["return", "Fibonacci", "(", "n", "-", "1", ")", "+", "Fibonacci", "(", "n", "-", "2", ")", ";", "}}"],
-                "fadedIndexes": [],
+                "text": "return Fibonacci (n - 1) + Fibonacci(n - 2);}}",
+                "fadedIndices": [],
+                "answers": []
+              },
+              {
+                "id": "r1b6",
+                "text": "}",
+                "fadedIndices": [],
+                "answers": []
+              },
+              {
+                "id": "r1b7",
+                "text": "}",
+                "fadedIndices": [],
                 "answers": []
               }
             ],
-            "solution": ["r1b1","r1b2","r1b3","r1b4","r1b5"]
+            "solution": ["r1b1","r1b2","r1b3","r1b4","r1b5","r1b6","r1b7"]
           }
       }
     ]
