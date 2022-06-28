@@ -1,4 +1,3 @@
-import styles from "./problemInfoDetailedCard.module.css";
 import {useNavigate} from 'react-router-dom';
 
 
@@ -10,7 +9,7 @@ export default function ProblemInfoDetailedCard({problem}) {
     }
     return (
         <>
-          <div className="bg-gray-200 p-2 rounded-xl m-12 w-4/5 h-4/5 flex flex-col items-center">
+          <div className="bg-gray-200 p-2 rounded-xl m-12 w-4/5 h-min flex flex-col items-center">
             <div className="p-2">
               <h1>{problem.name}</h1>
             </div>

@@ -1,18 +1,16 @@
-import styles from "./problemInfoListCard.module.css"
-
 export default function ProblemInfoListCard({problem, setSelected}) {
 
     return (
         <>
-          <div className="bg-sky-200 m-5 w-9/10 p-2 rounded-xl flex flex-row items-center" onClick={()=> setSelected(problem)}>
+          <div className="bg-sky-200 m-5 w-11/12 p-2 rounded-xl flex flex-row items-center" onClick={()=> setSelected(problem)}>
             <div className="p-2 mx-4">
-              <h1>{problem.name}</h1>
+              <h1 className="text-xl">{problem.name}</h1>
               <h2>{problem.author}</h2>
               <h3 className="text-gray-500">
                 {problem.tags.map((tag) => " " + tag + ",")}
               </h3>
             </div>
-            <div className="p-2 mx-5">
+            <div className="p-2 ml-auto">
               <h3>
                 {problem.variations.map((variation) => " " + variation + ", ")}
               </h3>
