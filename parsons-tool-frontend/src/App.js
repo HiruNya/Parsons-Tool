@@ -1,11 +1,11 @@
-import "./App.css";
 import { React } from "react";
 import { Routes, Route } from "react-router-dom";
-import ProblemEvaluation from "./pages/problemEvaluation";
 import ProblemInfoCard from "./components/problemInfoCard/problemInfoCard";
 import PageLayout from "./pages/PageLayout";
-import StudentBrowseProblems from "./pages/studentBrowseProblems";
+import StudentBrowseProblems from "./pages/StudentBrowseProblems";
 import data from "./data/recursion-parsons.json"
+import ParsonsProblem from "./components/parsonsProblem";
+import ProblemEvaluation from "./pages/ProblemEvaluation";
 
 function App() {
   return (
@@ -13,8 +13,9 @@ function App() {
       <Routes>
         <Route path="/" element={<PageLayout />}>
           <Route index element={<ProblemInfoCard />} />
-          <Route path="problems" element={<ProblemEvaluation />} />
+          <Route path="problems" element={<ParsonsProblem problem={data.problems[1].problem}/>} />
           <Route path="student" element={<StudentBrowseProblems problems={data.problems}/>} />
+          <Route path="solve" element={<ProblemEvaluation />} />
         </Route>
       </Routes>
     </>

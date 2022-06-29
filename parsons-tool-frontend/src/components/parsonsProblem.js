@@ -1,12 +1,11 @@
-import Space from "../components/space/Space";
+import Space from "./space/Space";
 import React, {useCallback, useState} from "react";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
 import update from "immutability-helper";
-import data from "../data/recursion-parsons.json";
 
-function ProblemEvaluation() {
-    const [cards, setCards] = useState(() => data.problems[1].problem.blocks)
+function ParsonsProblem({problem}) {
+    const [cards, setCards] = useState(() => problem.blocks)
     const moveCard = useCallback((dragIndex, hoverIndex, indentationDiff) => {
         if (hoverIndex) {
             console.log("Moved", cards[dragIndex].id, "to", cards[hoverIndex].id, "+", indentationDiff);
@@ -32,7 +31,7 @@ function ProblemEvaluation() {
                 }))
         }
     }, [cards])
-    const matches = (cards.find(({id}, i) => id !== data.problems[0].problem.solution[i]) === undefined) ? "matches" : "not-matches";
+    const matches = (cards.find(({id}, i) => id !== problem.solution[i]) === undefined) ? true : false;
 
     return (
         <div className="App">
@@ -43,4 +42,4 @@ function ProblemEvaluation() {
     );
 }
 
-export default ProblemEvaluation;
+export default ParsonsProblem;
