@@ -5,7 +5,6 @@ import {DndProvider} from "react-dnd";
 import update from "immutability-helper";
 
 function ParsonsProblem({problem}) {
-    console.log(problem)
     const [cards, setCards] = useState(() => problem.blocks)
     const moveCard = useCallback((dragIndex, hoverIndex, indentationDiff) => {
         if (hoverIndex) {
