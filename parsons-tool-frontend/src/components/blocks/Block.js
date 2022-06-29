@@ -1,17 +1,8 @@
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import "./block.css"
 
 
-const style = {
-    border: '1px dashed gray',
-    padding: '0.5rem 1rem',
-    marginBottom: '.5rem',
-    backgroundColor: 'white',
-    cursor: 'move',
-    display: 'flex',
-    justifyContent: 'left',
-}
+
 
 const Block = ({ id, text, index, moveCard, fadedIndices, indentation }) => {
     const ref = useRef(null)
@@ -76,7 +67,7 @@ const Block = ({ id, text, index, moveCard, fadedIndices, indentation }) => {
     const marginLeft = (indentation * 20) + "px"
     drag(drop(ref))
     return (
-        <div ref={ref} style={{ ...style, marginLeft }} data-handler-id={handlerId}>
+        <div className="flex py-2 px-4 mb-2 border-2 border-stone-400 border-dashed justify-start cursor-move bg-white" ref={ref} style={{ marginLeft }} data-handler-id={handlerId}>
             {toFadedChildren(text, fadedIndices)}
         </div>
     )

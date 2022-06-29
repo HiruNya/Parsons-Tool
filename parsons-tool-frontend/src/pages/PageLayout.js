@@ -5,7 +5,7 @@ export default function PageLayout() {
   return (
     <>
       <div className="h-screen">
-        <nav className="fixed">
+        <nav className="relative top-0 left-0">
           <NavLink to="">Home</NavLink>
           <NavLink to="problems">Solve</NavLink>
           <NavLink to="student">Student Problems</NavLink>

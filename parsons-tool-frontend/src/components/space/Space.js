@@ -1,13 +1,9 @@
 import { useCallback} from 'react'
 
 import Block from '../blocks/Block'
-import "./space.css"
-
-const style = {
-    width: 400,
-}
 
 const Space = ({ blocks, moveCard, matches }) => {
+
     const renderCard = useCallback((card, index) => {
         return (
             <Block
@@ -23,7 +19,7 @@ const Space = ({ blocks, moveCard, matches }) => {
     }, [moveCard])
     return (
         <>
-            <div className={"parsons-space " + matches} style={style}>{blocks.map(renderCard)}</div>
+            <div className={`w-96 border-solid border-2 ${matches ? "border-green-600" : "border-red-600"}`}>{blocks.map(renderCard)}</div>
         </>
     )
 }
