@@ -6,6 +6,7 @@ import StudentBrowseProblems from "./pages/StudentBrowseProblems";
 import data from "./data/recursion-parsons.json"
 import ParsonsProblem from "./components/parsonsProblem";
 import ProblemEvaluation from "./pages/ProblemEvaluation";
+import ProblemGeneration from "./pages/ProblemGeneration";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="problems" element={<ParsonsProblem problem={data.problems[1].problem}/>} />
           <Route path="student" element={<StudentBrowseProblems problems={data.problems}/>} />
           <Route path="solve" element={<ProblemEvaluation />} />
+          <Route path="create" element={<ProblemGeneration />} />
         </Route>
       </Routes>
     </>

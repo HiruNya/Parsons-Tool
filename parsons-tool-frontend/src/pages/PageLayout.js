@@ -6,9 +6,10 @@ export default function PageLayout() {
     <>
       <div className="h-screen">
         <nav className="relative top-0 left-0">
-          <NavLink to="">Home</NavLink>
-          <NavLink to="problems">Solve</NavLink>
-          <NavLink to="student">Student Problems</NavLink>
+          <NavLink to="">| Home </NavLink>
+          <NavLink to="problems">| Solve </NavLink>
+          <NavLink to="student">| Student Problems </NavLink>
+          <NavLink to="create">| Create Problem </NavLink>
         </nav>
         <div className="h-full">
           <Outlet />
