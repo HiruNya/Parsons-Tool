@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useState} from "react";
 import { Routes, Route } from "react-router-dom";
 import ProblemInfoCard from "./components/problemInfoCard/problemInfoCard";
 import PageLayout from "./pages/PageLayout";
@@ -9,6 +9,9 @@ import ProblemEvaluation from "./pages/ProblemEvaluation";
 import ProblemGeneration from "./pages/ProblemGeneration";
 
 function App() {
+
+  //const [problemSet, setProblems] = useState(data.problems);
+
   return (
     <>
       <Routes>
@@ -17,7 +20,7 @@ function App() {
           <Route path="problems" element={<ParsonsProblem problem={data.problems[1].problem}/>} />
           <Route path="student" element={<StudentBrowseProblems problems={data.problems}/>} />
           <Route path="solve" element={<ProblemEvaluation />} />
-          <Route path="create" element={<ProblemGeneration />} />
+          <Route path="create" element={<ProblemGeneration addProblem={(newProblem)=> {console.log(newProblem)}}/>} />
         </Route>
       </Routes>
     </>
