@@ -67,7 +67,7 @@ const Block = ({ id, text, index, moveCard, fadedIndices, indentation }) => {
     const marginLeft = (indentation * 20) + "px"
     drag(drop(ref))
     return (
-        <div className="flex py-2 px-4 mb-2 border-2 border-stone-400 border-dashed justify-start cursor-move bg-white" ref={ref} style={{ marginLeft }} data-handler-id={handlerId}>
+        <div className="flex py-2 px-4 mb-2 border-2 border-stone-400 border-solid rounded-full justify-start cursor-move bg-white" ref={ref} style={{ marginLeft }} data-handler-id={handlerId}>
             {toFadedChildren(text, fadedIndices)}
         </div>
     )
