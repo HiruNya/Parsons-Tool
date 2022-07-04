@@ -25,7 +25,7 @@ export default function ProblemGeneration({ addProblem }) {
       name: name,
       description: description,
       difficulty: "Easy - DECISION",
-      tags: [tags.split(',')],
+      tags: tags.split(','),
       variations: ["faded", "2d"],
       language: "Python",
       author: "F.Fromont",
