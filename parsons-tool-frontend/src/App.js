@@ -9,9 +9,6 @@ import ProblemEvaluation from "./pages/ProblemEvaluation";
 import ProblemGeneration from "./pages/ProblemGeneration";
 
 function App() {
-
-  //const [problemSet, setProblems] = useState(data.problems);
-
   return (
     <>
       <Routes>
