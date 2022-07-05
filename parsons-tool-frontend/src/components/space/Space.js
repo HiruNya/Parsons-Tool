@@ -1,6 +1,7 @@
-import { useCallback} from 'react'
+import React, { useCallback} from 'react'
 
 import Block from '../blocks/Block'
+import {SortableContext} from "@dnd-kit/sortable";
 
 const Space = ({ blocks, moveCard, matches }) => {
 
@@ -11,16 +12,16 @@ const Space = ({ blocks, moveCard, matches }) => {
                 index={index}
                 id={card.id}
                 text={card.text}
-                moveCard={moveCard}
+                // moveCard={moveCard}
                 fadedIndices={card.fadedIndices}
                 indentation={card.indentation}
             />
         )
     }, [moveCard])
     return (
-        <>
-            <div className={`w-96 border-solid border-2 ${matches ? "border-green-600" : "border-red-600"}`}>{blocks.map(renderCard)}</div>
-        </>
+        <SortableContext items={blocks}>
+            {blocks.map(renderCard)}
+        </SortableContext>
     )
 }
 

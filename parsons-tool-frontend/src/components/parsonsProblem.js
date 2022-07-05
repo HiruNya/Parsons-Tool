@@ -1,43 +1,44 @@
 import Space from "./space/Space";
 import React, {useCallback, useState} from "react";
-import {HTML5Backend} from "react-dnd-html5-backend";
-import {DndProvider} from "react-dnd";
+import {DndContext} from "@dnd-kit/core";
+import {arrayMove} from "@dnd-kit/sortable";
 import update from "immutability-helper";
 
 function ParsonsProblem({problem}) {
-    const [cards, setCards] = useState(() => problem.blocks)
-    const moveCard = useCallback((dragIndex, hoverIndex, indentationDiff) => {
-        if (hoverIndex) {
-            console.log("Moved", cards[dragIndex].id, "to", cards[hoverIndex].id, "+", indentationDiff);
-            setCards((prevCards) => {
-                const movedCard = prevCards[dragIndex];
-                movedCard.indentation = Math.max(0, movedCard.indentation + indentationDiff);
-                return update(prevCards, {
-                    $splice: [
-                        [dragIndex, 1],
-                        [hoverIndex, 0, movedCard],
-                    ],
-                });
-            })
-        } else {
-            setCards((prevCards) =>
-                update(prevCards, {
-                    [dragIndex]: {
+    const [state, setState] = useState(() => ({
+        problem: problem.blocks.map(block => block.id),
+        blocks: Object.fromEntries(problem.blocks.map(block => [block.id, block])),
+    }));
+    const dragEnd = useCallback(({active, over, delta}) => {
+        if (!active || !over) {
+            return;
+        }
+        return setState((state) => {
+            const oldIndex = state.problem.indexOf(active.id);
+            const newIndex = state.problem.indexOf(over.id);
+            let indentation = state.blocks[active.id].indentation;
+            indentation = ((indentation) ? indentation : 0) + Math.floor(delta.x / 40);
+            indentation = Math.min(Math.max(indentation, 0), 8);
+
+            return {
+                ...state,
+                problem: arrayMove(state.problem, oldIndex, newIndex),
+                blocks: update(state.blocks, {
+                    [active.id]: {
                         indentation: {
-                            // $apply: (prevIndent) => Math.min(Math.max(0, prevIndent + indentationDiff), 10)
-                            $set: Math.min(Math.max(0, indentationDiff), 10)
+                            $set: indentation,
                         }
                     }
-                }))
-        }
-    }, [cards])
-    const matches = (cards.find(({id}, i) => id !== problem.solution[i]) === undefined) ? true : false;
+                }),
+            };
+        });
+    }, []);
 
     return (
         <div className="App">
-            <DndProvider backend={HTML5Backend}>
-                <Space blocks={cards} moveCard={moveCard} matches={matches}/>
-            </DndProvider>
+            <DndContext onDragEnd={dragEnd}>
+                <Space blocks={state.problem.map(val => state.blocks[val])}/>
+            </DndContext>
         </div>
     );
 }
