@@ -27,7 +27,7 @@ const Block = ({ id, text, index, moveCard, fadedIndices, indentation }) => {
     }
 
     return (
-        <div className="flex py-2 px-4 mb-2 border-2 border-stone-400 border-dashed justify-start cursor-move bg-white" ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <div className="flex py-2 px-4 mb-2 border-2 border-stone-400 border-solid rounded-full justify-start cursor-move bg-white" ref={setNodeRef} style={style} {...attributes} {...listeners}>
             {toFadedChildren(text, fadedIndices)}
         </div>
     )
