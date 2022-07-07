@@ -3,7 +3,7 @@ import {CSS} from "@dnd-kit/utilities";
 
 
 
-const Block = ({ id, text, index, moveCard, fadedIndices, indentation }) => {
+const Block = ({ id, text, index, fadedIndices, indentation }) => {
     const {
         attributes,
         listeners,
