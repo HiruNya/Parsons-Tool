@@ -30,7 +30,7 @@ export default function ProblemGeneration({ addProblem }) {
       language: "Python",
       author: "F.Fromont",
       problem: {
-        blocks: [ code.split('\n').map(mapLine)],
+        blocks: code.split('\n').map(mapLine),
         solution: [],
       }
     };
