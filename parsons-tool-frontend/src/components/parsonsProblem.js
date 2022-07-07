@@ -33,7 +33,7 @@ function ParsonsProblem({problem}) {
                 moveBlock = {
                     [newSpace]: {
                         $splice: [
-                            [Math.max(newIndex, 0), 0, active.id]
+                            [Math.max((newIndex < 0)? (state.solution.length - 1): newIndex, 0), 0, active.id]
                         ]
                     },
                     [oldSpace]: {
@@ -49,7 +49,7 @@ function ParsonsProblem({problem}) {
                 blocks: {
                     [active.id]: {
                         indentation: {
-                            $set: indentation,
+                            $set: (oldSpace === newSpace)? indentation: 0,
                         }
                     }
                 },
