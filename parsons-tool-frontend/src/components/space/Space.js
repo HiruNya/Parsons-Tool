@@ -23,7 +23,7 @@ const Space = ({ name, blocks, matches }) => {
         )
     }, [])
     return (
-        <div style={{minHeight: "150px", minWidth: "150px", border: "solid red"}} ref={setNodeRef}>
+        <div className={`p-2 ml-2 mr-2 w-96 h-80 border-solid rounded-lg border-2 ${matches ? "border-green-600" : "border-red-600"}`} ref={setNodeRef}>
             <SortableContext items={blocks} id={name}>
                 {blocks.map(renderCard)}
             </SortableContext>
