@@ -67,7 +67,7 @@ const Block = ({ id, text, index, moveCard, fadedIndices, indentation }) => {
     const marginLeft = (indentation * 20) + "px"
     drag(drop(ref))
     return (
-        <div className="flex py-2 px-4 mb-2 border-2 border-stone-400 border-dashed justify-start cursor-move bg-white" ref={ref} style={{ marginLeft }} data-handler-id={handlerId}>
+        <div className="flex py-2 px-4 mb-2 border-2 border-stone-400 border-solid rounded-full justify-start cursor-move bg-white" ref={ref} style={{ marginLeft }} data-handler-id={handlerId}>
             {toFadedChildren(text, fadedIndices)}
         </div>
     )
@@ -84,7 +84,7 @@ const toFadedChildren = (text, fadedIndices) => {
         lastIndex = f;
     }
     spans.push(text.slice(lastIndex, text.length));
-    return spans.map(span => (span && <span>{span}</span>) || <input type="text" style={{width: "10ch"}} />);
+    return spans.map(span => (span && <span>{span}</span>) || <input type="text" className={"bg-stone-200 rounded-full px-1 mx-2"} style={{width: "10ch"}} />);
 }
 
 export default Block;

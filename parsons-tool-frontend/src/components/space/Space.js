@@ -19,7 +19,7 @@ const Space = ({ blocks, moveCard, matches }) => {
     }, [moveCard])
     return (
         <>
-            <div className={`w-96 border-solid border-2 ${matches ? "border-green-600" : "border-red-600"}`}>{blocks.map(renderCard)}</div>
+            <div className={`p-2 border-solid border-2 ${matches ? "border-green-600" : "border-red-600"}`}>{blocks.map(renderCard)}</div>
         </>
     )
 }
