@@ -4,16 +4,14 @@ main();
 
 async function main() {
   mongoose
-    .connect("mongodb://localhost:27017/mongodb", {
+    .connect("mongodb://localhost:27017/parsons", {
       useNewUrlParser: true,
-      user: "admin",
-      pass: "password",
     })
     .then(() => {
       console.log("Connected to database!");
     })
     .catch((err) => {
-      console.log("Error Connecting to database:", err);
+      console.log(err);
       process.exit();
     });
   await clearDatabase();
@@ -35,8 +33,10 @@ async function main() {
 
 async function clearDatabase() {
   // Clear Database tables
+  console.log("Finsihed clearing Database");
 }
 
 async function addData() {
   // Add data to database tables
+  console.log("Finished adding to database");
 }

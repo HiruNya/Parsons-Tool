@@ -33,8 +33,6 @@ if (process.env.NODE_ENV === "production") {
 mongoose
   .connect("mongodb://localhost:27017/mongodb", {
     useNewUrlParser: true,
-    user: "admin",
-    pass: "password",
   })
   .then(() => {
     app.listen(port, () =>

@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mongodb:
-    container_name: mongodb
+    container_name: parsons
     image: mongo:latest
     restart: always
     ports:
