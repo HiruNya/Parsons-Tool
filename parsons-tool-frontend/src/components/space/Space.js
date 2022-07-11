@@ -1,9 +1,15 @@
-import { useCallback} from 'react'
+import React, {useCallback} from 'react'
 
 import Block from '../blocks/Block'
+import {SortableContext} from "@dnd-kit/sortable";
+import {useDroppable} from "@dnd-kit/core";
 
-const Space = ({ blocks, moveCard, matches }) => {
-
+const Space = ({ name, blocks, matches }) => {
+    const {
+        setNodeRef,
+    } = useDroppable({
+        id: name,
+    });
     const renderCard = useCallback((card, index) => {
         return (
             <Block
@@ -11,16 +17,17 @@ const Space = ({ blocks, moveCard, matches }) => {
                 index={index}
                 id={card.id}
                 text={card.text}
-                moveCard={moveCard}
                 fadedIndices={card.fadedIndices}
                 indentation={card.indentation}
             />
         )
-    }, [moveCard])
+    }, [])
     return (
-        <>
-            <div className={`p-2 border-solid border-2 ${matches ? "border-green-600" : "border-red-600"}`}>{blocks.map(renderCard)}</div>
-        </>
+        <div style={{minHeight: "150px", minWidth: "150px", border: "solid red"}} ref={setNodeRef}>
+            <SortableContext items={blocks} id={name}>
+                {blocks.map(renderCard)}
+            </SortableContext>
+        </div>
     )
 }
 

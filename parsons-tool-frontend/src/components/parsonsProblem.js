@@ -1,45 +1,81 @@
 import Space from "./space/Space";
 import React, {useCallback, useState} from "react";
-import {HTML5Backend} from "react-dnd-html5-backend";
-import {DndProvider} from "react-dnd";
+import {DndContext} from "@dnd-kit/core";
+import {arrayMove} from "@dnd-kit/sortable";
 import update from "immutability-helper";
 
 function ParsonsProblem({problem}) {
-    const [cards, setCards] = useState(() => problem.blocks)
-    const moveCard = useCallback((dragIndex, hoverIndex, indentationDiff) => {
-        if (hoverIndex) {
-            console.log("Moved", cards[dragIndex].id, "to", cards[hoverIndex].id, "+", indentationDiff);
-            setCards((prevCards) => {
-                const movedCard = prevCards[dragIndex];
-                movedCard.indentation = Math.max(0, movedCard.indentation + indentationDiff);
-                return update(prevCards, {
-                    $splice: [
-                        [dragIndex, 1],
-                        [hoverIndex, 0, movedCard],
-                    ],
-                });
-            })
-        } else {
-            setCards((prevCards) =>
-                update(prevCards, {
-                    [dragIndex]: {
+    const [state, setState] = useState(() => ({
+        problem: problem.blocks.map(block => block.id),
+        solution: [],
+        blocks: Object.fromEntries(problem.blocks.map(block => [block.id, block])),
+    }));
+    const dragEnd = useCallback(({active, over, delta}) => {
+        if (!active || !over) {
+            return;
+        }
+        return setState((state) => {
+            const [oldSpace, oldIndex] = getPos(state, active.id);
+            let [newSpace, newIndex] = getPos(state, over.id);
+            let indentation = state.blocks[active.id].indentation;
+            indentation = ((indentation) ? indentation : 0) + Math.floor(delta.x / 40);
+            indentation = Math.min(Math.max(indentation, 0), 8);
+            newSpace = newSpace || ((Object.keys(state).indexOf(over.id) >= 0)? over.id: oldSpace);
+
+            let moveBlock;
+            if (oldSpace === newSpace) {
+                moveBlock = {
+                    [oldSpace]: {
+                        $set: arrayMove(state[oldSpace], oldIndex, newIndex),
+                    }
+                }
+            } else {
+                moveBlock = {
+                    [newSpace]: {
+                        $splice: [
+                            [Math.max((newIndex < 0)? (state.solution.length - 1): newIndex, 0), 0, active.id]
+                        ]
+                    },
+                    [oldSpace]: {
+                        $splice: [
+                            [oldIndex, 1]
+                        ]
+                    },
+                }
+            }
+
+            return update(state, {
+                ...moveBlock,
+                blocks: {
+                    [active.id]: {
                         indentation: {
-                            // $apply: (prevIndent) => Math.min(Math.max(0, prevIndent + indentationDiff), 10)
-                            $set: Math.min(Math.max(0, indentationDiff), 10)
+                            $set: (oldSpace === newSpace)? indentation: 0,
                         }
                     }
-                }))
-        }
-    }, [cards])
-    const matches = (cards.find(({id}, i) => id !== problem.solution[i]) === undefined) ? true : false;
+                },
+            });
+        });
+    }, []);
 
     return (
-        <div className="App">
-            <DndProvider backend={HTML5Backend}>
-                <Space blocks={cards} moveCard={moveCard} matches={matches}/>
-            </DndProvider>
+        <div className="App" style={{display: "flex"}}>
+            <DndContext onDragEnd={dragEnd}>
+                <Space name={"problem"} blocks={state.problem.map(val => state.blocks[val])}/>
+                <Space name={"solution"} blocks={state.solution.map(val => state.blocks[val])}/>
+            </DndContext>
         </div>
     );
+}
+
+const getPos = (state, id) => {
+    const spaces = ["problem", "solution"];
+    let index = -1;
+    let s = 0;
+    while (index < 0 && s < spaces.length) {
+        index = state[spaces[s]].indexOf(id);
+        s++;
+    }
+    return [spaces[s-1], index]
 }
 
 export default ParsonsProblem;
