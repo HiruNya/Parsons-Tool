@@ -5,8 +5,8 @@
     "parsons-tool-frontend"
   ],
   "scripts": {
-    "start-frontend": "cd parsons-tool-frontend/ && yarn start",
-    "start-backend": "cd parsons-tool-backend/ && yarn start"
+    "start-frontend": "yarn workspace parsons-components start",
+    "start-backend": "yarn workspace parsons-tool-backend start"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",
