@@ -5,15 +5,8 @@
       "name": "Fibonacci",
       "description": "This is a simple implementation of finding the value of a number in the fibonacci sequence by providing the index of the value to find ",
       "difficulty": "Easy",
-      "tags": [
-        "recursive",
-        "base case",
-        "conditional"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["recursive", "base case", "conditional"],
+      "variations": ["faded", "2d"],
       "language": "C",
       "author": "F.Fromont",
       "problem": {
@@ -21,9 +14,7 @@
           {
             "id": "r1b1",
             "text": "int Fibonacci(int ) {",
-            "fadedIndices": [
-              18
-            ],
+            "fadedIndices": [18],
             "answers": []
           },
           {
@@ -63,15 +54,7 @@
             "answers": []
           }
         ],
-        "solution": [
-          "r1b1",
-          "r1b2",
-          "r1b3",
-          "r1b4",
-          "r1b5",
-          "r1b6",
-          "r1b7"
-        ]
+        "solution": ["r1b1", "r1b2", "r1b3", "r1b4", "r1b5", "r1b6", "r1b7"]
       }
     },
     {
@@ -79,15 +62,8 @@
       "name": "Fibonacci 2.0 electric boogaloo",
       "description": "This is a simple implementation of finding the value of a number in the fibonacci sequence by providing the index of the value to find, but this particular version is done in a slightly more memory optimised manner ",
       "difficulty": "Easy",
-      "tags": [
-        "recursive",
-        "base case",
-        "conditional"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["recursive", "base case", "conditional"],
+      "variations": ["faded", "2d"],
       "language": "C",
       "author": "F.Fromont",
       "problem": {
@@ -135,15 +111,7 @@
             "answers": []
           }
         ],
-        "solution": [
-          "r1b1",
-          "r1b2",
-          "r1b3",
-          "r1b4",
-          "r1b5",
-          "r1b6",
-          "r1b7"
-        ]
+        "solution": ["r1b1", "r1b2", "r1b3", "r1b4", "r1b5", "r1b6", "r1b7"]
       }
     },
     {
@@ -151,68 +119,44 @@
       "name": "Linear Search w/ Variable Fading",
       "description": "",
       "difficulty": "Easy",
-      "tags": [
-        "iterative",
-        "search"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["iterative", "search"],
+      "variations": ["faded", "2d"],
       "language": "Python",
       "author": "H. Jayamanne",
       "problem": {
         "blocks": [
           {
-            "id": 0,
+            "id": "0",
             "text": "def LinearSearch(, ):",
-            "fadedIndices": [
-              17,
-              19
-            ],
+            "fadedIndices": [17, 19],
             "indentation": 0
           },
           {
-            "id": 1,
+            "id": "1",
             "text": "  for  in range(len()):",
-            "fadedIndices": [
-              6,
-              20
-            ],
+            "fadedIndices": [6, 20],
             "indentation": 1
           },
           {
-            "id": 2,
+            "id": "2",
             "text": "    if [] == :",
-            "fadedIndices": [
-              7,
-              8,
-              13
-            ],
+            "fadedIndices": [7, 8, 13],
             "indentation": 2
           },
           {
-            "id": 3,
+            "id": "3",
             "text": "      return ",
-            "fadedIndices": [
-              13
-            ],
+            "fadedIndices": [13],
             "indentation": 3
           },
           {
-            "id": 4,
+            "id": "4",
             "text": "    return -1",
             "fadedIndices": [],
             "indentation": 2
           }
         ],
-        "solution": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
+        "solution": ["0", "1", "2", "3", "4"]
       }
     },
     {
@@ -220,58 +164,44 @@
       "name": "Linear Search w/ Operator Fading",
       "description": "",
       "difficulty": "Easy",
-      "tags": [
-        "iterative",
-        "search"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["iterative", "search"],
+      "variations": ["faded", "2d"],
       "language": "Python",
       "author": "H. Jayamanne",
       "problem": {
         "blocks": [
           {
-            "id": 0,
+            "id": "0",
             "text": "def LinearSearch(array, element):",
             "fadedIndices": [],
             "indentation": 0
           },
           {
-            "id": 1,
+            "id": "1",
             "text": "  for i in range(len(array)):",
             "fadedIndices": [],
             "indentation": 1
           },
           {
-            "id": 2,
+            "id": "2",
             "text": "    if array[i]  element:",
-            "fadedIndices": [
-              16
-            ],
+            "fadedIndices": [16],
             "indentation": 2
           },
           {
-            "id": 3,
+            "id": "3",
             "text": "      return i",
             "fadedIndices": [],
             "indentation": 3
           },
           {
-            "id": 4,
+            "id": "4",
             "text": "    return -1",
             "fadedIndices": [],
             "indentation": 2
           }
         ],
-        "solution": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
+        "solution": ["0", "1", "2", "3", "4"]
       }
     },
     {
@@ -279,58 +209,44 @@
       "name": "Linear Search w/ Conditional Fading",
       "description": "",
       "difficulty": "Easy",
-      "tags": [
-        "iterative",
-        "search"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["iterative", "search"],
+      "variations": ["faded", "2d"],
       "language": "Python",
       "author": "H. Jayamanne",
       "problem": {
         "blocks": [
           {
-            "id": 0,
+            "id": "0",
             "text": "def LinearSearch(array, element):",
             "fadedIndices": [],
             "indentation": 0
           },
           {
-            "id": 1,
+            "id": "1",
             "text": "  for i in range(len(array)):",
             "fadedIndices": [],
             "indentation": 1
           },
           {
-            "id": 2,
+            "id": "2",
             "text": "    if :",
-            "fadedIndices": [
-              7
-            ],
+            "fadedIndices": [7],
             "indentation": 2
           },
           {
-            "id": 3,
+            "id": "3",
             "text": "      return i",
             "fadedIndices": [],
             "indentation": 3
           },
           {
-            "id": 4,
+            "id": "4",
             "text": "    return -1",
             "fadedIndices": [],
             "indentation": 2
           }
         ],
-        "solution": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
+        "solution": ["0", "1", "2", "3", "4"]
       }
     },
     {
@@ -338,67 +254,44 @@
       "name": "Linear Search w/ Keyword Fading",
       "description": "",
       "difficulty": "Easy",
-      "tags": [
-        "iterative",
-        "search"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["iterative", "search"],
+      "variations": ["faded", "2d"],
       "language": "Python",
       "author": "H. Jayamanne",
       "problem": {
         "blocks": [
           {
-            "id": 0,
+            "id": "1",
             "text": " LinearSearch(array, element):",
-            "fadedIndices": [
-              1
-            ],
+            "fadedIndices": [1],
             "indentation": 0
           },
           {
-            "id": 1,
+            "id": "2",
             "text": "   i  range(len(array)):",
-            "fadedIndices": [
-              2,
-              5
-            ],
+            "fadedIndices": [2, 5],
             "indentation": 1
           },
           {
-            "id": 2,
+            "id": "3",
             "text": "     array[i] == element:",
-            "fadedIndices": [
-              4
-            ],
+            "fadedIndices": [4],
             "indentation": 2
           },
           {
-            "id": 3,
+            "id": "4",
             "text": "       i",
-            "fadedIndices": [
-              6
-            ],
+            "fadedIndices": [6],
             "indentation": 3
           },
           {
-            "id": 4,
+            "id": "5",
             "text": "     -1",
-            "fadedIndices": [
-              4
-            ],
+            "fadedIndices": [4],
             "indentation": 2
           }
         ],
-        "solution": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
+        "solution": ["1", "2", "3", "4", "5"]
       }
     },
     {
@@ -406,14 +299,8 @@
       "name": "Binary Representation - Solution",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
-      "tags": [
-        "recursive",
-        "base case",
-        "conditional"
-      ],
-      "variations": [
-        "2d"
-      ],
+      "tags": ["recursive", "base case", "conditional"],
+      "variations": ["2d"],
       "language": "Python",
       "author": "F.Fromont",
       "problem": {
@@ -468,15 +355,7 @@
             "indentation": 1
           }
         ],
-        "solution": [
-          "br1b1",
-          "br1b2",
-          "br1b3",
-          "br1b4",
-          "br1b5",
-          "br1b6",
-          "br1b7"
-        ]
+        "solution": ["br1b1", "br1b2", "br1b3", "br1b4", "br1b5", "br1b6", "br1b7"]
       }
     },
     {
@@ -484,15 +363,8 @@
       "name": "Binary Representation - Conditional",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
-      "tags": [
-        "recursive",
-        "base case",
-        "conditional"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["recursive", "base case", "conditional"],
+      "variations": ["faded", "2d"],
       "language": "Python",
       "author": "F.Fromont",
       "problem": {
@@ -506,12 +378,8 @@
           {
             "id": "br1b2",
             "text": "if (  ) {",
-            "fadedIndices": [
-              4
-            ],
-            "answers": [
-              "n==1"
-            ]
+            "fadedIndices": [4],
+            "answers": ["n==1"]
           },
           {
             "id": "br1b3",
@@ -544,15 +412,7 @@
             "answers": []
           }
         ],
-        "solution": [
-          "br1b1",
-          "br1b2",
-          "br1b3",
-          "br1b4",
-          "br1b5",
-          "br1b6",
-          "br1b7"
-        ]
+        "solution": ["br1b1", "br1b2", "br1b3", "br1b4", "br1b5", "br1b6", "br1b7"]
       }
     },
     {
@@ -560,15 +420,8 @@
       "name": "Binary Representation - Operator",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
-      "tags": [
-        "recursive",
-        "base case",
-        "conditional"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["recursive", "base case", "conditional"],
+      "variations": ["faded", "2d"],
       "language": "Python",
       "author": "F.Fromont",
       "problem": {
@@ -582,12 +435,8 @@
           {
             "id": "br1b2",
             "text": "if ( n 1 ) {",
-            "fadedIndices": [
-              6
-            ],
-            "answers": [
-              "=="
-            ]
+            "fadedIndices": [6],
+            "answers": ["=="]
           },
           {
             "id": "br1b3",
@@ -604,22 +453,14 @@
           {
             "id": "br1b5",
             "text": "ConvertToBinary(n 2)",
-            "fadedIndices": [
-              17
-            ],
-            "answers": [
-              "/"
-            ]
+            "fadedIndices": [17],
+            "answers": ["/"]
           },
           {
             "id": "br1b6",
             "text": "printf(\"%d\", n 2);",
-            "fadedIndices": [
-              14
-            ],
-            "answers": [
-              "%"
-            ]
+            "fadedIndices": [14],
+            "answers": ["%"]
           },
           {
             "id": "br1b7",
@@ -628,15 +469,7 @@
             "answers": []
           }
         ],
-        "solution": [
-          "br1b1",
-          "br1b2",
-          "br1b3",
-          "br1b4",
-          "br1b5",
-          "br1b6",
-          "br1b7"
-        ]
+        "solution": ["br1b1", "br1b2", "br1b3", "br1b4", "br1b5", "br1b6", "br1b7"]
       }
     },
     {
@@ -644,15 +477,8 @@
       "name": "Binary Representation - Keyword",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
-      "tags": [
-        "recursive",
-        "base case",
-        "conditional"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["recursive", "base case", "conditional"],
+      "variations": ["faded", "2d"],
       "language": "Python",
       "author": "F.Fromont",
       "problem": {
@@ -666,12 +492,8 @@
           {
             "id": "br1b2",
             "text": " (  ) {",
-            "fadedIndices": [
-              0
-            ],
-            "answers": [
-              "if"
-            ]
+            "fadedIndices": [0],
+            "answers": ["if"]
           },
           {
             "id": "br1b3",
@@ -682,12 +504,8 @@
           {
             "id": "br1b4",
             "text": "} 2 {",
-            "fadedIndices": [
-              2
-            ],
-            "answers": [
-              "else"
-            ]
+            "fadedIndices": [2],
+            "answers": ["else"]
           },
           {
             "id": "br1b5",
@@ -708,15 +526,7 @@
             "answers": []
           }
         ],
-        "solution": [
-          "br1b1",
-          "br1b2",
-          "br1b3",
-          "br1b4",
-          "br1b5",
-          "br1b6",
-          "br1b7"
-        ]
+        "solution": ["br1b1", "br1b2", "br1b3", "br1b4", "br1b5", "br1b6", "br1b7"]
       }
     },
     {
@@ -724,15 +534,8 @@
       "name": "Binary Representation - Variable",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
-      "tags": [
-        "recursive",
-        "base case",
-        "conditional"
-      ],
-      "variations": [
-        "faded",
-        "2d"
-      ],
+      "tags": ["recursive", "base case", "conditional"],
+      "variations": ["faded", "2d"],
       "language": "Python",
       "author": "F.Fromont",
       "problem": {
@@ -740,32 +543,20 @@
           {
             "id": "br1b1",
             "text": "void ConvertToBinary(int  ) {",
-            "fadedIndices": [
-              25
-            ],
-            "answers": [
-              "n"
-            ]
+            "fadedIndices": [25],
+            "answers": ["n"]
           },
           {
             "id": "br1b2",
             "text": "if ( ==1 ) {",
-            "fadedIndices": [
-              4
-            ],
-            "answers": [
-              "n"
-            ]
+            "fadedIndices": [4],
+            "answers": ["n"]
           },
           {
             "id": "br1b3",
             "text": "printf(\" \");",
-            "fadedIndices": [
-              8
-            ],
-            "answers": [
-              "1"
-            ]
+            "fadedIndices": [8],
+            "answers": ["1"]
           },
           {
             "id": "br1b4",
@@ -776,22 +567,14 @@
           {
             "id": "br1b5",
             "text": "ConvertToBinary( /2)",
-            "fadedIndices": [
-              16
-            ],
-            "answers": [
-              "n"
-            ]
+            "fadedIndices": [16],
+            "answers": ["n"]
           },
           {
             "id": "br1b6",
             "text": "printf(\"%d\",  %2);",
-            "fadedIndices": [
-              13
-            ],
-            "answers": [
-              "n"
-            ]
+            "fadedIndices": [13],
+            "answers": ["n"]
           },
           {
             "id": "br1b7",
@@ -800,15 +583,7 @@
             "answers": []
           }
         ],
-        "solution": [
-          "br1b1",
-          "br1b2",
-          "br1b3",
-          "br1b4",
-          "br1b5",
-          "br1b6",
-          "br1b7"
-        ]
+        "solution": ["br1b1", "br1b2", "br1b3", "br1b4", "br1b5", "br1b6", "br1b7"]
       }
     }
   ]
