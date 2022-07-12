@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-useless-concat
 const INITIAL_CODE = 'print($$fade$$)\n' + '  print("Par$$fade$$")\n' + 'print("$$fade$$blems")';
 
 export const FADE_TOKEN = '$$fade$$';
@@ -13,7 +14,7 @@ export const mapLine = (text, id) => {
     parsedText = parsedText.replace(FADE_TOKEN, '');
   }
   const indentation = Math.floor(countSpaces(parsedText) / 2);
-  return { id, text: parsedText, fadedIndices, indentation };
+  return { id: `block-${id}`, text: parsedText, fadedIndices, indentation };
 };
 
 const countSpaces = (line) => {
