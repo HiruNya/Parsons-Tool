@@ -1,5 +1,6 @@
 import { React, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import update from 'immutability-helper';
 import ProblemInfoCard from './components/problemInfoCard/problemInfoCard';
 import PageLayout from './pages/PageLayout';
 import StudentBrowseProblems from './pages/StudentBrowseProblems';
@@ -14,8 +15,12 @@ function App() {
   function createProblem(newProblem) {
     console.log(newProblem);
 
-    const newSet = JSON.parse(JSON.stringify(problemSet));
-    newSet.problems = [...problemSet.problems, newProblem];
+    const newSet = update(problemSet, {
+      problems: {
+        $push: [newProblem],
+      },
+    });
+    console.log(newSet);
 
     updateProblems(newSet);
   }

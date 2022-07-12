@@ -18,8 +18,7 @@ export default function ProblemInfoListCard({ problem, setSelected }) {
           className="px-3 py-1 ml-auto mr-1 w-min h-min border-2 border-black bg-transparant rounded-full text-xl font-medium hover:text-white hover:border-white"
           onClick={() => setSelected(problem)}
         >
-          {' '}
-          &gt;{' '}
+          &gt;
         </button>
       </div>
     </>
