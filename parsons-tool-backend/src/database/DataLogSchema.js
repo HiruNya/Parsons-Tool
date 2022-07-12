@@ -37,6 +37,9 @@ const dataLogSchema = new Schema({
           type: String,
           required: true,
         },
+        context: {
+          type: Schema.Types.Mixed,
+        },
         submissionState: {
           type: Schema.Types.Mixed,
         },
