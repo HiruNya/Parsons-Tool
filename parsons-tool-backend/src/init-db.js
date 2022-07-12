@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import ParsonsProblem from './database/ProblemSchema';
 import DataLog from './database/DataLogSchema';
+import User from './database/UserSchema';
 import data from './database/parsons.json';
 
 main();
@@ -40,7 +41,9 @@ async function clearDatabase() {
   let schemaResponse = await ParsonsProblem.deleteMany({});
   console.log(`Finsihed clearing Database (removed ${schemaResponse.deletedCount}} parsons problems`);
   schemaResponse = await DataLog.deleteMany({});
-  console.log(`Finsihed clearing Database (removed ${schemaResponse.deletedCount}} parsons problems`);
+  console.log(`Finsihed clearing Database (removed ${schemaResponse.deletedCount}} Datalogs`);
+  schemaResponse = await User.deleteMany({});
+  console.log(`Finsihed clearing Database (removed ${schemaResponse.deletedCount}} Users`);
 }
 
 async function addData() {
