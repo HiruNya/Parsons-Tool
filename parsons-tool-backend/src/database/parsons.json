@@ -295,7 +295,7 @@
       }
     },
     {
-      "id": "BinaryRepresentation",
+      "id": "BinaryRepresentation-solution",
       "name": "Binary Representation - Solution",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
@@ -359,7 +359,7 @@
       }
     },
     {
-      "id": "BinaryRepresentation",
+      "id": "BinaryRepresentation-conditional",
       "name": "Binary Representation - Conditional",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
@@ -416,7 +416,7 @@
       }
     },
     {
-      "id": "BinaryRepresentation",
+      "id": "BinaryRepresentation-operator",
       "name": "Binary Representation - Operator",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
@@ -473,7 +473,7 @@
       }
     },
     {
-      "id": "BinaryRepresentation",
+      "id": "BinaryRepresentation-keyword",
       "name": "Binary Representation - Keyword",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
@@ -530,7 +530,7 @@
       }
     },
     {
-      "id": "BinaryRepresentation",
+      "id": "BinaryRepresentation-variable",
       "name": "Binary Representation - Variable",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
