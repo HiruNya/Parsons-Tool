@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import ParsonsProblem from './database/ProblemSchema';
+import DataLog from './database/DataLogSchema';
 import data from './database/parsons.json';
 
 main();
@@ -36,7 +37,9 @@ async function main() {
 
 async function clearDatabase() {
   // Clear Database tables
-  const schemaResponse = await ParsonsProblem.deleteMany({});
+  let schemaResponse = await ParsonsProblem.deleteMany({});
+  console.log(`Finsihed clearing Database (removed ${schemaResponse.deletedCount}} parsons problems`);
+  schemaResponse = await DataLog.deleteMany({});
   console.log(`Finsihed clearing Database (removed ${schemaResponse.deletedCount}} parsons problems`);
 }
 
