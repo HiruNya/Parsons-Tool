@@ -39,9 +39,14 @@ const toFadedChildren = (text, fadedIndices) => {
   return (
     <p className="py-2 px-4 mb-2 border-2 border-stone-400 border-solid rounded-full justify-start cursor-move bg-white">
       {spans.map(
-        (span) =>
-          (span && <span>{span}</span>) || (
-            <input type="text" className={'bg-stone-200 rounded-full px-1 mx-2'} style={{ width: '10ch' }} />
+        (span, index) =>
+          (span && <span key={index}>{span}</span>) || (
+            <input
+              key={index}
+              type="text"
+              className={'bg-stone-200 rounded-full px-1 mx-2'}
+              style={{ width: '10ch' }}
+            />
           ),
       )}
     </p>
