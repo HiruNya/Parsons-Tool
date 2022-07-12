@@ -39,11 +39,11 @@ async function main() {
 async function clearDatabase() {
   // Clear Database tables
   let schemaResponse = await ParsonsProblem.deleteMany({});
-  console.log(`Finsihed clearing Database (removed ${schemaResponse.deletedCount}} parsons problems`);
+  console.log(`Finished clearing Database (removed ${schemaResponse.deletedCount}} parsons problems`);
   schemaResponse = await DataLog.deleteMany({});
-  console.log(`Finsihed clearing Database (removed ${schemaResponse.deletedCount}} Datalogs`);
+  console.log(`Finished clearing Database (removed ${schemaResponse.deletedCount}} Datalogs`);
   schemaResponse = await User.deleteMany({});
-  console.log(`Finsihed clearing Database (removed ${schemaResponse.deletedCount}} Users`);
+  console.log(`Finished clearing Database (removed ${schemaResponse.deletedCount}} Users`);
 }
 
 async function addData() {
