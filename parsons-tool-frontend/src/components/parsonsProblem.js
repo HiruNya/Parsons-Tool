@@ -4,8 +4,11 @@ import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import update from 'immutability-helper';
 import { PresentationalBlock } from './blocks/Block';
+import logMoveBlock from '../loggers/logBlockDrag';
 
-function ParsonsProblem({ problem }) {
+function ParsonsProblem({ problem, logBlockMove }) {
+  logBlockMove = logBlockMove ? logBlockMove : logMoveBlock;
+
   const [state, setState] = useState(() => ({
     problem: problem.blocks.map((block) => block.id),
     solution: [],
@@ -19,11 +22,18 @@ function ParsonsProblem({ problem }) {
     setActiveId(null);
     return setState((state) => {
       const [oldSpace, oldIndex] = getPos(state, active.id);
-      let [newSpace, newIndex] = getPos(state, over.id);
-      let indentation = state.blocks[active.id].indentation;
+      let [newSpace, newIndex_] = getPos(state, over.id);
+      let newIndex = newIndex_ < 0 ? state[newSpace].length : newIndex_;
+      const oldIndentation = state.blocks[active.id].indentation;
+      let indentation = oldIndentation;
       indentation = (indentation ? indentation : 0) + Math.floor(delta.x / 40);
       indentation = Math.min(Math.max(indentation, 0), 8);
+      indentation = oldSpace === newSpace ? indentation : 0;
       newSpace = newSpace || (Object.keys(state).indexOf(over.id) >= 0 ? over.id : oldSpace);
+
+      if (active.id === over.id && (oldSpace === 'problem' || oldIndentation - indentation === 0)) {
+        return state;
+      }
 
       let moveBlock;
       if (oldSpace === newSpace) {
@@ -35,7 +45,7 @@ function ParsonsProblem({ problem }) {
       } else {
         moveBlock = {
           [newSpace]: {
-            $splice: [[Math.max(newIndex < 0 ? state.solution.length : newIndex, 0), 0, active.id]],
+            $splice: [[newIndex, 0, active.id]],
           },
           [oldSpace]: {
             $splice: [[oldIndex, 1]],
@@ -43,12 +53,19 @@ function ParsonsProblem({ problem }) {
         };
       }
 
+      logBlockMove({
+        blockId: active.id,
+        newSpace,
+        newIndex,
+        newIndentation: indentation,
+      });
+
       return update(state, {
         ...moveBlock,
         blocks: {
           [active.id]: {
             indentation: {
-              $set: oldSpace === newSpace ? indentation : 0,
+              $set: indentation,
             },
           },
         },
