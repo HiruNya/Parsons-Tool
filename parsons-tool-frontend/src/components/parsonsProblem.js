@@ -35,7 +35,7 @@ function ParsonsProblem({ problem }) {
       } else {
         moveBlock = {
           [newSpace]: {
-            $splice: [[Math.max(newIndex < 0 ? state.solution.length - 1 : newIndex, 0), 0, active.id]],
+            $splice: [[Math.max(newIndex < 0 ? state.solution.length : newIndex, 0), 0, active.id]],
           },
           [oldSpace]: {
             $splice: [[oldIndex, 1]],
