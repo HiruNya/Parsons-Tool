@@ -1,8 +1,9 @@
 import Space from './space/Space';
 import React, { useCallback, useState } from 'react';
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import update from 'immutability-helper';
+import { PresentationalBlock } from './blocks/Block';
 
 function ParsonsProblem({ problem }) {
   const [state, setState] = useState(() => ({
@@ -10,10 +11,12 @@ function ParsonsProblem({ problem }) {
     solution: [],
     blocks: Object.fromEntries(problem.blocks.map((block) => [block.id, block])),
   }));
+  const [activeId, setActiveId] = useState(null);
   const dragEnd = useCallback(({ active, over, delta }) => {
     if (!active || !over) {
       return;
     }
+    setActiveId(null);
     return setState((state) => {
       const [oldSpace, oldIndex] = getPos(state, active.id);
       let [newSpace, newIndex] = getPos(state, over.id);
@@ -52,12 +55,16 @@ function ParsonsProblem({ problem }) {
       });
     });
   }, []);
+  const dragStart = ({ active }) => {
+    setActiveId(active.id);
+  };
 
   return (
     <div className="App flex w-full">
-      <DndContext onDragEnd={dragEnd}>
+      <DndContext onDragEnd={dragEnd} onDragStart={dragStart} onDragCancel={() => setActiveId(null)}>
         <Space name={'problem'} blocks={state.problem.map((val) => state.blocks[val])} />
         <Space name={'solution'} blocks={state.solution.map((val) => state.blocks[val])} />
+        <DragOverlay>{activeId ? <PresentationalBlock {...state.blocks[activeId]} /> : null}</DragOverlay>
       </DndContext>
     </div>
   );
