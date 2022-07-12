@@ -6,7 +6,7 @@ export default function ProblemGeneration({ addProblem }) {
   const [description, setDescription] = useState("");
   const [code, setCode] = useState("");
   const [tags, setTags] = useState("");
-  const [strategies, setStrategy] = useState([]);
+  const [, setStrategy] = useState([]);
 
   const stratState = [false,false,false,false]
 
