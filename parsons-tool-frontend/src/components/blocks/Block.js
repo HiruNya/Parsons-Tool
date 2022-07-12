@@ -2,16 +2,17 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { forwardRef } from 'react';
 
-const Block = ({ id, text, index, fadedIndices, indentation }) => {
+const Block = ({ id, text, index, fadedIndices, indentation, enableHorizontal }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
-  if (transform) {
+  if (transform && enableHorizontal) {
     transform.x = Math.floor(transform.x / 40) * 40;
   }
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    paddingLeft: indentation && enableHorizontal ? 4 + indentation * 40 + 'px' : undefined,
   };
 
   return (
@@ -27,16 +28,8 @@ const Block = ({ id, text, index, fadedIndices, indentation }) => {
   );
 };
 
-export const PresentationalBlock = forwardRef(({ text, indentation, fadedIndices, style, ...otherProps }, ref) => (
-  <div
-    className="flex"
-    ref={ref}
-    style={{
-      paddingLeft: indentation ? 4 + indentation * 40 + 'px' : undefined,
-      ...style,
-    }}
-    {...otherProps}
-  >
+export const PresentationalBlock = forwardRef(({ text, fadedIndices, ...otherProps }, ref) => (
+  <div className="flex" ref={ref} {...otherProps}>
     {toFadedChildren(text, fadedIndices)}
   </div>
 ));

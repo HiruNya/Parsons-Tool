@@ -63,7 +63,7 @@ function ParsonsProblem({ problem }) {
     <div className="App flex w-full">
       <DndContext onDragEnd={dragEnd} onDragStart={dragStart} onDragCancel={() => setActiveId(null)}>
         <Space name={'problem'} blocks={state.problem.map((val) => state.blocks[val])} />
-        <Space name={'solution'} blocks={state.solution.map((val) => state.blocks[val])} />
+        <Space name={'solution'} blocks={state.solution.map((val) => state.blocks[val])} enableHorizontal={true} />
         <DragOverlay>{activeId ? <PresentationalBlock {...state.blocks[activeId]} /> : null}</DragOverlay>
       </DndContext>
     </div>
