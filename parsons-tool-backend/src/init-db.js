@@ -1,14 +1,14 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 main();
 
 async function main() {
   mongoose
-    .connect("mongodb://localhost:27017/parsons", {
+    .connect('mongodb://localhost:27017/parsons', {
       useNewUrlParser: true,
     })
     .then(() => {
-      console.log("Connected to database!");
+      console.log('Connected to database!');
     })
     .catch((err) => {
       console.log(err);
@@ -24,19 +24,19 @@ async function main() {
   mongoose
     .disconnect()
     .then(() => {
-      console.log("Disconnected from database!");
+      console.log('Disconnected from database!');
     })
     .catch((err) => {
-      console.log("Error Disconnecting: ", err);
+      console.log('Error Disconnecting: ', err);
     });
 }
 
 async function clearDatabase() {
   // Clear Database tables
-  console.log("Finsihed clearing Database");
+  console.log('Finsihed clearing Database');
 }
 
 async function addData() {
   // Add data to database tables
-  console.log("Finished adding to database");
+  console.log('Finished adding to database');
 }
