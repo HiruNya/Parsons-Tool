@@ -16,6 +16,12 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
+  roles: {
+    type: [String],
+    enum: ['student', 'lecturer', 'researcher'],
+    default: ['student'],
+    required: true,
+  },
   courses: {
     type: [String],
   },
