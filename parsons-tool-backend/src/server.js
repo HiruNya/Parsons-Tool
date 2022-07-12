@@ -5,7 +5,7 @@ import routes from './routes';
 
 // Setup Express
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // Setup JSON parsing for request body
 app.use(express.json());
