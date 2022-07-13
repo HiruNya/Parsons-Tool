@@ -4,10 +4,10 @@ import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import update from 'immutability-helper';
 import { PresentationalBlock } from './blocks/Block';
-import logMoveBlock from '../loggers/logBlockDrag';
+import { useLogging } from '../loggers/logContext';
 
-function ParsonsProblem({ problem, logBlockMove }) {
-  logBlockMove = logBlockMove ? logBlockMove : logMoveBlock;
+function ParsonsProblem({ problem }) {
+  const { logBlockDrag } = useLogging();
 
   const [state, setState] = useState(() => ({
     problem: problem.blocks.map((block) => block.id),
@@ -53,7 +53,7 @@ function ParsonsProblem({ problem, logBlockMove }) {
         };
       }
 
-      logBlockMove({
+      logBlockDrag({
         blockId: active.id,
         newSpace,
         newIndex,

@@ -1,6 +1,6 @@
 import logDataEvent from './logDataEvent';
 
-const logMoveBlock = ({ blockId, newSpace, newIndex, newIndentation }) =>
+const logBlockDrag = ({ blockId, newSpace, newIndex, newIndentation }) =>
   logDataEvent({
     type: 'BLOCK_DRAG',
     blockId,
@@ -12,4 +12,4 @@ const logMoveBlock = ({ blockId, newSpace, newIndex, newIndentation }) =>
     },
   });
 
-export default logMoveBlock;
+export default logBlockDrag;

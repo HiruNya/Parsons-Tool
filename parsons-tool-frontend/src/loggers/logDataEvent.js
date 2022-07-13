@@ -1,12 +1,9 @@
-const logDataEvent = ({ type, blockId, eventDetails, context }) => {
-  const logEvent = {
-    type,
-    blockID: blockId,
-    timestamp: Date.now(),
-    eventDetails,
-    context,
-  };
-  console.log(logEvent);
-};
+const logDataEvent = ({ type, blockId, eventDetails, context }) => ({
+  type,
+  blockID: blockId,
+  timestamp: Date.now(),
+  eventDetails,
+  context,
+});
 
 export default logDataEvent;
