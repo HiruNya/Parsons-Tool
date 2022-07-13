@@ -18,14 +18,14 @@ router.post('/', async (req, res) => {
 
 // POST request for data logging submission
 // Expects: a JSON object in the body conforming to DataLog model
-// Returns: 201 Created if successful, 500 Internal Server Error otherwise
+// Returns: 201 Created if successful, 500 Internal Server Error otherwise with error
 router.post('/submisssion', async (req, res) => {
   const { dataLog } = req.body.dataLog;
   let error = '';
   const result = await createDataLogRecord(dataLog, error);
 
   if (result) {
-    res.status(201).header('location', `/solve/submission/${result.id}`).send();
+    res.status(201).header('location', `/solve/submission/${result._id}`).send();
   } else {
     res.status(500).json(error).send();
   }
@@ -33,7 +33,7 @@ router.post('/submisssion', async (req, res) => {
 
 // GET request for retreiving a data logging submission
 // Expects: an id in the request parameter, corresponding to id of submission
-// Returns: 200 OK if found, 404 Not Found otherwise
+// Returns: 200 OK if found, 404 Not found, and 400 if bad request
 
 router.get('/submission/:id', async (req, res) => {
   const { id } = req.params;
@@ -45,9 +45,9 @@ router.get('/submission/:id', async (req, res) => {
       // Respond with 404 Not Found if datalog with id not found
       res.sendStatus(404);
     }
-  } catch {
+  } catch (err) {
     // Respond with 400 Bad Request if id causes exception
-    res.sendStatus(400);
+    res.status(400).json(err).send();
   }
 });
 
