@@ -20,14 +20,14 @@ router.post('/', async (req, res) => {
 // Expects: a JSON object in the body conforming to DataLog model
 // Returns: 201 Created if successful, 500 Internal Server Error otherwise
 router.post('/submisssion', async (req, res) => {
-  const { dataLog } = req.body;
+  const { dataLog } = req.body.dataLog;
   let error = '';
   const result = await createDataLogRecord(dataLog, error);
 
   if (result) {
     res.status(201).header('location', `/solve/submission/${result.id}`).send();
   } else {
-    res.Status(500).json(error).send();
+    res.status(500).json(error).send();
   }
 });
 
