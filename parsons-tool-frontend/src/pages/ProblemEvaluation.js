@@ -1,8 +1,10 @@
 import { useLocation } from 'react-router-dom';
 import ParsonsProblem from '../components/parsonsProblem';
+import { useLogging } from '../loggers/logContext';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
+  const { logSubmission } = useLogging();
   const problem = location.state.problem;
 
   return (
@@ -15,7 +17,10 @@ export default function ProblemEvaluation() {
         <ParsonsProblem problem={problem.problem} />
       </div>
       <div className="mt-6 mx-auto flex flex-row space-between">
-        <button className="px-3 py-1 mr-2 border-2 border-solid border-green-400 bg-green-400 rounded-full hover:bg-green-500">
+        <button
+          className="px-3 py-1 mr-2 border-2 border-solid border-green-400 bg-green-400 rounded-full hover:bg-green-500"
+          onClick={logSubmission}
+        >
           Submit Attempt / Check
         </button>
         <button className="px-3 py-1 ml-2 border-2 border-solid border-red-400 bg-red-400 rounded-full hover:bg-red-500">

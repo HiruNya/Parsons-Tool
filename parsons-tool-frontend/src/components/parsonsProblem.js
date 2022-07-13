@@ -1,5 +1,5 @@
 import Space from './space/Space';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import update from 'immutability-helper';
@@ -7,7 +7,7 @@ import { PresentationalBlock } from './blocks/Block';
 import { useLogging } from '../loggers/logContext';
 
 function ParsonsProblem({ problem }) {
-  const { logBlockDrag, logInputSet } = useLogging();
+  const { logBlockDrag, logInputSet, setState: setLoggerState } = useLogging();
 
   const [state, setState] = useState(() => ({
     problem: problem.blocks.map((block) => block.id),
@@ -99,6 +99,7 @@ function ParsonsProblem({ problem }) {
       }),
     [],
   );
+  useEffect(() => setLoggerState(state), [state]);
 
   return (
     <div className="App flex w-full">
