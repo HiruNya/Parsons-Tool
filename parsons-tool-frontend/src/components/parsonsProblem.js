@@ -7,12 +7,14 @@ import { PresentationalBlock } from './blocks/Block';
 import { useLogging } from '../loggers/logContext';
 
 function ParsonsProblem({ problem }) {
-  const { logBlockDrag } = useLogging();
+  const { logBlockDrag, logInputSet } = useLogging();
 
   const [state, setState] = useState(() => ({
     problem: problem.blocks.map((block) => block.id),
     solution: [],
-    blocks: Object.fromEntries(problem.blocks.map((block) => [block.id, block])),
+    blocks: Object.fromEntries(
+      problem.blocks.map((block) => [block.id, { currentInputs: block.fadedIndices.map(() => ''), ...block }]),
+    ),
   }));
   const [activeId, setActiveId] = useState(null);
   const dragEnd = useCallback(({ active, over, delta }) => {
@@ -72,16 +74,50 @@ function ParsonsProblem({ problem }) {
       });
     });
   }, []);
-  const dragStart = ({ active }) => {
+  const dragStart = useCallback(({ active }) => {
     setActiveId(active.id);
-  };
+  }, []);
+  const setInput = useCallback(
+    (blockId, fadedIndex, newValue) =>
+      setState((oldState) => {
+        logInputSet({
+          blockId,
+          fadedIndex,
+          newValue,
+        });
+        return update(oldState, {
+          blocks: {
+            [blockId]: {
+              currentInputs: {
+                [fadedIndex]: {
+                  $set: newValue,
+                },
+              },
+            },
+          },
+        });
+      }),
+    [],
+  );
 
   return (
     <div className="App flex w-full">
       <DndContext onDragEnd={dragEnd} onDragStart={dragStart} onDragCancel={() => setActiveId(null)}>
-        <Space name={'problem'} blocks={state.problem.map((val) => state.blocks[val])} />
-        <Space name={'solution'} blocks={state.solution.map((val) => state.blocks[val])} enableHorizontal={true} />
-        <DragOverlay>{activeId ? <PresentationalBlock {...state.blocks[activeId]} /> : null}</DragOverlay>
+        <Space name={'problem'} blocks={state.problem.map((val) => state.blocks[val])} setInput={setInput} />
+        <Space
+          name={'solution'}
+          blocks={state.solution.map((val) => state.blocks[val])}
+          setInput={setInput}
+          enableHorizontal={true}
+        />
+        <DragOverlay>
+          {activeId ? (
+            <PresentationalBlock
+              innerProps={(i) => ({ value: state.blocks[activeId].currentInputs[Math.floor(i / 2)] })}
+              {...state.blocks[activeId]}
+            />
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </div>
   );

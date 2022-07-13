@@ -4,24 +4,24 @@ import Block from '../blocks/Block';
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
 
-const Space = ({ name, blocks, matches, enableHorizontal }) => {
+const Space = ({ name, blocks, matches, enableHorizontal, setInput }) => {
   const { setNodeRef } = useDroppable({
     id: name,
   });
   const renderCard = useCallback(
-    (card, index) => {
-      return (
-        <Block
-          key={card.id}
-          index={index}
-          id={card.id}
-          text={card.text}
-          fadedIndices={card.fadedIndices}
-          indentation={card.indentation}
-          enableHorizontal={enableHorizontal}
-        />
-      );
-    },
+    (card, index) => (
+      <Block
+        key={card.id}
+        index={index}
+        id={card.id}
+        text={card.text}
+        fadedIndices={card.fadedIndices}
+        indentation={card.indentation}
+        enableHorizontal={enableHorizontal}
+        currentInputs={card.currentInputs}
+        setInput={(fadedIndex, newValue) => setInput(card.id, fadedIndex, newValue)}
+      />
+    ),
     [enableHorizontal],
   );
   return (
