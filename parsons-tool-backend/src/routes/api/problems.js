@@ -3,28 +3,24 @@ import ParsonsProblem from '../../database/ProblemSchema';
 
 const router = express.Router();
 
-router.get('/problems', async (req, res) => {
-  res.json('Problems endpoint listening');
-});
-
 // GET request for retreiving a particular parsons problem
 // Expects: an id in the request paramter, corresponding to the id of the object
 // Returns: 200 OK if found, 404 Not found, and 400 if bad request
 router.get('/:id', async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
   try {
     const problemItem = await ParsonsProblem.findById(id);
     if (problemItem) {
-      res.json(problemItem)
+      res.json(problemItem);
     } else {
       // Respond with 404 Not Found if problem with id not found
       res.sendStatus(404);
     }
-  } catch (err){
+  } catch (err) {
     // Respond with 400 Bad Request if id causes exception
     res.status(400).json(err).send();
   }
-})
+});
 
 // POST request for new problem creation
 // Expects: a JSON object in the body conforming to ParsonsProblem model
@@ -39,7 +35,7 @@ router.post('/create', async (req, res) => {
   } else {
     res.status(500).json(error).send();
   }
-})
+});
 
 // Validates the fields needed are present and returns with an error message or created recorded
 const createNewProblem = async (obj, err) => {
@@ -62,7 +58,6 @@ const createNewProblem = async (obj, err) => {
   const newProblem = new ParsonsProblem(obj);
   await newProblem.save();
   return newProblem;
-
-}
+};
 
 export default router;

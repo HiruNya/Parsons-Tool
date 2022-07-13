@@ -3,10 +3,6 @@ import DataLog from '../../database/DataLogSchema';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  res.json('Solve endpoint listening');
-});
-
 // POST request for Code Execution
 // Expects: a JSON object in the body which contains the code to be evaluated
 // Returns: A JSON object with the status of the different tests executed
