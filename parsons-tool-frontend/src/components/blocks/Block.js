@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 
 const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setInput, enableHorizontal }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });

@@ -29,7 +29,7 @@ export const LoggingProvider = ({ children }) => {
   const logInputSet = useCallback((event) => log(logInputSetInnner(event)), [log]);
   const logSubmission = useCallback(() => log(logSubmissionInner(state)), [log, state]);
   children = useMemo(() => children, [children]);
-  console.log("Data Log", dataEvents);
+  console.log('Data Log', dataEvents);
 
   return (
     <LogContext.Provider

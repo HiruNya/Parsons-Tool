@@ -22,7 +22,7 @@ const Space = ({ name, blocks, matches, enableHorizontal, setInput }) => {
         setInput={(fadedIndex, newValue) => setInput(card.id, fadedIndex, newValue)}
       />
     ),
-    [enableHorizontal],
+    [enableHorizontal, setInput],
   );
   return (
     <div className="p-2 ml-2 mr-2 w-1/2 h-96 border-solid rounded-lg border-2 border-gray-400" ref={setNodeRef}>

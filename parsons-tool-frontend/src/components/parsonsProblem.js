@@ -17,63 +17,66 @@ function ParsonsProblem({ problem }) {
     ),
   }));
   const [activeId, setActiveId] = useState(null);
-  const dragEnd = useCallback(({ active, over, delta }) => {
-    if (!active || !over) {
-      return;
-    }
-    setActiveId(null);
-    return setState((state) => {
-      const [oldSpace, oldIndex] = getPos(state, active.id);
-      let [newSpace, newIndex_] = getPos(state, over.id);
-      let newIndex = newIndex_ < 0 ? state[newSpace].length : newIndex_;
-      const oldIndentation = state.blocks[active.id].indentation;
-      let indentation = oldIndentation;
-      indentation = (indentation ? indentation : 0) + Math.floor(delta.x / 40);
-      indentation = Math.min(Math.max(indentation, 0), 8);
-      indentation = oldSpace === newSpace ? indentation : 0;
-      newSpace = newSpace || (Object.keys(state).indexOf(over.id) >= 0 ? over.id : oldSpace);
-
-      if (active.id === over.id && (oldSpace === 'problem' || oldIndentation - indentation === 0)) {
-        return state;
+  const dragEnd = useCallback(
+    ({ active, over, delta }) => {
+      if (!active || !over) {
+        return;
       }
+      setActiveId(null);
+      return setState((state) => {
+        const [oldSpace, oldIndex] = getPos(state, active.id);
+        let [newSpace, newIndex_] = getPos(state, over.id);
+        let newIndex = newIndex_ < 0 ? state[newSpace].length : newIndex_;
+        const oldIndentation = state.blocks[active.id].indentation;
+        let indentation = oldIndentation;
+        indentation = (indentation ? indentation : 0) + Math.floor(delta.x / 40);
+        indentation = Math.min(Math.max(indentation, 0), 8);
+        indentation = oldSpace === newSpace ? indentation : 0;
+        newSpace = newSpace || (Object.keys(state).indexOf(over.id) >= 0 ? over.id : oldSpace);
 
-      let moveBlock;
-      if (oldSpace === newSpace) {
-        moveBlock = {
-          [oldSpace]: {
-            $set: arrayMove(state[oldSpace], oldIndex, newIndex),
-          },
-        };
-      } else {
-        moveBlock = {
-          [newSpace]: {
-            $splice: [[newIndex, 0, active.id]],
-          },
-          [oldSpace]: {
-            $splice: [[oldIndex, 1]],
-          },
-        };
-      }
+        if (active.id === over.id && (oldSpace === 'problem' || oldIndentation - indentation === 0)) {
+          return state;
+        }
 
-      logBlockDrag({
-        blockId: active.id,
-        newSpace,
-        newIndex,
-        newIndentation: indentation,
-      });
+        let moveBlock;
+        if (oldSpace === newSpace) {
+          moveBlock = {
+            [oldSpace]: {
+              $set: arrayMove(state[oldSpace], oldIndex, newIndex),
+            },
+          };
+        } else {
+          moveBlock = {
+            [newSpace]: {
+              $splice: [[newIndex, 0, active.id]],
+            },
+            [oldSpace]: {
+              $splice: [[oldIndex, 1]],
+            },
+          };
+        }
 
-      return update(state, {
-        ...moveBlock,
-        blocks: {
-          [active.id]: {
-            indentation: {
-              $set: indentation,
+        logBlockDrag({
+          blockId: active.id,
+          newSpace,
+          newIndex,
+          newIndentation: indentation,
+        });
+
+        return update(state, {
+          ...moveBlock,
+          blocks: {
+            [active.id]: {
+              indentation: {
+                $set: indentation,
+              },
             },
           },
-        },
+        });
       });
-    });
-  }, []);
+    },
+    [logBlockDrag],
+  );
   const dragStart = useCallback(({ active }) => {
     setActiveId(active.id);
   }, []);
@@ -97,9 +100,9 @@ function ParsonsProblem({ problem }) {
           },
         });
       }),
-    [],
+    [logInputSet],
   );
-  useEffect(() => setLoggerState(state), [state]);
+  useEffect(() => setLoggerState(state), [state, setLoggerState]);
 
   return (
     <div className="App flex w-full">
