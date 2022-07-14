@@ -1,70 +1,127 @@
 import Space from './space/Space';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import update from 'immutability-helper';
 import { PresentationalBlock } from './blocks/Block';
+import { useLogging } from '../loggers/logContext';
 
 function ParsonsProblem({ problem }) {
+  const { logBlockDrag, logInputSet, setState: setLoggerState } = useLogging();
+
   const [state, setState] = useState(() => ({
     problem: problem.blocks.map((block) => block.id),
     solution: [],
-    blocks: Object.fromEntries(problem.blocks.map((block) => [block.id, block])),
+    blocks: Object.fromEntries(
+      problem.blocks.map((block) => [block.id, { currentInputs: block.fadedIndices.map(() => ''), ...block }]),
+    ),
   }));
   const [activeId, setActiveId] = useState(null);
-  const dragEnd = useCallback(({ active, over, delta }) => {
-    if (!active || !over) {
-      return;
-    }
-    setActiveId(null);
-    return setState((state) => {
-      const [oldSpace, oldIndex] = getPos(state, active.id);
-      let [newSpace, newIndex] = getPos(state, over.id);
-      let indentation = state.blocks[active.id].indentation;
-      indentation = (indentation ? indentation : 0) + Math.floor(delta.x / 40);
-      indentation = Math.min(Math.max(indentation, 0), 8);
-      newSpace = newSpace || (Object.keys(state).indexOf(over.id) >= 0 ? over.id : oldSpace);
-
-      let moveBlock;
-      if (oldSpace === newSpace) {
-        moveBlock = {
-          [oldSpace]: {
-            $set: arrayMove(state[oldSpace], oldIndex, newIndex),
-          },
-        };
-      } else {
-        moveBlock = {
-          [newSpace]: {
-            $splice: [[Math.max(newIndex < 0 ? state.solution.length : newIndex, 0), 0, active.id]],
-          },
-          [oldSpace]: {
-            $splice: [[oldIndex, 1]],
-          },
-        };
+  const dragEnd = useCallback(
+    ({ active, over, delta }) => {
+      if (!active || !over) {
+        return;
       }
+      setActiveId(null);
+      return setState((state) => {
+        const [oldSpace, oldIndex] = getPos(state, active.id);
+        let [newSpace, newIndex_] = getPos(state, over.id);
+        let newIndex = newIndex_ < 0 ? state[newSpace].length : newIndex_;
+        const oldIndentation = state.blocks[active.id].indentation;
+        let indentation = oldIndentation;
+        indentation = (indentation ? indentation : 0) + Math.floor(delta.x / 40);
+        indentation = Math.min(Math.max(indentation, 0), 8);
+        indentation = oldSpace === newSpace ? indentation : 0;
+        newSpace = newSpace || (Object.keys(state).indexOf(over.id) >= 0 ? over.id : oldSpace);
 
-      return update(state, {
-        ...moveBlock,
-        blocks: {
-          [active.id]: {
-            indentation: {
-              $set: oldSpace === newSpace ? indentation : 0,
+        if (active.id === over.id && (oldSpace === 'problem' || oldIndentation - indentation === 0)) {
+          return state;
+        }
+
+        let moveBlock;
+        if (oldSpace === newSpace) {
+          moveBlock = {
+            [oldSpace]: {
+              $set: arrayMove(state[oldSpace], oldIndex, newIndex),
+            },
+          };
+        } else {
+          moveBlock = {
+            [newSpace]: {
+              $splice: [[newIndex, 0, active.id]],
+            },
+            [oldSpace]: {
+              $splice: [[oldIndex, 1]],
+            },
+          };
+        }
+
+        logBlockDrag({
+          blockId: active.id,
+          newSpace,
+          newIndex,
+          newIndentation: indentation,
+        });
+
+        return update(state, {
+          ...moveBlock,
+          blocks: {
+            [active.id]: {
+              indentation: {
+                $set: indentation,
+              },
             },
           },
-        },
+        });
       });
-    });
-  }, []);
-  const dragStart = ({ active }) => {
+    },
+    [logBlockDrag],
+  );
+  const dragStart = useCallback(({ active }) => {
     setActiveId(active.id);
-  };
+  }, []);
+  const setInput = useCallback(
+    (blockId, fadedIndex, newValue) =>
+      setState((oldState) => {
+        logInputSet({
+          blockId,
+          fadedIndex,
+          newValue,
+        });
+        return update(oldState, {
+          blocks: {
+            [blockId]: {
+              currentInputs: {
+                [fadedIndex]: {
+                  $set: newValue,
+                },
+              },
+            },
+          },
+        });
+      }),
+    [logInputSet],
+  );
+  useEffect(() => setLoggerState(state), [state, setLoggerState]);
 
   return (
     <div className="App flex w-full">
       <DndContext onDragEnd={dragEnd} onDragStart={dragStart} onDragCancel={() => setActiveId(null)}>
-        <Space name={'problem'} blocks={state.problem.map((val) => state.blocks[val])} />
-        <Space name={'solution'} blocks={state.solution.map((val) => state.blocks[val])} enableHorizontal={true} />
-        <DragOverlay>{activeId ? <PresentationalBlock {...state.blocks[activeId]} /> : null}</DragOverlay>
+        <Space name={'problem'} blocks={state.problem.map((val) => state.blocks[val])} setInput={setInput} />
+        <Space
+          name={'solution'}
+          blocks={state.solution.map((val) => state.blocks[val])}
+          setInput={setInput}
+          enableHorizontal={true}
+        />
+        <DragOverlay>
+          {activeId ? (
+            <PresentationalBlock
+              innerProps={(i) => ({ value: state.blocks[activeId].currentInputs[Math.floor(i / 2)] })}
+              {...state.blocks[activeId]}
+            />
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </div>
   );

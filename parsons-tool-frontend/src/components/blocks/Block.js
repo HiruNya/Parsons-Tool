@@ -2,7 +2,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { forwardRef } from 'react';
 
-const Block = ({ id, text, index, fadedIndices, indentation, enableHorizontal }) => {
+const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setInput, enableHorizontal }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   if (transform && enableHorizontal) {
@@ -22,19 +22,26 @@ const Block = ({ id, text, index, fadedIndices, indentation, enableHorizontal })
       text={text}
       indentation={indentation}
       fadedIndices={fadedIndices}
+      innerProps={(index) => {
+        const i = Math.floor(index / 2);
+        return {
+          onChange: (e) => setInput(i, e.target.value),
+          value: currentInputs[i] ? currentInputs[i] : '',
+        };
+      }}
       {...attributes}
       {...listeners}
     />
   );
 };
 
-export const PresentationalBlock = forwardRef(({ text, fadedIndices, ...otherProps }, ref) => (
+export const PresentationalBlock = forwardRef(({ text, fadedIndices, innerProps, ...otherProps }, ref) => (
   <div className="flex" ref={ref} {...otherProps}>
-    {toFadedChildren(text, fadedIndices)}
+    {toFadedChildren(text, fadedIndices, innerProps)}
   </div>
 ));
 
-const toFadedChildren = (text, fadedIndices) => {
+const toFadedChildren = (text, fadedIndices, innerProps) => {
   // expect the faded indices are in-order and properly merged if needed
   const spans = [];
   let lastIndex = 0;
@@ -55,6 +62,7 @@ const toFadedChildren = (text, fadedIndices) => {
               type="text"
               className={'bg-stone-200 rounded-full px-1 mx-2'}
               style={{ width: '10ch' }}
+              {...(innerProps ? innerProps(index) : null)}
             />
           ),
       )}
