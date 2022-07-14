@@ -5,7 +5,7 @@ import routes from './routes';
 
 // Setup Express
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // Setup JSON parsing for request body
 app.use(express.json());
@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Connect to the database and then start the server
 mongoose
-  .connect('mongodb://localhost:27017/mongodb', {
+  .connect('mongodb://localhost:27017/parsons', {
     useNewUrlParser: true,
   })
   .then(() => {
