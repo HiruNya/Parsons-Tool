@@ -17,8 +17,7 @@ router.post('/', async (req, res) => {
 // Returns: 201 Created if successful, 500 Internal Server Error otherwise with error
 router.post('/submisssion', async (req, res) => {
   const { dataLog } = req.body.dataLog;
-  let error = '';
-  const result = await createDataLogRecord(dataLog, error);
+  const [result, error] = await createDataLogRecord(dataLog);
 
   if (result) {
     res.status(201).header('location', `/solve/submission/${result._id}`).send();
@@ -48,27 +47,27 @@ router.get('/submission/:id', async (req, res) => {
 });
 
 // Validates the fields needed are present and returns with an error message or the created record
-const createDataLogRecord = async (obj, err) => {
+const createDataLogRecord = async (obj) => {
+  let err = '';
   if (obj.id === '' || obj.id === undefined || obj.id === null) {
     err = 'Invalid or Missing ID';
-    return;
   } else if (obj.userId === undefined || obj.userId === null) {
     err = 'Invalid or Missing userId';
-    return;
   } else if (obj.initialProblem === undefined || obj.initialProblem === null) {
     err = 'Invalid or Missing initialProblem';
-    return;
   } else if (obj.blockState === undefined || obj.blockState === null) {
     err = 'Invalid or Missing blockState';
-    return;
   } else if (obj.dataEvents === undefined || obj.dataEvents === null || obj.dataEvents.length < 1) {
     err = 'Invalid or Missing dataEvents';
-    return;
+  }
+
+  if (err === '') {
+    return false, err;
   }
 
   const newDataLog = new DataLog(obj);
   await newDataLog.save();
-  return newDataLog;
+  return newDataLog, err;
 };
 
 export default router;
