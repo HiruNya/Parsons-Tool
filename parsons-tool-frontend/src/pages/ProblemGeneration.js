@@ -1,12 +1,15 @@
-import { React, useState } from 'react';
+import { React, useState, useContext } from 'react';
+import { DataContext } from '../data/DataContext';
 import { mapLine } from '../generators/naiveGenerator';
 
-export default function ProblemGeneration({ addProblem }) {
+export default function ProblemGeneration() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [code, setCode] = useState('');
   const [tags, setTags] = useState('');
   const [, setStrategy] = useState([]);
+
+  const { sendProblemCreation } = useContext(DataContext);
 
   const stratState = [false, false, false, false];
 
@@ -33,7 +36,12 @@ export default function ProblemGeneration({ addProblem }) {
         solution: [],
       },
     };
-    addProblem(newProblem);
+    //Callback function to print to console - checking that problem is created
+    const postCallback = () => {
+      console.log(newProblem);
+    };
+    //POST problem to the server
+    sendProblemCreation(newProblem, postCallback);
   };
 
   return (

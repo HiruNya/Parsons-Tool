@@ -26,8 +26,7 @@ router.get('/:id', async (req, res) => {
 // Expects: a JSON object in the body conforming to ParsonsProblem model
 // Returns: 201 Created if successful, 500 Interal Server Error otherwise with error
 router.post('/create', async (req, res) => {
-  const { newProblem } = req.body.problem;
-  const [result, error] = await createNewProblem(newProblem);
+  const [result, error] = await createNewProblem(req.body);
 
   if (result) {
     res.status(201).header('location', `/problems/${result._id}`).send();
@@ -39,16 +38,20 @@ router.post('/create', async (req, res) => {
 // Validates the fields needed are present and returns with an error message or created recorded
 const createNewProblem = async (obj) => {
   let err = '';
-  if (obj.id === '' || obj.id === undefined || obj.id === null) {
-    err = 'Invalid or Missing ID';
-  } else if (obj.name === undefined || obj.name === null) {
-    err = 'Invalid or Missing name';
-  } else if (obj.problem === undefined || obj.problem === null) {
-    err = 'Invalid or Missing problem field';
-  } else if (obj.problem.blocks === undefined || obj.problem.blocks === null || obj.problem.blocks.length < 1) {
-    err = 'Invalid or Missing problem blocks';
-  } else if (obj.problem.solution === undefined || obj.problem.solution === null || obj.problem.solution.length < 1) {
-    err = 'Invalid or Missing problem solution';
+  try {
+    if (obj.id === '' || obj.id === undefined || obj.id === null) {
+      err = 'Invalid or Missing ID';
+    } else if (obj.name === undefined || obj.name === null) {
+      err = 'Invalid or Missing name';
+    } else if (obj.problem === undefined || obj.problem === null) {
+      err = 'Invalid or Missing problem field';
+    } else if (obj.problem.blocks === undefined || obj.problem.blocks === null || obj.problem.blocks.length < 1) {
+      err = 'Invalid or Missing problem blocks';
+    } else if (obj.problem.solution === undefined || obj.problem.solution === null || obj.problem.solution.length < 1) {
+      err = 'Invalid or Missing problem solution';
+    }
+  } catch (error) {
+    err = error;
   }
 
   if (err === '') {

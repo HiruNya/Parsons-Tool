@@ -5,6 +5,8 @@ import ProblemInfoListCard from '../components/problemInfoCard/problemInfoListCa
 
 export default function StudentBrowseProblems() {
   const [selected, setSelected] = useState();
+
+  // Use context to retrieve problem list from server
   const { problems } = useContext(DataContext);
 
   return (
