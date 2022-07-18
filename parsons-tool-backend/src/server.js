@@ -10,6 +10,15 @@ const port = process.env.PORT || 3001;
 // Setup JSON parsing for request body
 app.use(express.json());
 
+// Setup CORS for frontend access to server
+const cors = require('cors');
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 // Setup API Routes.
 app.use('/', routes);
 
