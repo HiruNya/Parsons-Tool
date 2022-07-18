@@ -12,13 +12,16 @@ export default function useGet(url, initialState = null) {
 
   useEffect(() => {
     async function fetchData() {
+      console.log(url);
       setLoading(true);
       setError(false);
       try {
         const response = await axios.get(url);
         setData(response.data);
+        console.log(response);
         setLoading(false);
-      } catch {
+      } catch (error) {
+        console.log(error);
         setError(true);
         setLoading(false);
       }
