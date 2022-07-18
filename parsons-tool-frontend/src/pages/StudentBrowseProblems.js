@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { DataContext } from '../data/DataContext';
 import ProblemInfoDetailedCard from '../components/problemInfoCard/problemInfoDetailedCard';
 import ProblemInfoListCard from '../components/problemInfoCard/problemInfoListCard';
