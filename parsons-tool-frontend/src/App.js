@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import ProblemInfoCard from './components/problemInfoCard/problemInfoCard';
 import PageLayout from './pages/PageLayout';
 import StudentBrowseProblems from './pages/StudentBrowseProblems';
-import ParsonsProblem from './components/parsonsProblem';
 import ProblemEvaluation from './pages/ProblemEvaluation';
 import ProblemGeneration from './pages/ProblemGeneration';
 import { LoggingProvider } from './loggers/logContext';
