@@ -1,5 +1,5 @@
-import { React, useState, useContext } from 'react';
-import { DataContext } from '../data/DataContext';
+import { React, useState } from 'react';
+import { useBackend } from '../data/BackendContext';
 import { mapLine } from '../generators/naiveGenerator';
 
 export default function ProblemGeneration() {
@@ -9,7 +9,7 @@ export default function ProblemGeneration() {
   const [tags, setTags] = useState('');
   const [, setStrategy] = useState([]);
 
-  const { sendProblemCreation } = useContext(DataContext);
+  const { sendProblemCreation } = useBackend();
 
   const stratState = [false, false, false, false];
 

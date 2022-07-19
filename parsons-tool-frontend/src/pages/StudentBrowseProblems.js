@@ -1,5 +1,5 @@
-import { useState, useContext } from 'react';
-import { DataContext } from '../data/DataContext';
+import { useState } from 'react';
+import { useBackend } from '../data/BackendContext';
 import ProblemInfoDetailedCard from '../components/problemInfoCard/problemInfoDetailedCard';
 import ProblemInfoListCard from '../components/problemInfoCard/problemInfoListCard';
 
@@ -7,7 +7,7 @@ export default function StudentBrowseProblems() {
   const [selected, setSelected] = useState();
 
   // Use context to retrieve problem list from server
-  const { problems } = useContext(DataContext);
+  const { problems } = useBackend;
 
   return (
     <div className="flex flex-row h-full">

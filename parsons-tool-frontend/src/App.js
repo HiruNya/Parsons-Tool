@@ -6,12 +6,12 @@ import StudentBrowseProblems from './pages/StudentBrowseProblems';
 import ProblemEvaluation from './pages/ProblemEvaluation';
 import ProblemGeneration from './pages/ProblemGeneration';
 import { LoggingProvider } from './loggers/logContext';
-import { DataContextProvider } from './data/DataContext';
+import { BackendContextProvider } from './data/BackendContext';
 
 function App() {
   return (
     <>
-      <DataContextProvider>
+      <BackendContextProvider>
         <LoggingProvider>
           <Routes>
             <Route path="/" element={<PageLayout />}>
@@ -22,7 +22,7 @@ function App() {
             </Route>
           </Routes>
         </LoggingProvider>
-      </DataContextProvider>
+      </BackendContextProvider>
     </>
   );
 }

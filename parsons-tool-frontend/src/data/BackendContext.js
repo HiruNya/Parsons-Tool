@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import useGet from '../hooks/useGet';
 import usePost from '../hooks/usePost';
 
-const DataContext = React.createContext({
+const BackendContext = React.createContext({
   problems: [],
 });
 
-function DataContextProvider({ children }) {
+export const useBackend = () => useContext(BackendContext);
+
+export const BackendContextProvider = ({ children }) => {
   // Currently URL is hardcoded, should change to use env variable
   const {
     data: problems,
@@ -53,7 +55,5 @@ function DataContextProvider({ children }) {
     sendProblemCreation,
   };
 
-  return <DataContext.Provider value={context}>{children}</DataContext.Provider>;
-}
-
-export { DataContext, DataContextProvider };
+  return <BackendContext.Provider value={context}>{children}</BackendContext.Provider>;
+};
