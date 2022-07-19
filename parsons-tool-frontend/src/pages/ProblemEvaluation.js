@@ -1,10 +1,13 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import ParsonsProblem from '../components/parsonsProblem';
+import { useBackend } from '../data/BackendContext';
 import { useLogging } from '../loggers/logContext';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
-  const { logSubmission } = useLogging();
+  const { logSubmission, state, dataEvents } = useLogging();
+  const { sendSubmissionRequest } = useBackend();
+
   const problem = location.state.problem;
 
   const navigate = useNavigate();
@@ -13,7 +16,21 @@ export default function ProblemEvaluation() {
   };
 
   const submitSolution = () => {
-    console.log('Test');
+    const newDataLog = {
+      id: 'NEED ID',
+      userId: 'NEED USER_ID',
+      initialProblem: problem,
+      blockState: state,
+      dataEvents: dataEvents,
+    };
+
+    //Callback function to print to console - checking that it is submitted
+    const postCallback = () => {
+      console.log(newDataLog);
+    };
+
+    //POST users interaction to the server
+    sendSubmissionRequest(newDataLog, postCallback);
   };
 
   return (

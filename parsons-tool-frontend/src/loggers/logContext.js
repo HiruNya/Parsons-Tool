@@ -39,6 +39,8 @@ export const LoggingProvider = ({ children }) => {
         logSubmission,
         logBlockDrag,
         logInputSet,
+        state,
+        dataEvents,
       }}
     />
   );
