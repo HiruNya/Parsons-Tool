@@ -33,7 +33,7 @@ export default function ProblemGeneration() {
       author: 'F.Fromont',
       problem: {
         blocks: code.split('\n').map(mapLine),
-        solution: [],
+        solution: [], // need solution added
       },
     };
     //Callback function to print to console - checking that problem is created
