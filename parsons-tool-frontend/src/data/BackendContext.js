@@ -28,7 +28,7 @@ export const BackendContextProvider = ({ children }) => {
     isLoading: submissionIsLoading,
     error: submissionError,
     postData: sendSubmissionRequest,
-  } = usePost('http://localhost:3001/solve/submission');
+  } = usePost('http://localhost:3001/solve/submit');
 
   const {
     response: problemCreationResponse,
