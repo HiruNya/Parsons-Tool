@@ -26,7 +26,7 @@ router.get('/:id', async (req, res) => {
 // Expects: a JSON object in the body conforming to ParsonsProblem model
 // Returns: 201 Created if successful, 500 Interal Server Error otherwise with error
 router.post('/create', async (req, res) => {
-  const [result, error] = await createNewProblem(req.body);
+  const { result, error } = await createNewProblem(req.body);
 
   if (result) {
     res.status(201).header('location', `/problems/${result._id}`).send();
@@ -50,17 +50,17 @@ const createNewProblem = async (obj) => {
     } else if (obj.problem.solution === undefined || obj.problem.solution === null || obj.problem.solution.length < 1) {
       err = 'Invalid or Missing problem solution';
     }
+
+    if (err !== '') {
+      return { result: false, error: err };
+    }
+
+    const newProblem = new ParsonsProblem(obj);
+    await newProblem.save();
+    return { result: newProblem, error: err };
   } catch (error) {
-    err = error;
+    return { result: false, error: error };
   }
-
-  if (err === '') {
-    return false, err;
-  }
-
-  const newProblem = new ParsonsProblem(obj);
-  await newProblem.save();
-  return newProblem, err;
 };
 
 export default router;
