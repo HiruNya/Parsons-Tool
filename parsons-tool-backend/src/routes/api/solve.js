@@ -17,7 +17,6 @@ router.post('/', async (req, res) => {
 // Returns: 201 Created if successful, 500 Internal Server Error otherwise with error
 router.post('/submit', async (req, res) => {
   const { result, error } = await createDataLogRecord(req.body);
-  console.log(result, error);
   if (result) {
     res.status(201).header('location', `/solve/submission/${result._id}`).send();
   } else {

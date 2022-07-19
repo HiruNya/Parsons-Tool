@@ -20,7 +20,10 @@ export default function ProblemGeneration() {
 
   const createProblem = () => {
     // TODO Validate the actual code block to check it is valid for execution based
-
+    const codeBlocks = code.split('\n').map(mapLine);
+    const solution = codeBlocks.map((block) => {
+      return block.id;
+    });
     //Create a new problem object, block generation occurs here
     const newProblem = {
       id: 'NEED ID',
@@ -32,8 +35,8 @@ export default function ProblemGeneration() {
       language: 'Python',
       author: 'F.Fromont',
       problem: {
-        blocks: code.split('\n').map(mapLine),
-        solution: [], // need solution added
+        blocks: codeBlocks,
+        solution: solution,
       },
     };
     //Callback function to print to console - checking that problem is created
