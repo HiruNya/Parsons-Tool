@@ -7,7 +7,7 @@ export default function StudentBrowseProblems() {
   const [selected, setSelected] = useState();
 
   // Use context to retrieve problem list from server
-  const { problems } = useBackend;
+  const { problems } = useBackend();
 
   return (
     <div className="flex flex-row h-full">
