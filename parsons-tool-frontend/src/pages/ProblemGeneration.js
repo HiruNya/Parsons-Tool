@@ -151,7 +151,7 @@ export default function ProblemGeneration() {
             </div>
 
             <div className="flex flex-col w-full ml-7 mt-4">
-              <h2 className="text-lg font-medium">Associated Tags (comma seperated values)</h2>
+              <h2 className="text-lg font-medium">Associated Tags (comma separated values)</h2>
               <input
                 className="bg-stone-200 rounded-full px-3 py-1 text-black max-w-xs mt-5 mb-3"
                 type="text"
