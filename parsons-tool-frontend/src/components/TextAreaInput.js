@@ -8,7 +8,7 @@ const TextAreaInput = ({ spaces = 4, setCode }) => {
       text.target.setSelectionRange(text.caret + spaces, text.caret + spaces);
     }
     setCode(text.value);
-  }, [text]);
+  }, [setCode, spaces, text]);
 
   const handleTab = (e) => {
     let content = e.target.value;
