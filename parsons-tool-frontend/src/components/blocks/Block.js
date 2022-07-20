@@ -38,8 +38,8 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
 };
 
 export const PresentationalBlock = forwardRef(({ text, fadedIndices, innerProps, ...otherProps }, ref) => (
-  <div className="flex" ref={ref} {...otherProps}>
-    {toFadedChildren(text, fadedIndices, innerProps)}
+  <div className={'flex'} ref={ref} {...otherProps}>
+    {text.length > 0 && toFadedChildren(text, fadedIndices, innerProps)}
   </div>
 ));
 
