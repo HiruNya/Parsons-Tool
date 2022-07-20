@@ -3,6 +3,7 @@ import Block from '../components/blocks/Block';
 import { useBackend } from '../data/BackendContext';
 import { generateParsons } from '../generators/naiveGenerator';
 import TextAreaInput from '../components/TextAreaInput';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProblemGeneration() {
   const [name, setName] = useState('');
@@ -11,6 +12,11 @@ export default function ProblemGeneration() {
   const [tags, setTags] = useState('');
   const [example, setExample] = useState([]);
   const [, setStrategy] = useState([]);
+
+  const navigate = useNavigate();
+  const goToView = () => {
+    navigate('/student');
+  };
 
   const { sendProblemCreation } = useBackend();
 
@@ -28,15 +34,14 @@ export default function ProblemGeneration() {
     setStrategy(...stratState);
   };
 
-  const shuffleBlocks = () => {
-    const array = [...example];
+  const shuffleBlocks = (array) => {
     for (var i = array.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
       var temp = array[i];
       array[i] = array[j];
       array[j] = temp;
     }
-    setExample(array);
+    return array;
   };
 
   const createProblem = () => {
@@ -45,6 +50,8 @@ export default function ProblemGeneration() {
     const solution = codeBlocks.map((block) => {
       return block.id;
     });
+
+    const randomBlocks = shuffleBlocks([...codeBlocks]);
     //Create a new problem object, block generation occurs here
     const newProblem = {
       id: 'NEED ID',
@@ -56,13 +63,14 @@ export default function ProblemGeneration() {
       language: 'Python',
       author: 'F.Fromont',
       problem: {
-        blocks: codeBlocks,
+        blocks: randomBlocks,
         solution: solution,
       },
     };
     //Callback function to print to console - checking that problem is created
     const postCallback = () => {
       console.log(newProblem);
+      goToView();
     };
     //POST problem to the server
     sendProblemCreation(newProblem, postCallback);
@@ -202,7 +210,10 @@ export default function ProblemGeneration() {
                 </button>
                 <button
                   className="px-4 py-2 mr-3 bg-blue-400 text-white rounded-full hover:bg-blue-500"
-                  onClick={shuffleBlocks}
+                  onClick={() => {
+                    const array = [...example];
+                    setExample(shuffleBlocks(array));
+                  }}
                 >
                   Randomise
                 </button>

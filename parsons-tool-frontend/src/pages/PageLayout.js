@@ -13,9 +13,7 @@ export default function PageLayout() {
         <div className="h-full">
           <Outlet />
         </div>
-        <footer className="fixed bottom-0">
-          <p>This is a footer</p>
-        </footer>
+        <footer className="fixed bottom-0"></footer>
       </div>
     </>
   );

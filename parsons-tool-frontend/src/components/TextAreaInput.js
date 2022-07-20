@@ -35,8 +35,8 @@ const TextAreaInput = ({ spaces = 4, setCode }) => {
       value={text.value}
       name=""
       id=""
-      cols="70"
-      rows="20"
+      cols="50"
+      rows="10"
       placeholder="#Enter solution code here"
     ></textarea>
   );
