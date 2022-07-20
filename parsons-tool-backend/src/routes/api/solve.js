@@ -1,4 +1,6 @@
 import express from 'express';
+import axios from 'axios';
+
 import DataLog from '../../database/DataLogSchema';
 
 const router = express.Router();
@@ -8,8 +10,24 @@ const router = express.Router();
 // Returns: A JSON object with the status of the different tests executed
 
 router.post('/', async (req, res) => {
-  // Make call to docker container/other process for execution of code
-  // To be done with execution implementation
+  for (let val in [req.body.solution, req.body.blocks]) {
+    if (val === undefined) {
+      return res.status(401);
+    }
+  }
+  const blocks = req.body.solution.map((sId) => req.body.blocks[sId]);
+  if (blocks.indexOf(undefined) !== -1) {
+    return res.status(401);
+  }
+  const code = blocks.map(blockToLine).join('\n') + '\nprint(LinearSearch([1, 2, 3, 4, 3], 3))';
+  console.log(code);
+  const { error, result } = await executeOnJobe(code);
+  const actual = result.stdout.trimEnd('\n');
+  if (actual === '2') {
+    return res.json({ result: 'correct' });
+  } else {
+    return res.json({ result: 'incorrect', actual });
+  }
 });
 
 // POST request for data logging submission
@@ -69,6 +87,34 @@ const createDataLogRecord = async (obj) => {
   } catch (error) {
     return { result: false, error: error };
   }
+};
+
+const executeOnJobe = (sourceCode) =>
+  axios({
+    url: 'http://localhost:4000/jobe/index.php/restapi/runs',
+    method: 'POST',
+    data: {
+      run_spec: {
+        language_id: 'python3',
+        sourcecode: sourceCode,
+      },
+    },
+  }).then((resp) => {
+    if (resp.status < 200 && resp.status >= 300) {
+      return { error: resp.status };
+    }
+    return { result: resp.data };
+  });
+
+const blockToLine = ({ text, fadedIndices, currentInputs, indentation }) => {
+  for (let i = fadedIndices.length - 1; i >= 0; i--) {
+    const index = fadedIndices[i];
+    const input = currentInputs[i];
+    text = text.slice(0, index) + input + text.slice(index, text.length);
+  }
+  text = text.trimStart(' ');
+  text = ' '.repeat(2 * indentation) + text;
+  return text;
 };
 
 export default router;
