@@ -1,8 +1,8 @@
 const logDataEvent = ({ type, blockId, eventDetails, context }) => ({
-  type,
+  eventType: type,
   blockID: blockId,
   timestamp: Date.now(),
-  eventDetails,
+  eventMsg: eventDetails,
   context,
 });
 

@@ -1,11 +1,37 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ParsonsProblem from '../components/parsonsProblem';
+import { useBackend } from '../data/BackendContext';
 import { useLogging } from '../loggers/logContext';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
-  const { logSubmission } = useLogging();
+  const { logSubmission, state, dataEvents } = useLogging();
+  const { sendSubmissionRequest } = useBackend();
+
   const problem = location.state.problem;
+
+  const navigate = useNavigate();
+  const cancel = () => {
+    navigate('/student');
+  };
+
+  const submitSolution = () => {
+    const newDataLog = {
+      id: 'NEED ID',
+      userId: 'NEED USER_ID',
+      initialProblem: problem,
+      blockState: state,
+      dataEvents: dataEvents,
+    };
+
+    //Callback function to print to console - checking that it is submitted
+    const postCallback = () => {
+      console.log(newDataLog);
+    };
+
+    //POST users interaction to the server
+    sendSubmissionRequest(newDataLog, postCallback);
+  };
 
   return (
     <div className="flex flex-col ">
@@ -18,12 +44,21 @@ export default function ProblemEvaluation() {
       </div>
       <div className="mt-6 mx-auto flex flex-row space-between">
         <button
-          className="px-3 py-1 mr-2 border-2 border-solid border-green-400 bg-green-400 rounded-full hover:bg-green-500"
+          className="px-3 py-1 mr-2 border-2 border-solid border-yellow-400 bg-yellow-400 rounded-full hover:bg-yellow-500"
           onClick={logSubmission}
         >
-          Submit Attempt / Check
+          Test Solution
         </button>
-        <button className="px-3 py-1 ml-2 border-2 border-solid border-red-400 bg-red-400 rounded-full hover:bg-red-500">
+        <button
+          className="px-3 py-1 mr-2 border-2 border-solid border-green-400 bg-green-400 rounded-full hover:bg-green-500"
+          onClick={submitSolution}
+        >
+          Submit Solution
+        </button>
+        <button
+          className="px-3 py-1 ml-2 border-2 border-solid border-red-400 bg-red-400 rounded-full hover:bg-red-500"
+          onClick={cancel}
+        >
           Cancel / Quit
         </button>
       </div>

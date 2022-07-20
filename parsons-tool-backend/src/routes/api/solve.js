@@ -15,10 +15,8 @@ router.post('/', async (req, res) => {
 // POST request for data logging submission
 // Expects: a JSON object in the body conforming to DataLog model
 // Returns: 201 Created if successful, 500 Internal Server Error otherwise with error
-router.post('/submisssion', async (req, res) => {
-  const { dataLog } = req.body.dataLog;
-  const [result, error] = await createDataLogRecord(dataLog);
-
+router.post('/submit', async (req, res) => {
+  const { result, error } = await createDataLogRecord(req.body);
   if (result) {
     res.status(201).header('location', `/solve/submission/${result._id}`).send();
   } else {
@@ -49,25 +47,28 @@ router.get('/submission/:id', async (req, res) => {
 // Validates the fields needed are present and returns with an error message or the created record
 const createDataLogRecord = async (obj) => {
   let err = '';
-  if (obj.id === '' || obj.id === undefined || obj.id === null) {
-    err = 'Invalid or Missing ID';
-  } else if (obj.userId === undefined || obj.userId === null) {
-    err = 'Invalid or Missing userId';
-  } else if (obj.initialProblem === undefined || obj.initialProblem === null) {
-    err = 'Invalid or Missing initialProblem';
-  } else if (obj.blockState === undefined || obj.blockState === null) {
-    err = 'Invalid or Missing blockState';
-  } else if (obj.dataEvents === undefined || obj.dataEvents === null || obj.dataEvents.length < 1) {
-    err = 'Invalid or Missing dataEvents';
-  }
+  try {
+    if (obj.id === '' || obj.id === undefined || obj.id === null) {
+      err = 'Invalid or Missing ID';
+    } else if (obj.userId === undefined || obj.userId === null) {
+      err = 'Invalid or Missing userId';
+    } else if (obj.initialProblem === undefined || obj.initialProblem === null) {
+      err = 'Invalid or Missing initialProblem';
+    } else if (obj.blockState === undefined || obj.blockState === null) {
+      err = 'Invalid or Missing blockState';
+    } else if (obj.dataEvents === undefined || obj.dataEvents === null || obj.dataEvents.length < 1) {
+      err = 'Invalid or Missing dataEvents';
+    }
+    if (err !== '') {
+      return { result: false, error: err };
+    }
 
-  if (err === '') {
-    return false, err;
+    const newDataLog = new DataLog(obj);
+    await newDataLog.save();
+    return { result: newDataLog, error: '' };
+  } catch (error) {
+    return { result: false, error: error };
   }
-
-  const newDataLog = new DataLog(obj);
-  await newDataLog.save();
-  return newDataLog, err;
 };
 
 export default router;
