@@ -5,7 +5,7 @@ import { useLogging } from '../loggers/logContext';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
-  const { logSubmission, state, dataEvents } = useLogging();
+  const { state, dataEvents } = useLogging();
   const { sendSubmissionRequest, sendExecutionRequest, executionResponse, executionIsLoading } = useBackend();
 
   const problem = location.state.problem;
