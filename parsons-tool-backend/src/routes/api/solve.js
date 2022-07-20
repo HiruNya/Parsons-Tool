@@ -10,16 +10,18 @@ const router = express.Router();
 // Returns: A JSON object with the status of the different tests executed
 
 router.post('/', async (req, res) => {
-  for (let val in [req.body.solution, req.body.blocks]) {
+  const solution = req.body.solution;
+  const blocks = req.body.blocks;
+  for (let val in [solution, blocks]) {
     if (val === undefined) {
       return res.status(401);
     }
   }
-  const blocks = req.body.solution.map((sId) => req.body.blocks[sId]);
-  if (blocks.indexOf(undefined) !== -1) {
+  const solutionBlocks = solution.map((sId) => blocks[sId]);
+  if (solutionBlocks.indexOf(undefined) !== -1) {
     return res.status(401);
   }
-  const code = blocks.map(blockToLine).join('\n') + '\nprint(LinearSearch([1, 2, 3, 4, 3], 3))';
+  const code = solutionBlocks.map(blockToLine).join('\n') + '\nprint(LinearSearch([1, 2, 3, 4, 3], 3))';
   console.log(code);
   const { error, result } = await executeOnJobe(code);
   const actual = result.stdout.trimEnd('\n');
