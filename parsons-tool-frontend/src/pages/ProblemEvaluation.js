@@ -5,8 +5,8 @@ import { useLogging } from '../loggers/logContext';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
-  const { logSubmission, state, dataEvents } = useLogging();
-  const { sendSubmissionRequest } = useBackend();
+  const { state, dataEvents } = useLogging();
+  const { sendSubmissionRequest, sendExecutionRequest, executionResponse, executionIsLoading } = useBackend();
 
   const problem = location.state.problem;
 
@@ -45,7 +45,7 @@ export default function ProblemEvaluation() {
       <div className="mt-6 mx-auto flex flex-row space-between">
         <button
           className="px-3 py-1 mr-2 border-2 border-solid border-yellow-400 bg-yellow-400 rounded-full hover:bg-yellow-500"
-          onClick={logSubmission}
+          onClick={() => sendExecutionRequest(state)}
         >
           Test Solution
         </button>
@@ -64,7 +64,15 @@ export default function ProblemEvaluation() {
       </div>
       <div className="mx-auto bg-stone-400 rounded-lg p-1 mt-5 w-10/12">
         <p className="mx-auto bg-stone-700 w-full text-white rounded p-2">Result console</p>
+        {(executionIsLoading && 'Loading...') || (executionResponse && renderResult(executionResponse.data))}
       </div>
     </div>
   );
 }
+
+const renderResult = ({ result, actual }) =>
+  result === 'correct' ? (
+    <div className={'mx-auto bg-green-300 w-full rounded p-2'}>Correct!</div>
+  ) : (
+    <div className={'mx-auto bg-red-300 w-full rounded p-2'}>Incorrect! Expected `2`, Actual: `{actual}`</div>
+  );

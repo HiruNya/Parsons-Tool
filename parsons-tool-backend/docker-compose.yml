@@ -10,3 +10,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=password
+  jobe:
+    container_name: parsons_job_server
+    image: trampgeek/jobeinabox
+    ports:
+      - 4000:80
