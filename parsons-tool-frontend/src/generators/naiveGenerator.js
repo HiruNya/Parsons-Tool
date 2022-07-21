@@ -1,9 +1,11 @@
 // eslint-disable-next-line no-useless-concat
-const INITIAL_CODE = 'print($$fade$$)\n' + '  print("Par$$fade$$")\n' + 'print("$$fade$$blems")';
-
 export const FADE_TOKEN = '$$fade$$';
 
-export const generateParsons = () => INITIAL_CODE.split('\n').map(mapLine);
+export const generateParsons = (sourceCode) =>
+  sourceCode
+    .split('\n')
+    .filter((t) => t.length > 0)
+    .map(mapLine);
 
 export const mapLine = (text, id) => {
   let parsedText = text;

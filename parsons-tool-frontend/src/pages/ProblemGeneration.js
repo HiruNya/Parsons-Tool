@@ -1,29 +1,57 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
+import Block from '../components/blocks/Block';
 import { useBackend } from '../data/BackendContext';
-import { mapLine } from '../generators/naiveGenerator';
+import { generateParsons } from '../generators/naiveGenerator';
+import TextAreaInput from '../components/TextAreaInput';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProblemGeneration() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [code, setCode] = useState('');
   const [tags, setTags] = useState('');
+  const [example, setExample] = useState([]);
   const [, setStrategy] = useState([]);
+
+  const navigate = useNavigate();
+  const goToView = () => {
+    navigate('/student');
+  };
 
   const { sendProblemCreation } = useBackend();
 
   const stratState = [false, false, false, false];
+
+  useEffect(() => {
+    if (code !== '') {
+      const codeBlocks = generateParsons(code);
+      setExample(codeBlocks);
+    }
+  }, [code]);
 
   const handleCheckbox = (index) => {
     stratState[index] = !stratState[index];
     setStrategy(...stratState);
   };
 
+  const shuffleBlocks = (array) => {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  };
+
   const createProblem = () => {
     // TODO Validate the actual code block to check it is valid for execution based
-    const codeBlocks = code.split('\n').map(mapLine);
+    const codeBlocks = generateParsons(code);
     const solution = codeBlocks.map((block) => {
       return block.id;
     });
+
+    const randomBlocks = shuffleBlocks([...codeBlocks]);
     //Create a new problem object, block generation occurs here
     const newProblem = {
       id: 'NEED ID',
@@ -35,13 +63,14 @@ export default function ProblemGeneration() {
       language: 'Python',
       author: 'F.Fromont',
       problem: {
-        blocks: codeBlocks,
+        blocks: randomBlocks,
         solution: solution,
       },
     };
     //Callback function to print to console - checking that problem is created
     const postCallback = () => {
       console.log(newProblem);
+      goToView();
     };
     //POST problem to the server
     sendProblemCreation(newProblem, postCallback);
@@ -92,15 +121,7 @@ export default function ProblemGeneration() {
                 </select>
               </div>
               <div>
-                <textarea
-                  className="border-2 border-solid rounded-lg p-3 w-full"
-                  name="solution"
-                  id=""
-                  cols="70"
-                  rows="20"
-                  placeholder="#Enter solution code here"
-                  onChange={(event) => setCode(event.target.value)}
-                />
+                <TextAreaInput setCode={setCode} />
               </div>
 
               <div>
@@ -163,7 +184,22 @@ export default function ProblemGeneration() {
 
               <h2 className="text-lg font-medium">Example Parsons Problem</h2>
 
-              <p className="h-3/5 bg-stone-200 w-96 rounded-lg p-3 mb-5">[## would show blocks]</p>
+              <div className="h-3/5 bg-stone-200 w-96 rounded-lg p-3 mb-5">
+                {code !== '' && (example ?? example.length > 0)
+                  ? example.map((block) => {
+                      return (
+                        <Block
+                          key={`block-${block.id}`}
+                          id={block.id}
+                          text={block.text}
+                          fadedIndices={block.fadedIndices}
+                          indentation={block.indentation}
+                          currentInputs={''}
+                        />
+                      );
+                    })
+                  : ''}
+              </div>
 
               <div className="ml-16">
                 <button
@@ -172,7 +208,13 @@ export default function ProblemGeneration() {
                 >
                   Create
                 </button>
-                <button className="px-4 py-2 mr-3 bg-blue-400 text-white rounded-full hover:bg-blue-500">
+                <button
+                  className="px-4 py-2 mr-3 bg-blue-400 text-white rounded-full hover:bg-blue-500"
+                  onClick={() => {
+                    const array = [...example];
+                    setExample(shuffleBlocks(array));
+                  }}
+                >
                   Randomise
                 </button>
               </div>

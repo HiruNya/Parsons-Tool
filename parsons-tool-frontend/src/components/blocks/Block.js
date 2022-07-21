@@ -38,7 +38,7 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
 };
 
 export const PresentationalBlock = forwardRef(({ text, fadedIndices, innerProps, ...otherProps }, ref) => (
-  <div className="flex" ref={ref} {...otherProps}>
+  <div className={'flex'} ref={ref} {...otherProps}>
     {toFadedChildren(text, fadedIndices, innerProps)}
   </div>
 ));
@@ -58,7 +58,7 @@ const toFadedChildren = (text, fadedIndices, innerProps) => {
     <p className="py-2 px-4 mb-2 border-2 border-stone-400 border-solid rounded-full justify-start cursor-move bg-white">
       {spans.map(
         (span, index) =>
-          (span && <span key={index}>{span}</span>) || (
+          (span !== null && <span key={index}>{span}</span>) || (
             <input
               key={index}
               type="text"

@@ -17,7 +17,7 @@ export default function StudentBrowseProblems() {
             <ProblemInfoListCard problem={problem} setSelected={(problem) => setSelected(problem)} key={i} />
           ))
         ) : (
-          <p>No problems assigned</p>
+          <p className="p-2 text-white">No problems assigned</p>
         )}
       </div>
       <div className="w-full">{selected ? <ProblemInfoDetailedCard problem={selected} /> : <div></div>}</div>
