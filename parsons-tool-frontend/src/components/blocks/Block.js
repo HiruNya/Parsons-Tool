@@ -3,7 +3,8 @@ import { CSS } from '@dnd-kit/utilities';
 import { forwardRef } from 'react';
 
 const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setInput, enableHorizontal }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const visibility = isDragging ? 'hidden' : undefined;
 
   if (transform && enableHorizontal) {
     transform.x = Math.floor(transform.x / 40) * 40;
@@ -13,6 +14,7 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
     transform: CSS.Transform.toString(transform),
     transition,
     paddingLeft: indentation && enableHorizontal ? 4 + indentation * 40 + 'px' : undefined,
+    visibility,
   };
 
   return (
