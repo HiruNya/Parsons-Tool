@@ -3,6 +3,7 @@ import Block from '../components/blocks/Block';
 import { useBackend } from '../data/BackendContext';
 import { generateParsons } from '../generators/naiveGenerator';
 import TextAreaInput from '../components/TextAreaInput';
+import TestCaseCreation from '../components/testCases/TestCaseCreation';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProblemGeneration() {
@@ -221,6 +222,11 @@ export default function ProblemGeneration() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="my-3 ml-4 flex flex-col w-full">
+        <h2 className="ml-3 text-lg font-medium">Test Cases</h2>
+        <TestCaseCreation />
       </div>
     </div>
   );
