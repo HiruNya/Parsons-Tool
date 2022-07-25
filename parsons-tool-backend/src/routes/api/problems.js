@@ -16,8 +16,9 @@ router.get('/:id', async (req, res) => {
       // Respond with 404 Not Found if problem with id not found
       res.sendStatus(404);
     }
-  } catch (err) {
+  } catch (error) {
     // Respond with 400 Bad Request if id causes exception
+    console.log('[problems.js]>', error);
     res.status(400).json(err).send();
   }
 });

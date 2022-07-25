@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
     return res.status(401);
   }
   const code = solutionBlocks.map(blockToLine).join('\n') + '\nprint(LinearSearch([1, 2, 3, 4, 3], 3))';
-  console.log(code);
+  console.log('[solve.js]>', code);
   const { error, result } = await executeOnJobe(code);
   const actual = result.stdout.trimEnd('\n');
   if (actual === '2') {
@@ -40,6 +40,7 @@ router.post('/submit', async (req, res) => {
   if (result) {
     res.status(201).header('location', `/solve/submission/${result._id}`).send();
   } else {
+    console.log('[solve.js]>', error);
     res.status(500).json(error).send();
   }
 });
@@ -58,9 +59,10 @@ router.get('/submission/:id', async (req, res) => {
       // Respond with 404 Not Found if datalog with id not found
       res.sendStatus(404);
     }
-  } catch (err) {
+  } catch (error) {
     // Respond with 400 Bad Request if id causes exception
-    res.status(400).json(err).send();
+    console.log('[solve.js]>', error);
+    res.status(400).json(error).send();
   }
 });
 

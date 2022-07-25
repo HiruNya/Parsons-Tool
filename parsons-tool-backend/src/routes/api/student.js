@@ -7,8 +7,8 @@ router.get('/', async (req, res) => {
   try {
     const problems = await ParsonsProblems.find({});
     res.json(problems);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.log('[student.js]>', error);
     res.status(500).json('An issue has occured on the server end');
   }
 });
