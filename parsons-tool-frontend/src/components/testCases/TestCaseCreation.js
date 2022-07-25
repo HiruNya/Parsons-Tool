@@ -1,23 +1,40 @@
-import TestCase from './TestCaseComponent';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import ListOfTestCases from './ListOfTestCases';
 
-export default function TestCaseCreation() {
-  const [testCases, setTestCases] = useState([]);
+export default function TestCaseCreation({ updateTestSet }) {
+  const [testCases, setTestCases] = useState([{ id: 0, inputs: '', outputs: '' }]);
+  const [caseNum, setCaseNum] = useState(1);
+
+  useEffect(() => {
+    updateTestSet(
+      testCases.map((test) => {
+        return { inputs: test.inputs, outputs: test.outputs };
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [testCases]);
 
   function newTestCase() {
     const newCase = {
+      id: caseNum,
       inputs: '',
       outputs: '',
     };
-
-    setTestCases([...testCases, newCase]);
+    const newSet = [...testCases, newCase];
+    setTestCases(newSet);
+    setCaseNum(caseNum + 1);
   }
 
   function handleDelete(index) {
-    console.log('Delete: ', index, testCases);
     const newArray = [...testCases];
     newArray.splice(index, 1);
     setTestCases(newArray);
+  }
+
+  function handleUpdate(index, state) {
+    const newList = [...testCases];
+    newList[index] = state;
+    setTestCases(newList);
   }
 
   return (
@@ -25,24 +42,8 @@ export default function TestCaseCreation() {
       <button onClick={newTestCase} className="px-3 py-1 ml-3 rounded-full bg-yellow-200 hover:bg-yellow-300">
         New Test Case +
       </button>
-      <ul>
-        {testCases && testCases.length > 0 ? (
-          testCases.map((item, i) => (
-            <TestCase
-              key={`test-case-${i}`}
-              test={item}
-              deleteCase={() => handleDelete(i)}
-              updateState={(newState) => {
-                const newList = [...testCases];
-                newList[i] = newState;
-                setTestCases(newList);
-              }}
-            />
-          ))
-        ) : (
-          <p>"no test cases"</p>
-        )}
-      </ul>
+
+      <ListOfTestCases testCases={testCases} handleDelete={handleDelete} handleUpdate={handleUpdate} />
     </div>
   );
 }

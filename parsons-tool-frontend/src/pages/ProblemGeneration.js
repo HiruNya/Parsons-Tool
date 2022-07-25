@@ -13,6 +13,7 @@ export default function ProblemGeneration() {
   const [tags, setTags] = useState('');
   const [example, setExample] = useState([]);
   const [, setStrategy] = useState([]);
+  const [testSet, setTestSet] = useState([]);
 
   const navigate = useNavigate();
   const goToView = () => {
@@ -67,6 +68,7 @@ export default function ProblemGeneration() {
         blocks: randomBlocks,
         solution: solution,
       },
+      tests: testSet,
     };
     //Callback function to print to console - checking that problem is created
     const postCallback = () => {
@@ -226,7 +228,7 @@ export default function ProblemGeneration() {
 
       <div className="my-3 ml-4 flex flex-col w-full">
         <h2 className="ml-3 text-lg font-medium">Test Cases</h2>
-        <TestCaseCreation />
+        <TestCaseCreation updateTestSet={setTestSet} />
       </div>
     </div>
   );
