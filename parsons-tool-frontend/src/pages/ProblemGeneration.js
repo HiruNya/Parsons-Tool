@@ -184,7 +184,7 @@ export default function ProblemGeneration() {
 
               <h2 className="text-lg font-medium">Example Parsons Problem</h2>
 
-              <div className="h-3/5 bg-stone-200 w-96 rounded-lg p-3 mb-5">
+              <div className="h-72 bg-stone-200 w-96 rounded-lg p-3 mb-5 overflow-auto">
                 {code !== '' && (example ?? example.length > 0)
                   ? example.map((block) => {
                       return (
