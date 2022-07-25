@@ -52,10 +52,6 @@ const problemSchema = new Schema({
     },
     tests: [
       {
-        id: {
-          type: String,
-          required: true,
-        },
         name: {
           type: String,
           default: 'Test Case',
@@ -65,20 +61,10 @@ const problemSchema = new Schema({
           default: false,
         },
         inputs: {
-          type: [
-            {
-              values: String,
-              types: String,
-            },
-          ],
+          type: [String],
         },
         outputs: {
-          type: [
-            {
-              values: String,
-              types: String,
-            },
-          ],
+          type: [String],
         },
         timeout: {
           type: Number,

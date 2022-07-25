@@ -67,8 +67,8 @@ export default function ProblemGeneration() {
       problem: {
         blocks: randomBlocks,
         solution: solution,
+        tests: testSet,
       },
-      tests: testSet,
     };
     //Callback function to print to console - checking that problem is created
     const postCallback = () => {

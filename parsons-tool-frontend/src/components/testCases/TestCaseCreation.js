@@ -8,7 +8,7 @@ export default function TestCaseCreation({ updateTestSet }) {
   useEffect(() => {
     updateTestSet(
       testCases.map((test) => {
-        return { inputs: test.inputs, outputs: test.outputs };
+        return { inputs: [test.inputs], outputs: [test.outputs] };
       }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,7 +42,6 @@ export default function TestCaseCreation({ updateTestSet }) {
       <button onClick={newTestCase} className="px-3 py-1 ml-3 rounded-full bg-yellow-200 hover:bg-yellow-300">
         New Test Case +
       </button>
-
       <ListOfTestCases testCases={testCases} handleDelete={handleDelete} handleUpdate={handleUpdate} />
     </div>
   );
