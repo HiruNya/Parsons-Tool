@@ -1,7 +1,6 @@
 {
   "problems": [
     {
-      "id": "recursion1",
       "name": "Fibonacci",
       "description": "This is a simple implementation of finding the value of a number in the fibonacci sequence by providing the index of the value to find ",
       "difficulty": "Easy",
@@ -58,7 +57,6 @@
       }
     },
     {
-      "id": "recursion2",
       "name": "Fibonacci 2.0 electric boogaloo",
       "description": "This is a simple implementation of finding the value of a number in the fibonacci sequence by providing the index of the value to find, but this particular version is done in a slightly more memory optimised manner ",
       "difficulty": "Easy",
@@ -115,7 +113,6 @@
       }
     },
     {
-      "id": "linear-search-vf",
       "name": "Linear Search w/ Variable Fading",
       "description": "",
       "difficulty": "Easy",
@@ -160,7 +157,6 @@
       }
     },
     {
-      "id": "linear-search-of",
       "name": "Linear Search w/ Operator Fading",
       "description": "",
       "difficulty": "Easy",
@@ -205,7 +201,6 @@
       }
     },
     {
-      "id": "linear-search-cf",
       "name": "Linear Search w/ Conditional Fading",
       "description": "",
       "difficulty": "Easy",
@@ -250,7 +245,6 @@
       }
     },
     {
-      "id": "linear-search-kf",
       "name": "Linear Search w/ Keyword Fading",
       "description": "",
       "difficulty": "Easy",
@@ -295,7 +289,6 @@
       }
     },
     {
-      "id": "BinaryRepresentation-solution",
       "name": "Binary Representation - Solution",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
@@ -359,7 +352,6 @@
       }
     },
     {
-      "id": "BinaryRepresentation-conditional",
       "name": "Binary Representation - Conditional",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
@@ -416,7 +408,6 @@
       }
     },
     {
-      "id": "BinaryRepresentation-operator",
       "name": "Binary Representation - Operator",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
@@ -473,7 +464,6 @@
       }
     },
     {
-      "id": "BinaryRepresentation-keyword",
       "name": "Binary Representation - Keyword",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",
@@ -530,7 +520,6 @@
       }
     },
     {
-      "id": "BinaryRepresentation-variable",
       "name": "Binary Representation - Variable",
       "description": "This is a simple implementation of a recursive solution for converting an integer into its binary representation ",
       "difficulty": "Easy",

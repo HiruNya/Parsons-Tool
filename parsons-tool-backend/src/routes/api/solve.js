@@ -68,9 +68,7 @@ router.get('/submission/:id', async (req, res) => {
 const createDataLogRecord = async (obj) => {
   let err = '';
   try {
-    if (obj.id === '' || obj.id === undefined || obj.id === null) {
-      err = 'Invalid or Missing ID';
-    } else if (obj.userId === undefined || obj.userId === null) {
+    if (obj.userId === undefined || obj.userId === null) {
       err = 'Invalid or Missing userId';
     } else if (obj.initialProblem === undefined || obj.initialProblem === null) {
       err = 'Invalid or Missing initialProblem';

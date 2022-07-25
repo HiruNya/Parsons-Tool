@@ -56,7 +56,6 @@ export default function ProblemGeneration() {
     const randomBlocks = shuffleBlocks([...codeBlocks]);
     //Create a new problem object, block generation occurs here
     const newProblem = {
-      id: 'NEED ID',
       name: name,
       description: description,
       difficulty: 'Easy - DECISION',

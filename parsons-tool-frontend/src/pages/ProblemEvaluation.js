@@ -17,7 +17,6 @@ export default function ProblemEvaluation() {
 
   const submitSolution = () => {
     const newDataLog = {
-      id: 'NEED ID',
       userId: 'NEED USER_ID',
       initialProblem: problem,
       blockState: state,

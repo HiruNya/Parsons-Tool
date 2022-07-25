@@ -2,11 +2,6 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const problemSchema = new Schema({
-  id: {
-    type: String,
-    unique: true,
-    required: true,
-  },
   name: {
     type: String,
     required: true,

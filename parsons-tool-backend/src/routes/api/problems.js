@@ -39,9 +39,7 @@ router.post('/create', async (req, res) => {
 const createNewProblem = async (obj) => {
   let err = '';
   try {
-    if (obj.id === '' || obj.id === undefined || obj.id === null) {
-      err = 'Invalid or Missing ID';
-    } else if (obj.name === undefined || obj.name === null) {
+    if (obj.name === undefined || obj.name === null) {
       err = 'Invalid or Missing name';
     } else if (obj.problem === undefined || obj.problem === null) {
       err = 'Invalid or Missing problem field';
