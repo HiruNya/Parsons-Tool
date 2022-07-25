@@ -109,7 +109,7 @@ export default function ProblemGeneration() {
           <div className="flex flex-row">
             <div className="flex flex-col w-full">
               <div className="flex flex-row ">
-                <h2 className="px-3 py-1 my-3 text-lg font-medium">Solution Code</h2>
+                <h2 className="py-1 my-3 text-lg font-medium">Solution Code</h2>
                 <select
                   className="bg-stone-200 rounded-full px-2 py-1 text-black my-3 ml-auto"
                   name="language"
