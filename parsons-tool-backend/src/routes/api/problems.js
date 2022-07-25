@@ -31,6 +31,7 @@ router.post('/create', async (req, res) => {
   if (result) {
     res.status(201).header('location', `/problems/${result._id}`).send();
   } else {
+    console.log('[problems.js]>', error);
     res.status(500).json(error).send();
   }
 });
