@@ -16,8 +16,9 @@ router.get('/:id', async (req, res) => {
       // Respond with 404 Not Found if problem with id not found
       res.sendStatus(404);
     }
-  } catch (err) {
+  } catch (error) {
     // Respond with 400 Bad Request if id causes exception
+    console.log('[problems.js]>', error);
     res.status(400).json(err).send();
   }
 });
@@ -31,6 +32,7 @@ router.post('/create', async (req, res) => {
   if (result) {
     res.status(201).header('location', `/problems/${result._id}`).send();
   } else {
+    console.log('[problems.js]>', error);
     res.status(500).json(error).send();
   }
 });
@@ -39,9 +41,7 @@ router.post('/create', async (req, res) => {
 const createNewProblem = async (obj) => {
   let err = '';
   try {
-    if (obj.id === '' || obj.id === undefined || obj.id === null) {
-      err = 'Invalid or Missing ID';
-    } else if (obj.name === undefined || obj.name === null) {
+    if (obj.name === undefined || obj.name === null) {
       err = 'Invalid or Missing name';
     } else if (obj.problem === undefined || obj.problem === null) {
       err = 'Invalid or Missing problem field';
