@@ -3,6 +3,7 @@ import Block from '../components/blocks/Block';
 import { useBackend } from '../data/BackendContext';
 import { generateParsons } from '../generators/naiveGenerator';
 import TextAreaInput from '../components/TextAreaInput';
+import TestCaseCreation from '../components/testCases/TestCaseCreation';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProblemGeneration() {
@@ -12,6 +13,7 @@ export default function ProblemGeneration() {
   const [tags, setTags] = useState('');
   const [example, setExample] = useState([]);
   const [, setStrategy] = useState([]);
+  const [testSet, setTestSet] = useState([]);
 
   const navigate = useNavigate();
   const goToView = () => {
@@ -65,6 +67,7 @@ export default function ProblemGeneration() {
       problem: {
         blocks: randomBlocks,
         solution: solution,
+        tests: testSet,
       },
     };
     //Callback function to print to console - checking that problem is created
@@ -108,7 +111,7 @@ export default function ProblemGeneration() {
           <div className="flex flex-row">
             <div className="flex flex-col w-full">
               <div className="flex flex-row ">
-                <h2 className="px-3 py-1 my-3 text-lg font-medium">Solution Code</h2>
+                <h2 className="py-1 my-3 text-lg font-medium">Solution Code</h2>
                 <select
                   className="bg-stone-200 rounded-full px-2 py-1 text-black my-3 ml-auto"
                   name="language"
@@ -221,6 +224,11 @@ export default function ProblemGeneration() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="my-3 ml-4 flex flex-col w-full">
+        <h2 className="ml-3 text-lg font-medium">Test Cases</h2>
+        <TestCaseCreation updateTestSet={setTestSet} />
       </div>
     </div>
   );
