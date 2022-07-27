@@ -1,17 +1,23 @@
 version: "3.8"
 
 services:
-  mongodb:
-    container_name: parsons
+  api:
+    build: .
+    restart: always
+    depends_on:
+      - db
+      - jobe
+    ports:
+      - 3001:3001
+    environment:
+      - MONGO_DB=mongodb://db/parsons
+      - PORT=3001
+  db:
     image: mongo:latest
     restart: always
     ports:
       - 27017:27017
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=password
   jobe:
-    container_name: parsons_job_server
     image: trampgeek/jobeinabox
     ports:
       - 4000:80
