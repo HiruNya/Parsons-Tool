@@ -28,12 +28,28 @@ const signInWithGoogle = async () => {
       await createUser({ uid: user.uid, email: user.email });
       result = await queryDatabase(user.uid);
     }
+    localStorage.setItem('userRecord', JSON.stringify(result));
     return result;
   } catch (error) {
     console.log('Check');
 
     console.error(error);
   }
+};
+
+function onAuthStateChange(setIsLoggedIn) {
+  return auth.onAuthStateChanged((user) => {
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  });
+}
+
+const logout = () => {
+  localStorage.removeItem('userRecord');
+  signOut(auth);
 };
 
 // query the database for the user id, and return the user or return null
@@ -51,8 +67,4 @@ const queryDatabase = async (id) => {
   }
 };
 
-const logout = () => {
-  signOut(auth);
-};
-
-export { auth, signInWithGoogle, logout };
+export { auth, signInWithGoogle, onAuthStateChange, logout, queryDatabase };

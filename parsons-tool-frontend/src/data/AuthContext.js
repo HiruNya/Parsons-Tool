@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth, logout, signInWithGoogle } from '../firebase';
+import { auth, logout, onAuthStateChange, queryDatabase, signInWithGoogle } from '../firebase';
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
@@ -37,6 +37,22 @@ export const AuthContextProvider = ({ children }) => {
       }
     }
   }, [userRecord]);
+
+  useEffect(() => {
+    if (isLoggedIn && (userRecord === undefined || userRecord === null)) {
+      const userRecord = JSON.parse(localStorage.getItem('userRecord'));
+      if (userRecord) {
+        setUserRecord(userRecord);
+      }
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange(setIsLoggedIn);
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const context = {
     isLoggedIn,
