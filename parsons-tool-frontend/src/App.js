@@ -7,22 +7,25 @@ import ProblemGeneration from './pages/ProblemGeneration';
 import { LoggingProvider } from './loggers/logContext';
 import { BackendContextProvider } from './data/BackendContext';
 import Login from './pages/Login';
+import { AuthContextProvider } from './data/AuthContext';
 
 function App() {
   return (
     <>
-      <BackendContextProvider>
-        <LoggingProvider>
-          <Routes>
-            <Route path="login" element={<Login />} />
-            <Route path="/" element={<PageLayout />}>
-              <Route path="student" element={<StudentBrowseProblems />} />
-              <Route path="solve" element={<ProblemEvaluation />} />
-              <Route path="create" element={<ProblemGeneration />} />
-            </Route>
-          </Routes>
-        </LoggingProvider>
-      </BackendContextProvider>
+      <AuthContextProvider>
+        <BackendContextProvider>
+          <LoggingProvider>
+            <Routes>
+              <Route path="login" element={<Login />} />
+              <Route path="/" element={<PageLayout />}>
+                <Route path="student" element={<StudentBrowseProblems />} />
+                <Route path="solve" element={<ProblemEvaluation />} />
+                <Route path="create" element={<ProblemGeneration />} />
+              </Route>
+            </Routes>
+          </LoggingProvider>
+        </BackendContextProvider>
+      </AuthContextProvider>
     </>
   );
 }

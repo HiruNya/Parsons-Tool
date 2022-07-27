@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth, signInWithGoogle } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuth } from '../data/AuthContext';
 
 export default function Login() {
+  const { signIn, auth } = useAuth();
   // eslint-disable-next-line no-unused-vars
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
@@ -19,10 +20,7 @@ export default function Login() {
   return (
     <div>
       <h1>LOGIN</h1>
-      <button
-        className=" p-3 text-lg mb-3 border-none text-white bg-blue-400 hover:bg-blue-500"
-        onClick={signInWithGoogle}
-      >
+      <button className=" p-3 text-lg mb-3 border-none text-white bg-blue-400 hover:bg-blue-500" onClick={signIn}>
         Login with Google
       </button>
     </div>
