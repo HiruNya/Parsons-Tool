@@ -11,7 +11,7 @@ services:
     ports:
       - 3001:3001
     environment:
-      - MONGO_DB=mongodb://db:27017/parsons
+      - MONGO_DB=mongodb://db/parsons
   db:
     image: mongo:latest
     restart: always
