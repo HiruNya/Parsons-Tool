@@ -19,8 +19,10 @@ export default function Login() {
   }, [user, loading]);
   return (
     <div>
-      <h1>LOGIN</h1>
-      <button className=" p-3 text-lg mb-3 border-none text-white bg-blue-400 hover:bg-blue-500" onClick={signIn}>
+      <button
+        className=" px-4 py-3 text-lg my-3 border-none rounded-full text-white bg-blue-400 hover:bg-blue-500"
+        onClick={signIn}
+      >
         Login with Google
       </button>
     </div>

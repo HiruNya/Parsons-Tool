@@ -1,12 +1,14 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import ParsonsProblem from '../components/parsonsProblem';
 import { useBackend } from '../data/BackendContext';
+import { useAuth } from '../data/AuthContext';
 import { useLogging } from '../loggers/logContext';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
   const { state, dataEvents } = useLogging();
   const { sendSubmissionRequest, sendExecutionRequest, executionResponse, executionIsLoading } = useBackend();
+  const { uid } = useAuth();
 
   const problem = location.state.problem;
 
@@ -17,7 +19,7 @@ export default function ProblemEvaluation() {
 
   const submitSolution = () => {
     const newDataLog = {
-      userId: 'NEED USER_ID',
+      userId: uid,
       initialProblem: problem,
       blockState: state,
       dataEvents: dataEvents,

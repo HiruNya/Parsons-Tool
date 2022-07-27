@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth, logout, onAuthStateChange, queryDatabase, signInWithGoogle } from '../firebase';
+import { auth, logout, onAuthStateChange, signInWithGoogle } from '../firebase';
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
@@ -13,8 +13,9 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRecord, setUserRecord] = useState(null);
+  const [isLecturer, setIsLecturer] = useState(false);
   const [roles, setRoles] = useState([]);
-  const navigate = useNavigate();
+  const [uid, setUid] = useState('');
 
   async function signIn() {
     await signInWithGoogle();
@@ -24,7 +25,6 @@ export const AuthContextProvider = ({ children }) => {
   function signOut() {
     logout();
     setIsLoggedIn(false);
-    navigate('/login');
   }
 
   useEffect(() => {
@@ -32,6 +32,19 @@ export const AuthContextProvider = ({ children }) => {
       const userRoles = [...userRecord.roles];
       if (userRoles !== null) {
         setRoles(userRoles);
+
+        if (
+          roles.find((element) => {
+            if (element.includes('lecturer')) {
+              return true;
+            }
+            return false;
+          })
+        ) {
+          setIsLecturer(true);
+        } else {
+          setIsLecturer(false);
+        }
       }
     }
   }, [userRecord]);
@@ -41,6 +54,7 @@ export const AuthContextProvider = ({ children }) => {
       const userRecord = JSON.parse(localStorage.getItem('userRecord'));
       if (userRecord) {
         setUserRecord(userRecord);
+        setUid(userRecord.uid);
       }
     } else {
       setUserRecord(null);
@@ -56,8 +70,9 @@ export const AuthContextProvider = ({ children }) => {
 
   const context = {
     isLoggedIn,
+    isLecturer,
+    uid,
     auth,
-    roles,
     signIn,
     signOut,
   };
