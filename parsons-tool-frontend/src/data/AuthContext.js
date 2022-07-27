@@ -42,9 +42,8 @@ export const AuthContextProvider = ({ children }) => {
           })
         ) {
           setIsLecturer(true);
-        } else {
-          setIsLecturer(false);
         }
+        setIsLecturer(false);
       }
     }
   }, [userRecord]);
@@ -58,6 +57,7 @@ export const AuthContextProvider = ({ children }) => {
       }
     } else {
       setUserRecord(null);
+      setUid('');
     }
   }, [isLoggedIn]);
 
