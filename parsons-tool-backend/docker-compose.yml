@@ -6,8 +6,8 @@ services:
     build: .
     restart: always
     depends_on:
-      - parsons_db
-      - parsons_job_server
+      - db
+      - jobe
     ports:
       - 3001:3001
     environment:
