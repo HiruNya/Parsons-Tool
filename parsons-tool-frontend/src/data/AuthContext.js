@@ -17,15 +17,13 @@ export const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
 
   async function signIn() {
-    const user = await signInWithGoogle();
-    setUserRecord(user);
+    await signInWithGoogle();
     setIsLoggedIn(true);
   }
 
   function signOut() {
     logout();
     setIsLoggedIn(false);
-    setUserRecord(null);
     navigate('/login');
   }
 
@@ -44,6 +42,8 @@ export const AuthContextProvider = ({ children }) => {
       if (userRecord) {
         setUserRecord(userRecord);
       }
+    } else {
+      setUserRecord(null);
     }
   }, [isLoggedIn]);
 
