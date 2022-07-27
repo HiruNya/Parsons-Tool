@@ -21,12 +21,14 @@ const signInWithGoogle = async () => {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
     // Check if the user exists in database
-    const result = await queryDatabase(user.uid);
+    let result = await queryDatabase(user.uid);
     // if result is null then create a new user record
     if (result === null) {
       console.log('[firebase.js]> Creating new user for ', user);
       await createUser({ uid: user.uid, email: user.email });
+      result = await queryDatabase(user.uid);
     }
+    return result;
   } catch (error) {
     console.log('Check');
 
@@ -39,14 +41,11 @@ const queryDatabase = async (id) => {
   try {
     const result = await queryUser(id);
     if (result.data !== null) {
-      console.log('[firebase.js]> data:', result.data);
       return result.data;
     } else {
-      console.log('[firebase.js]> data: null');
       return null;
     }
   } catch (error) {
-    console.log('[firebase.js]> error state');
     console.error(error);
     return null;
   }

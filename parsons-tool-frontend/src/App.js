@@ -8,6 +8,7 @@ import { LoggingProvider } from './loggers/logContext';
 import { BackendContextProvider } from './data/BackendContext';
 import Login from './pages/Login';
 import { AuthContextProvider } from './data/AuthContext';
+import { ProtectedRoute } from './components/protectedRoute';
 
 function App() {
   return (
@@ -20,7 +21,14 @@ function App() {
               <Route path="/" element={<PageLayout />}>
                 <Route path="student" element={<StudentBrowseProblems />} />
                 <Route path="solve" element={<ProblemEvaluation />} />
-                <Route path="create" element={<ProblemGeneration />} />
+                <Route
+                  path="create"
+                  element={
+                    <ProtectedRoute requiredRole="lecturer">
+                      <ProblemGeneration />
+                    </ProtectedRoute>
+                  }
+                />
               </Route>
             </Routes>
           </LoggingProvider>
