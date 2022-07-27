@@ -18,6 +18,10 @@ export default function ProblemEvaluation() {
   };
 
   const submitSolution = () => {
+    const userRecord = JSON.parse(localStorage.getItem('userRecord'));
+    console.log('[auth]>', userRecord);
+    console.log('[evaluation] submit solution');
+    console.log(uid);
     const newDataLog = {
       userId: uid,
       initialProblem: problem,
@@ -29,9 +33,11 @@ export default function ProblemEvaluation() {
     const postCallback = () => {
       console.log(newDataLog);
     };
+    console.log('[evaluation] about to send');
 
     //POST users interaction to the server
     sendSubmissionRequest(newDataLog, postCallback);
+    //navigate('/student');
   };
 
   return (

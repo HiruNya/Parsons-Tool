@@ -4,6 +4,7 @@ import { auth, logout, onAuthStateChange, signInWithGoogle } from '../firebase';
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
+  uid: '',
   auth: auth,
   roles: [],
 });
@@ -19,12 +20,14 @@ export const AuthContextProvider = ({ children }) => {
 
   async function signIn() {
     await signInWithGoogle();
-    setIsLoggedIn(true);
   }
 
   function signOut() {
     logout();
     setIsLoggedIn(false);
+    setIsLecturer(false);
+    setRoles([]);
+    setUid('');
   }
 
   useEffect(() => {
@@ -33,26 +36,27 @@ export const AuthContextProvider = ({ children }) => {
       if (userRoles !== null) {
         setRoles(userRoles);
 
-        if (
-          roles.find((element) => {
-            if (element.includes('lecturer')) {
-              return true;
-            }
-            return false;
-          })
-        ) {
+        console.log(userRoles);
+
+        if (roles.find((element) => element === 'lecturer')) {
+          console.log('[auth]> is lecturer');
           setIsLecturer(true);
+        } else {
+          console.log('[auth]> is not lecturer');
+          setIsLecturer(false);
         }
-        setIsLecturer(false);
       }
     }
   }, [userRecord]);
 
   useEffect(() => {
-    if (isLoggedIn && (userRecord === undefined || userRecord === null)) {
+    if (isLoggedIn) {
       const userRecord = JSON.parse(localStorage.getItem('userRecord'));
+      console.log('[auth]>', userRecord);
+
       if (userRecord) {
         setUserRecord(userRecord);
+        console.log('setting uid: ', userRecord.uid);
         setUid(userRecord.uid);
       }
     } else {

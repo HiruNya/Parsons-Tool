@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await Users.findOne({ uid: id });
+    const user = await Users.findOne({ email: id });
     if (user) {
       res.json(user);
     } else {
@@ -46,9 +46,7 @@ router.post('/new', async (req, res) => {
 const createNewUser = async (obj) => {
   let err = '';
   try {
-    if (obj.uid === undefined || obj.uid === null) {
-      err = 'Invalid or Missing uid';
-    } else if (obj.email === undefined || obj._id === null) {
+    if (obj.email === undefined || obj._id === null) {
       err = 'Invalid or Missing email';
     }
 

@@ -21,12 +21,12 @@ const signInWithGoogle = async () => {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
     // Check if the user exists in database
-    let result = await queryDatabase(user.uid);
+    let result = await queryDatabase(user.email);
     // if result is null then create a new user record
     if (result === null) {
       console.log('[firebase.js]> Creating new user for ', user);
-      await createUser({ uid: user.uid, email: user.email });
-      result = await queryDatabase(user.uid);
+      await createUser({ email: user.email });
+      result = await queryDatabase(user.email);
     }
     localStorage.setItem(
       'userRecord',
@@ -63,6 +63,7 @@ const queryDatabase = async (id) => {
       return null;
     }
   } catch (error) {
+    console.log('[firebase.js]> Querying for id: ', id);
     console.error(error);
     return null;
   }
