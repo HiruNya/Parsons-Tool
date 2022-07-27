@@ -28,7 +28,7 @@ const signInWithGoogle = async () => {
       await createUser({ uid: user.uid, email: user.email });
       result = await queryDatabase(user.uid);
     }
-    localStorage.setItem('userRecord', JSON.stringify(result));
+    localStorage.setItem('userRecord', JSON.stringify({ group: result.experimentGroup, roles: result.roles }));
     return result;
   } catch (error) {
     console.log('Check');
