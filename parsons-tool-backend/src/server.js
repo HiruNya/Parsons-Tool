@@ -14,7 +14,7 @@ app.use(express.json());
 // Setup CORS for frontend access to server
 const cors = require('cors');
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'http*://*--hiru-parsons.netlify.app', 'http*://parsons.hiru.dev'],
   credentials: true,
   optionSuccessStatus: 200,
 };
