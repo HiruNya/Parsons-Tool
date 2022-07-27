@@ -6,6 +6,7 @@ import routes from './routes';
 // Setup Express
 const app = express();
 const port = process.env.PORT || 3001;
+const mongoDbUrl = process.env.MONGO_DB || 'mongodb://localhost:27017/parsons';
 
 // Setup JSON parsing for request body
 app.use(express.json());
@@ -40,7 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Connect to the database and then start the server
 mongoose
-  .connect('mongodb://localhost:27017/parsons', {
+  .connect(mongoDbUrl, {
     useNewUrlParser: true,
   })
   .then(() => {
