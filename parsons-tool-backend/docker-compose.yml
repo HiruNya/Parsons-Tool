@@ -8,10 +8,10 @@ services:
       - db
       - jobe
     ports:
-      - 80:80
+      - 3001:3001
     environment:
       - MONGO_DB=mongodb://db/parsons
-      - PORT=80
+      - PORT=3001
   db:
     image: mongo:latest
     restart: always
