@@ -1,5 +1,6 @@
 import express from 'express';
 import ParsonsProblem from '../../database/ProblemSchema';
+import Courses from '../../database/CourseSchema';
 
 const router = express.Router();
 
@@ -27,7 +28,7 @@ router.get('/:id', async (req, res) => {
 // Expects: a JSON object in the body conforming to ParsonsProblem model
 // Returns: 201 Created if successful, 500 Interal Server Error otherwise with error
 router.post('/create', async (req, res) => {
-  const { result, error } = await createNewProblem(req.body);
+  const { result, error } = await createNewProblem(req.body.newProblem, req.body.group);
 
   if (result) {
     res.status(201).header('location', `/problems/${result._id}`).send();
@@ -38,8 +39,9 @@ router.post('/create', async (req, res) => {
 });
 
 // Validates the fields needed are present and returns with an error message or created recorded
-const createNewProblem = async (obj) => {
+const createNewProblem = async (obj, group) => {
   let err = '';
+  let groupNumber = 0;
   try {
     if (obj.name === undefined || obj.name === null) {
       err = 'Invalid or Missing name';
@@ -55,8 +57,23 @@ const createNewProblem = async (obj) => {
       return { result: false, error: err };
     }
 
+    if (group !== undefined || group !== null) {
+      groupNumber = group;
+    }
+
     const newProblem = new ParsonsProblem(obj);
     await newProblem.save();
+
+    // Add the problem id to a list of problems, default to 0 otherwise
+    const problemGroup = await Courses.findOne({ groupNumber: groupNumber });
+    if (!problemGroup) {
+      const newGroup = new Courses({ groupNumber: groupNumber, problems: [newProblem._id] });
+      await newGroup.save();
+    } else {
+      problemGroup.problems.push(newProblem._id);
+      await problemGroup.save();
+    }
+
     return { result: newProblem, error: err };
   } catch (error) {
     return { result: false, error: error };

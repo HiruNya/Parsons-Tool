@@ -1,13 +1,14 @@
 import express from 'express';
 import ParsonsProblems from '../../database/ProblemSchema';
 import Users from '../../database/UserSchema';
+import Courses from '../../database/CourseSchema';
 
 const router = express.Router();
 
+// Get a list of all problems in the database
 router.get('/', async (req, res) => {
   try {
     const problems = await ParsonsProblems.find({});
-    console.log('[student.js]> Problems found: ', problems);
     res.json(problems);
   } catch (error) {
     console.log('[student.js]>', error);
@@ -15,10 +16,26 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get a list of problems for a specific group/course
+router.get('/problems/:group', async (req, res) => {
+  const { group } = req.params;
+  try {
+    const course = await Courses.findOne({ groupNumber: group });
+    const problems = await ParsonsProblems.find({ _id: { $in: [...course.problems] } });
+    if (!problems) {
+      res.json([]);
+    }
+    res.json(problems);
+  } catch (error) {
+    console.log('[student.js]>', error);
+    res.status(500).json('An issue has occured on the server end');
+  }
+});
+
+// Get a list of all users in the database
 router.get('/all', async (req, res) => {
   try {
     const users = await Users.find({});
-    console.log('[student.js]> Users found: ', users);
     res.json(users);
   } catch (error) {
     console.log('[student.js]>', error);
@@ -26,6 +43,7 @@ router.get('/all', async (req, res) => {
   }
 });
 
+// Get a particular student based on their email
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -45,6 +63,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Create a new user
 router.post('/new', async (req, res) => {
   const { result, error } = await createNewUser(req.body);
 
@@ -57,10 +76,17 @@ router.post('/new', async (req, res) => {
   }
 });
 
+// Get a group number for a new student
+const getGroupNumber = async () => {
+  const userNumber = await Users.countDocuments({ roles: { $size: 1 }, roles: ['student'] });
+  return (userNumber % 4) + 1;
+};
+
 const createNewUser = async (obj) => {
   let err = '';
+  console.log('[createNewUser] ', obj);
   try {
-    if (obj.email === undefined || obj._id === null) {
+    if (obj.email === undefined || obj.email === null) {
       err = 'Invalid or Missing email';
     }
 
@@ -68,6 +94,9 @@ const createNewUser = async (obj) => {
       return { result: false, error: err };
     }
 
+    const groupNumber = await getGroupNumber();
+    obj.experimentGroup = groupNumber;
+    console.log('[student.js]> New User:', obj);
     const newUser = new Users(obj);
     await newUser.save();
     return { result: newUser, error: err };

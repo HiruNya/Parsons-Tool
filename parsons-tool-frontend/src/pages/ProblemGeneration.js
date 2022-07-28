@@ -14,6 +14,7 @@ export default function ProblemGeneration() {
   const [example, setExample] = useState([]);
   const [, setStrategy] = useState([]);
   const [testSet, setTestSet] = useState([]);
+  const [groupNumber, setGroupNumber] = useState(0);
 
   const navigate = useNavigate();
   const goToView = () => {
@@ -71,11 +72,11 @@ export default function ProblemGeneration() {
     };
     //Callback function to print to console - checking that problem is created
     const postCallback = () => {
-      console.log(newProblem);
+      console.log(newProblem, groupNumber);
       goToView();
     };
     //POST problem to the server
-    sendProblemCreation(newProblem, postCallback);
+    sendProblemCreation({ newProblem: newProblem, group: groupNumber }, postCallback);
   };
 
   return (
@@ -111,6 +112,16 @@ export default function ProblemGeneration() {
             <div className="flex flex-col w-full">
               <div className="flex flex-row ">
                 <h2 className="py-1 my-3 text-lg font-medium">Solution Code</h2>
+                <span className="py-1 ml-10 my-3 text-lg ">
+                  Group Number:{' '}
+                  <input
+                    type="text"
+                    className="px-3 w-9 bg-stone-200 rounded-full"
+                    onChange={(event) => setGroupNumber(event.target.value)}
+                    placeholder="0"
+                  />
+                </span>
+
                 <select
                   className="bg-stone-200 rounded-full px-2 py-1 text-black my-3 ml-auto"
                   name="language"
