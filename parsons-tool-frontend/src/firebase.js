@@ -16,7 +16,7 @@ const auth = getAuth(app);
 
 const googleProvider = new GoogleAuthProvider();
 
-const signInWithGoogle = async () => {
+const signInWithGoogle = async (setChangeState) => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
@@ -32,6 +32,7 @@ const signInWithGoogle = async () => {
       'userRecord',
       JSON.stringify({ uid: result._id, group: result.experimentGroup, roles: result.roles }),
     );
+    setChangeState();
     return result;
   } catch (error) {
     console.error(error);

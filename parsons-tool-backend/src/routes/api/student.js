@@ -19,6 +19,7 @@ router.get('/:id', async (req, res) => {
   try {
     const user = await Users.findOne({ email: id });
     if (user) {
+      console.log(`[student.js]> Student '${id}' found`);
       res.json(user);
     } else {
       // Respond with 404 Not Found if user id not found
@@ -36,6 +37,7 @@ router.post('/new', async (req, res) => {
   const { result, error } = await createNewUser(req.body);
 
   if (result) {
+    console.log('[student.js]> New User record: ', result);
     res.status(201).header('location', `/student/${result._id}`).send();
   } else {
     console.log('[student.js]>', error);

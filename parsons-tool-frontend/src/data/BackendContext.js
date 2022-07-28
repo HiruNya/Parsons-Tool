@@ -19,6 +19,7 @@ export const queryUser = async (id) => {
 export const createUser = async (user) => {
   try {
     const response = await axios.post(apiServerUrl + '/student/new', user);
+    console.log('[BackendContext.js]> User creation resp: ', response);
     return response;
   } catch (error) {
     console.log(error);

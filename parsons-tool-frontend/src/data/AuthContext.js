@@ -17,9 +17,14 @@ export const AuthContextProvider = ({ children }) => {
   const [isLecturer, setIsLecturer] = useState(false);
   const [roles, setRoles] = useState([]);
   const [uid, setUid] = useState('');
+  const [stateChange, setStateChange] = useState(false);
+
+  function setChangeState() {
+    setStateChange(!stateChange);
+  }
 
   async function signIn() {
-    await signInWithGoogle();
+    await signInWithGoogle(setChangeState);
   }
 
   function signOut() {
@@ -63,7 +68,7 @@ export const AuthContextProvider = ({ children }) => {
       setUserRecord(null);
       setUid('');
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, stateChange]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setIsLoggedIn);
