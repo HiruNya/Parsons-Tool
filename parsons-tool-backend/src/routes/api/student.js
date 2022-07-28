@@ -7,7 +7,6 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const problems = await ParsonsProblems.find({});
-    console.log('[student.js]> Problems found: ', problems);
     res.json(problems);
   } catch (error) {
     console.log('[student.js]>', error);
@@ -18,7 +17,6 @@ router.get('/', async (req, res) => {
 router.get('/all', async (req, res) => {
   try {
     const users = await Users.find({});
-    console.log('[student.js]> Users found: ', users);
     res.json(users);
   } catch (error) {
     console.log('[student.js]>', error);
@@ -57,6 +55,13 @@ router.post('/new', async (req, res) => {
   }
 });
 
+const getGroupNumber = async () => {
+  console.log(await Users.find({ roles: { $size: 1 }, roles: ['student'] }));
+  const userNumber = await Users.countDocuments({ roles: { $size: 1 }, roles: ['student'] });
+  console.log('[student.js]> Assigned category:', userNumber % 4);
+  return userNumber % 4;
+};
+
 const createNewUser = async (obj) => {
   let err = '';
   try {
@@ -68,6 +73,9 @@ const createNewUser = async (obj) => {
       return { result: false, error: err };
     }
 
+    const groupNumber = await getGroupNumber();
+    obj.experimentGroup = groupNumber;
+    console.log('[student.js]> New User:', obj);
     const newUser = new Users(obj);
     await newUser.save();
     return { result: newUser, error: err };
