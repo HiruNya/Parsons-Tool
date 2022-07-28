@@ -11,6 +11,7 @@ import { ProtectedRoute } from './components/protectedRoute';
 import Home from './pages/Home';
 import Introduction from './pages/Introduction';
 import { ProblemContextProvider } from './data/ProblemContext';
+import Summary from './pages/Summary';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
                   }
                 >
                   <Route path="intro" element={<Introduction />} />
+                  <Route path="summary" element={<Summary />} />
                   <Route path="student" element={<StudentBrowseProblems />} />
                   <Route path="solve" element={<ProblemEvaluation />} />
                   <Route

@@ -3,25 +3,20 @@ import ParsonsProblem from '../components/parsonsProblem';
 import { useBackend } from '../data/BackendContext';
 import { useAuth } from '../data/AuthContext';
 import { useLogging } from '../loggers/logContext';
+import { useProblems } from '../data/ProblemContext';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
   const { state, dataEvents } = useLogging();
   const { sendSubmissionRequest, sendExecutionRequest, executionResponse, executionIsLoading } = useBackend();
   const { uid } = useAuth();
+  const { nextProblem } = useProblems();
 
   const problem = location.state.problem;
 
   const navigate = useNavigate();
-  const cancel = () => {
-    navigate('/student');
-  };
 
   const submitSolution = () => {
-    const userRecord = JSON.parse(localStorage.getItem('userRecord'));
-    console.log('[auth]>', userRecord);
-    console.log('[evaluation] submit solution');
-    console.log(uid);
     const newDataLog = {
       userId: uid,
       initialProblem: problem,
@@ -33,11 +28,10 @@ export default function ProblemEvaluation() {
     const postCallback = () => {
       console.log(newDataLog);
     };
-    console.log('[evaluation] about to send');
-
     //POST users interaction to the server
     sendSubmissionRequest(newDataLog, postCallback);
-    //navigate('/student');
+    nextProblem();
+    navigate('/summary');
   };
 
   return (
@@ -49,7 +43,7 @@ export default function ProblemEvaluation() {
       <div className="mx-auto  w-9/12 my-2">
         <ParsonsProblem problem={problem.problem} problemId={problem['_id']} />
       </div>
-      <div className="mt-6 mx-auto flex flex-row space-between">
+      <div className="mt-6 pl-8 mx-auto flex flex-row space-between">
         <button
           className="px-3 py-1 mr-2 border-2 border-solid border-yellow-400 bg-yellow-400 rounded-full hover:bg-yellow-500"
           onClick={() => sendExecutionRequest(state)}
@@ -61,12 +55,6 @@ export default function ProblemEvaluation() {
           onClick={submitSolution}
         >
           Submit Solution
-        </button>
-        <button
-          className="px-3 py-1 ml-2 border-2 border-solid border-red-400 bg-red-400 rounded-full hover:bg-red-500"
-          onClick={cancel}
-        >
-          Cancel / Quit
         </button>
       </div>
       <div className="mx-auto bg-stone-400 rounded-lg p-1 mt-5 w-10/12">
