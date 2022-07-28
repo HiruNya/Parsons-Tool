@@ -1,8 +1,30 @@
+import axios from 'axios';
 import React, { useContext } from 'react';
 import useGet from '../hooks/useGet';
 import usePost from '../hooks/usePost';
 
 const apiServerUrl = process.env.REACT_APP_API_SERVER_URL || 'http://localhost:3001';
+
+// Query database if user id is present
+export const queryUser = async (id) => {
+  try {
+    const response = await axios.get(apiServerUrl + '/student/' + id);
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error: error };
+  }
+};
+
+// Post to database with user account
+export const createUser = async (user) => {
+  try {
+    const response = await axios.post(apiServerUrl + '/student/new', user);
+    console.log('[BackendContext.js]> User creation resp: ', response);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const BackendContext = React.createContext({
   problems: [],
