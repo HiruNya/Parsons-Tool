@@ -47,7 +47,7 @@ export default function ProblemEvaluation() {
         <p className="w-10/12 flex-wrap mx-auto my-4 bg-stone-200 p-2 rounded-lg">{problem.description}</p>
       </div>
       <div className="mx-auto  w-9/12 my-2">
-        <ParsonsProblem problem={problem.problem} />
+        <ParsonsProblem problem={problem.problem} problemId={problem['_id']} />
       </div>
       <div className="mt-6 mx-auto flex flex-row space-between">
         <button

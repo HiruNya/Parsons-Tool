@@ -6,10 +6,11 @@ import update from 'immutability-helper';
 import { PresentationalBlock } from './blocks/Block';
 import { useLogging } from '../loggers/logContext';
 
-function ParsonsProblem({ problem }) {
+function ParsonsProblem({ problem, problemId }) {
   const { logBlockDrag, logInputSet, setState: setLoggerState } = useLogging();
 
   const [state, setState] = useState(() => ({
+    initialProblem: problemId,
     problem: problem.blocks.map((block) => block.id),
     solution: [],
     blocks: Object.fromEntries(
