@@ -2,7 +2,7 @@ import express from 'express';
 import axios from 'axios';
 
 import DataLog from '../../database/DataLogSchema';
-import ProblemSchema from "../../database/ProblemSchema";
+import ProblemSchema from '../../database/ProblemSchema';
 
 const jobeUrl = process.env.JOBE_URL || 'http://localhost:4000';
 
@@ -25,9 +25,9 @@ router.post('/', async (req, res) => {
     return res.status(401);
   }
   const tests = (await ProblemSchema.findById(req.body.initialProblem)).problem.tests;
-  const testRunnerScript = tests.map(({inputs}) => `print(${inputs[0]}(${inputs[1]}))`).join('\n');
-  const expectedOutput = tests.map(({outputs}) => outputs).join('\n');
-  const code = solutionBlocks.map(blockToLine).join('\n')  + '\n' + testRunnerScript;
+  const testRunnerScript = tests.map(({ inputs }) => `print(${inputs[0]}(${inputs[1]}))`).join('\n');
+  const expectedOutput = tests.map(({ outputs }) => outputs).join('\n');
+  const code = solutionBlocks.map(blockToLine).join('\n') + '\n' + testRunnerScript;
   console.log('[solve.js]> code>', code);
   console.log('[solve.js]> expected>', expectedOutput);
   const { error, result } = await executeOnJobe(code);
@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
   if (actual === expectedOutput) {
     return res.json({ result: 'correct' });
   } else {
-    return res.json({ result: 'incorrect', actual });
+    return res.json({ result: 'incorrect', expected: expectedOutput, actual });
   }
 });
 

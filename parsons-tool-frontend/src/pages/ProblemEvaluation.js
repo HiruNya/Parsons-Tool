@@ -77,9 +77,11 @@ export default function ProblemEvaluation() {
   );
 }
 
-const renderResult = ({ result, actual }) =>
+const renderResult = ({ result, actual, expected }) =>
   result === 'correct' ? (
     <div className={'mx-auto bg-green-300 w-full rounded p-2'}>Correct!</div>
   ) : (
-    <div className={'mx-auto bg-red-300 w-full rounded p-2'}>Incorrect! Expected `2`, Actual: `{actual}`</div>
+    <div className={'mx-auto bg-red-300 w-full rounded p-2'}>
+      Incorrect! Expected `{expected}`, Actual: `{actual}`
+    </div>
   );
