@@ -21,7 +21,11 @@ router.get('/problems/:group', async (req, res) => {
   const { group } = req.params;
   try {
     const course = await Courses.findOne({ groupNumber: group });
-    res.json(course.problems);
+    const problems = await ParsonsProblems.find({ _id: { $in: [...course.problems] } });
+    if (!problems) {
+      res.json([]);
+    }
+    res.json(problems);
   } catch (error) {
     console.log('[student.js]>', error);
     res.status(500).json('An issue has occured on the server end');

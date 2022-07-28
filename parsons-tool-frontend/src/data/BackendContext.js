@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext } from 'react';
 import useGet from '../hooks/useGet';
 import usePost from '../hooks/usePost';
+import { useAuth } from './AuthContext';
 
 const apiServerUrl = process.env.REACT_APP_API_SERVER_URL || 'http://localhost:3001';
 
@@ -33,11 +34,13 @@ const BackendContext = React.createContext({
 export const useBackend = () => useContext(BackendContext);
 
 export const BackendContextProvider = ({ children }) => {
+  const { group } = useAuth();
+
   const {
     data: problems,
     isLoading: isLoadingProblems,
     error: problemsErrorState,
-  } = useGet(apiServerUrl + '/student', []);
+  } = useGet(apiServerUrl + '/student/problems/' + group, []);
 
   const {
     response: executionResponse,

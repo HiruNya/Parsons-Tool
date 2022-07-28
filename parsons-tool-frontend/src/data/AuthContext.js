@@ -15,6 +15,7 @@ export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRecord, setUserRecord] = useState(null);
   const [isLecturer, setIsLecturer] = useState(false);
+  const [group, setGroup] = useState(0);
   const [uid, setUid] = useState('');
   const [stateChange, setStateChange] = useState(false);
 
@@ -31,6 +32,7 @@ export const AuthContextProvider = ({ children }) => {
     setIsLoggedIn(false);
     setIsLecturer(false);
     setUid('');
+    setGroup(0);
   }
 
   useEffect(() => {
@@ -43,6 +45,12 @@ export const AuthContextProvider = ({ children }) => {
           setIsLecturer(false);
         }
       }
+      const userGroup = userRecord.group;
+      if (userGroup !== null) {
+        setGroup(userGroup);
+      } else {
+        setGroup(0);
+      }
     }
   }, [userRecord]);
 
@@ -53,7 +61,6 @@ export const AuthContextProvider = ({ children }) => {
 
       if (userRecord) {
         setUserRecord(userRecord);
-        console.log('setting uid: ', userRecord.uid);
         setUid(userRecord.uid);
       }
     } else {
@@ -72,6 +79,7 @@ export const AuthContextProvider = ({ children }) => {
   const context = {
     isLoggedIn,
     isLecturer,
+    group,
     uid,
     auth,
     signIn,
