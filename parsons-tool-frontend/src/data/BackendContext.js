@@ -37,6 +37,12 @@ export const BackendContextProvider = ({ children }) => {
   const { group, stateChange } = useAuth();
 
   const {
+    data: allProblems,
+    isLoading: allProblemsIsLoading,
+    error: allProblemsError,
+  } = useGet(apiServerUrl + '/student/', []);
+
+  const {
     data: problems,
     isLoading: isLoadingProblems,
     error: problemsErrorState,
@@ -64,6 +70,9 @@ export const BackendContextProvider = ({ children }) => {
   } = usePost(apiServerUrl + '/problems/create');
 
   const context = {
+    allProblems,
+    allProblemsIsLoading,
+    allProblemsError,
     problems,
     isLoadingProblems,
     problemsErrorState,
