@@ -47,7 +47,7 @@ export default function ProblemEvaluation() {
         <p className="w-10/12 flex-wrap mx-auto my-4 bg-stone-200 p-2 rounded-lg">{problem.description}</p>
       </div>
       <div className="mx-auto  w-9/12 my-2">
-        <ParsonsProblem problem={problem.problem} />
+        <ParsonsProblem problem={problem.problem} problemId={problem['_id']} />
       </div>
       <div className="mt-6 mx-auto flex flex-row space-between">
         <button
@@ -77,9 +77,11 @@ export default function ProblemEvaluation() {
   );
 }
 
-const renderResult = ({ result, actual }) =>
+const renderResult = ({ result, actual, expected }) =>
   result === 'correct' ? (
     <div className={'mx-auto bg-green-300 w-full rounded p-2'}>Correct!</div>
   ) : (
-    <div className={'mx-auto bg-red-300 w-full rounded p-2'}>Incorrect! Expected `2`, Actual: `{actual}`</div>
+    <div className={'mx-auto bg-red-300 w-full rounded p-2'}>
+      Incorrect! Expected `{expected}`, Actual: `{actual}`
+    </div>
   );

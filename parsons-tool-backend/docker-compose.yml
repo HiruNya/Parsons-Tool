@@ -12,6 +12,7 @@ services:
     environment:
       - MONGO_DB=mongodb://db/parsons
       - PORT=3001
+      - JOBE_URL=http://jobe
   db:
     image: mongo:latest
     restart: always
@@ -19,5 +20,3 @@ services:
       - 27017:27017
   jobe:
     image: trampgeek/jobeinabox
-    ports:
-      - 4000:80

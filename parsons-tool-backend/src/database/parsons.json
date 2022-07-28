@@ -53,7 +53,13 @@
             "answers": []
           }
         ],
-        "solution": ["r1b1", "r1b2", "r1b3", "r1b4", "r1b5", "r1b6", "r1b7"]
+        "solution": ["r1b1", "r1b2", "r1b3", "r1b4", "r1b5", "r1b6", "r1b7"],
+        "tests": [
+          {
+            "inputs": ["Fibonacci", "4"],
+            "outputs": [3]
+          }
+        ]
       }
     },
     {
@@ -121,6 +127,16 @@
       "language": "Python",
       "author": "H. Jayamanne",
       "problem": {
+        "tests": [
+          {
+            "inputs": ["LinearSearch", "[1, 2, 3, 4], 3"],
+            "outputs": [2]
+          },
+          {
+            "inputs": ["LinearSearch", "[\"hello\", \"world\", \"uwu\"], \"world\"",","],
+            "outputs": [1]
+          }
+        ],
         "blocks": [
           {
             "id": "0",
