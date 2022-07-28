@@ -3,7 +3,6 @@ import logBlockDragInner from './logBlockDrag';
 import logInputSetInnner from './logInputSet';
 import logSubmissionInner from './logSubmission';
 import update from 'immutability-helper';
-import { useAuth } from '../data/AuthContext';
 
 const LogContext = React.createContext({
   setState: () => {},
@@ -17,8 +16,6 @@ export const useLogging = () => useContext(LogContext);
 export const LoggingProvider = ({ children }) => {
   const [state, setState] = useState(null);
   const [dataEvents, setDataEvents] = useState([]);
-  const { uid } = useAuth();
-
   const log = useCallback(
     (params) =>
       setDataEvents((oldDataEvents) =>
@@ -32,7 +29,7 @@ export const LoggingProvider = ({ children }) => {
   const logInputSet = useCallback((event) => log(logInputSetInnner(event)), [log]);
   const logSubmission = useCallback(() => log(logSubmissionInner(state)), [log, state]);
   children = useMemo(() => children, [children]);
-  //console.log('Data Log', dataEvents);
+  console.log('Data Log', dataEvents);
 
   return (
     <LogContext.Provider
