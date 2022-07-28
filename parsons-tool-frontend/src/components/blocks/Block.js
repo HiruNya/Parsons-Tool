@@ -24,13 +24,7 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
       text={text}
       indentation={indentation}
       fadedIndices={fadedIndices}
-      innerProps={(index) => {
-        const i = Math.floor(index / 2);
-        return {
-          onChange: (e) => setInput(i, e.target.value),
-          value: currentInputs[i] ? currentInputs[i] : '',
-        };
-      }}
+      innerProps={(index) => defaultInnerProps(currentInputs, index, setInput)}
       {...attributes}
       {...listeners}
     />
@@ -64,12 +58,26 @@ const toFadedChildren = (text, fadedIndices, innerProps) => {
               type="text"
               className={'bg-stone-200 rounded-full px-1 mx-2'}
               style={{ width: '10ch' }}
+              data-no-dnd={'true'}
               {...(innerProps ? innerProps(index) : null)}
             />
           ),
       )}
     </p>
   );
+};
+
+export const defaultInnerProps = (currentInputs, index, setInput) => {
+  const i = Math.floor(index / 2);
+  return {
+    onChange: (e) => {
+      console.log('HI');
+      console.log(this);
+      e.preventDefault();
+      setInput(i, e.target.value);
+    },
+    value: currentInputs[i] ? currentInputs[i] : '',
+  };
 };
 
 export default Block;

@@ -1,13 +1,22 @@
 import Space from './space/Space';
 import React, { useCallback, useEffect, useState } from 'react';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragOverlay,
+  MouseSensor as LibMouseSensor,
+  KeyboardSensor as LibKeyboardSensor,
+  useSensors,
+  useSensor,
+} from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import update from 'immutability-helper';
-import { PresentationalBlock } from './blocks/Block';
+import { defaultInnerProps, PresentationalBlock } from './blocks/Block';
 import { useLogging } from '../loggers/logContext';
 
 function ParsonsProblem({ problem, problemId }) {
   const { logBlockDrag, logInputSet, setState: setLoggerState } = useLogging();
+
+  useSensors(useSensor(MouseSensor), useSensor(KeyboardSensor));
 
   const [state, setState] = useState(() => ({
     initialProblem: problemId,
@@ -118,8 +127,12 @@ function ParsonsProblem({ problem, problemId }) {
         <DragOverlay>
           {activeId ? (
             <PresentationalBlock
-              innerProps={(i) => ({ value: state.blocks[activeId].currentInputs[Math.floor(i / 2)] })}
-              {...state.blocks[activeId]}
+              innerProps={(i) =>
+                defaultInnerProps(state.blocks[activeId].currentInputs, i, (index, val) =>
+                  setInput(activeId, index, val),
+                )
+              }
+              {...stripExtraObjectProperties(state.blocks[activeId])}
             />
           ) : null}
         </DragOverlay>
@@ -138,5 +151,48 @@ const getPos = (state, id) => {
   }
   return [spaces[s - 1], index];
 };
+
+const stripExtraObjectProperties = (obj) => {
+  const newObject = { ...obj };
+  delete newObject.currentInputs;
+  delete newObject.correctIndentation;
+  return newObject;
+};
+
+/** Taken from https://github.com/clauderic/dnd-kit/issues/477 **/
+export class MouseSensor extends LibMouseSensor {
+  static activators = [
+    {
+      eventName: 'onMouseDown',
+      handler: ({ nativeEvent: event }) => {
+        return shouldHandleEvent(event.target);
+      },
+    },
+  ];
+}
+
+export class KeyboardSensor extends LibKeyboardSensor {
+  static activators = [
+    {
+      eventName: 'onKeyDown',
+      handler: ({ nativeEvent: event }) => {
+        return shouldHandleEvent(event.target);
+      },
+    },
+  ];
+}
+
+function shouldHandleEvent(element) {
+  let cur = element;
+
+  while (cur) {
+    if (cur.dataset && cur.dataset.noDnd) {
+      return false;
+    }
+    cur = cur.parentElement;
+  }
+
+  return true;
+}
 
 export default ParsonsProblem;
