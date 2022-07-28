@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import DataLog from '../../database/DataLogSchema';
 
+const jobeUrl = process.env.JOBE_URL || 'http://localhost:4000';
+
 const router = express.Router();
 
 // POST request for Code Execution
@@ -93,7 +95,7 @@ const createDataLogRecord = async (obj) => {
 
 const executeOnJobe = (sourceCode) =>
   axios({
-    url: 'http://localhost:4000/jobe/index.php/restapi/runs',
+    url: jobeUrl + '/jobe/index.php/restapi/runs',
     method: 'POST',
     data: {
       run_spec: {
