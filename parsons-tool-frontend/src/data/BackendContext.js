@@ -34,13 +34,13 @@ const BackendContext = React.createContext({
 export const useBackend = () => useContext(BackendContext);
 
 export const BackendContextProvider = ({ children }) => {
-  const { group } = useAuth();
+  const { group, stateChange } = useAuth();
 
   const {
     data: problems,
     isLoading: isLoadingProblems,
     error: problemsErrorState,
-  } = useGet(apiServerUrl + '/student/problems/' + group, []);
+  } = useGet(apiServerUrl + '/student/problems/' + group, [], stateChange);
 
   const {
     response: executionResponse,
