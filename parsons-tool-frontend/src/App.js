@@ -9,36 +9,43 @@ import { BackendContextProvider } from './data/BackendContext';
 import { AuthContextProvider } from './data/AuthContext';
 import { ProtectedRoute } from './components/protectedRoute';
 import Home from './pages/Home';
+import Introduction from './pages/Introduction';
+import { ProblemContextProvider } from './data/ProblemContext';
+import Summary from './pages/Summary';
 
 function App() {
   return (
     <>
       <AuthContextProvider>
         <BackendContextProvider>
-          <LoggingProvider>
-            <Routes>
-              <Route path="home" element={<Home />} />
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute requiredRole={false}>
-                    <PageLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route path="student" element={<StudentBrowseProblems />} />
-                <Route path="solve" element={<ProblemEvaluation />} />
+          <ProblemContextProvider>
+            <LoggingProvider>
+              <Routes>
+                <Route path="home" element={<Home />} />
                 <Route
-                  path="create"
+                  path="/"
                   element={
-                    <ProtectedRoute requiredRole={true}>
-                      <ProblemGeneration />
+                    <ProtectedRoute requiredRole={false}>
+                      <PageLayout />
                     </ProtectedRoute>
                   }
-                />
-              </Route>
-            </Routes>
-          </LoggingProvider>
+                >
+                  <Route path="intro" element={<Introduction />} />
+                  <Route path="summary" element={<Summary />} />
+                  <Route path="student" element={<StudentBrowseProblems />} />
+                  <Route path="solve" element={<ProblemEvaluation />} />
+                  <Route
+                    path="create"
+                    element={
+                      <ProtectedRoute requiredRole={true}>
+                        <ProblemGeneration />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Route>
+              </Routes>
+            </LoggingProvider>
+          </ProblemContextProvider>
         </BackendContextProvider>
       </AuthContextProvider>
     </>

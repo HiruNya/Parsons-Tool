@@ -4,7 +4,8 @@ import Login from '../components/Login.js';
 function Home() {
   return (
     <div className="ml-2 flex flex-col items-center">
-      <h1 className="my-2 font-semibold text-xl">Unamed Parsons Problems Tool</h1>
+      <img className="mt-3 w-6/12 mx-auto" src="upp-logo.svg" alt="logo for site" />
+
       <p className="p-3 my-2 w-10/12 rounded-xl bg-blue-100 text-lg">
         Welcome to the tool we have created to aid in presenting a specific format of coding problems: Parsons Problems
         <br />
@@ -25,8 +26,8 @@ function Home() {
         <br />
         <br />
         When you are ready, please login with your university email through the google popup that appears after
-        selecting the button below. If you have any questions please forward them to: <br />
-        <i>ffro805@aucklanduni.ac.nz</i> <br />
+        selecting the button below. If you have any questions please forward them to: <br /> <br />
+        <i>ffro805@aucklanduni.ac.nz</i> <br /> <br />
         with "faded parsons problem" in the subject line
       </p>
       <Login />
