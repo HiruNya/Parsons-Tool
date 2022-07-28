@@ -22,7 +22,7 @@ function Introduction() {
       <img className="mt-3 w-6/12 mx-auto" src="upp-logo.svg" alt="logo for site" />
       <div className="flex flex-col items-center ">
         <p className="w-10/12 mt-8 text-center text-lg">
-          Thank you for logging in. The image below is to help famaliarise yourself with our tool and how to use it
+          Thank you for logging in. The image below illustrates how this works
         </p>
         <img className="mb-3" src="parsons-example.png" alt="showing how to use the parsons problem tool" />
         <p className="w-7/12 mb-4 text-center text-lg">
