@@ -7,7 +7,19 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const problems = await ParsonsProblems.find({});
+    console.log('[student.js]> Problems found: ', problems);
     res.json(problems);
+  } catch (error) {
+    console.log('[student.js]>', error);
+    res.status(500).json('An issue has occured on the server end');
+  }
+});
+
+router.get('/all', async (req, res) => {
+  try {
+    const users = await Users.find({});
+    console.log('[student.js]> Users found: ', users);
+    res.json(users);
   } catch (error) {
     console.log('[student.js]>', error);
     res.status(500).json('An issue has occured on the server end');

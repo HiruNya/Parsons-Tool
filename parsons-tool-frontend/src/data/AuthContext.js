@@ -15,7 +15,6 @@ export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRecord, setUserRecord] = useState(null);
   const [isLecturer, setIsLecturer] = useState(false);
-  const [roles, setRoles] = useState([]);
   const [uid, setUid] = useState('');
   const [stateChange, setStateChange] = useState(false);
 
@@ -31,7 +30,6 @@ export const AuthContextProvider = ({ children }) => {
     logout();
     setIsLoggedIn(false);
     setIsLecturer(false);
-    setRoles([]);
     setUid('');
   }
 
@@ -39,15 +37,9 @@ export const AuthContextProvider = ({ children }) => {
     if (userRecord !== null) {
       const userRoles = [...userRecord.roles];
       if (userRoles !== null) {
-        setRoles(userRoles);
-
-        console.log(userRoles);
-
-        if (roles.find((element) => element === 'lecturer')) {
-          console.log('[auth]> is lecturer');
+        if (userRoles.find((element) => element === 'lecturer')) {
           setIsLecturer(true);
         } else {
-          console.log('[auth]> is not lecturer');
           setIsLecturer(false);
         }
       }
