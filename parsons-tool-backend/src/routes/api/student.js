@@ -1,9 +1,11 @@
 import express from 'express';
 import ParsonsProblems from '../../database/ProblemSchema';
 import Users from '../../database/UserSchema';
+import Courses from '../../database/CourseSchema';
 
 const router = express.Router();
 
+// Get a list of all problems in the database
 router.get('/', async (req, res) => {
   try {
     const problems = await ParsonsProblems.find({});
@@ -14,6 +16,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get a list of problems for a specific group/course
+router.get('/problems/:group', async (req, res) => {
+  const { group } = req.params;
+  try {
+    const course = await Courses.findOne({ groupNumber: group });
+    res.json(course.problems);
+  } catch (error) {
+    console.log('[student.js]>', error);
+    res.status(500).json('An issue has occured on the server end');
+  }
+});
+
+// Get a list of all users in the database
 router.get('/all', async (req, res) => {
   try {
     const users = await Users.find({});
@@ -24,6 +39,7 @@ router.get('/all', async (req, res) => {
   }
 });
 
+// Get a particular student based on their email
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -43,6 +59,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Create a new user
 router.post('/new', async (req, res) => {
   const { result, error } = await createNewUser(req.body);
 
@@ -55,17 +72,17 @@ router.post('/new', async (req, res) => {
   }
 });
 
+// Get a group number for a new student
 const getGroupNumber = async () => {
-  console.log(await Users.find({ roles: { $size: 1 }, roles: ['student'] }));
   const userNumber = await Users.countDocuments({ roles: { $size: 1 }, roles: ['student'] });
-  console.log('[student.js]> Assigned category:', userNumber % 4);
-  return userNumber % 4;
+  return (userNumber % 4) + 1;
 };
 
 const createNewUser = async (obj) => {
   let err = '';
+  console.log('[createNewUser] ', obj);
   try {
-    if (obj.email === undefined || obj._id === null) {
+    if (obj.email === undefined || obj.email === null) {
       err = 'Invalid or Missing email';
     }
 
