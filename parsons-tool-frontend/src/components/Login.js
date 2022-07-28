@@ -14,7 +14,7 @@ export default function Login() {
       //maybe trigger a loading
       return;
     }
-    if (user) navigate('/student');
+    if (user) navigate('/intro');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading]);
   return (
