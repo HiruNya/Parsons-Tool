@@ -5,7 +5,6 @@ services:
     build: .
     restart: always
     depends_on:
-      - db
       - jobe
     ports:
       - 3001:3001
