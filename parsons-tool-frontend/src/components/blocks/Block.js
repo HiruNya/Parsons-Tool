@@ -5,15 +5,19 @@ import { forwardRef } from 'react';
 const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setInput, enableHorizontal }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
   const opacity = isDragging ? 0 : undefined;
+  let transformX = null;
 
-  if (transform && enableHorizontal) {
-    transform.x = Math.floor(transform.x / 40) * 40;
+  if (indentation && enableHorizontal) {
+    if (transform) {
+      transform.x = 4 + indentation * 40 + 'px';
+    } else {
+      transformX = 4 + indentation * 40 + 'px';
+    }
   }
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: transformX ? `translateX(${transformX})` : CSS.Transform.toString(transform),
     transition,
-    paddingLeft: indentation && enableHorizontal ? 4 + indentation * 40 + 'px' : undefined,
     opacity,
   };
 
@@ -24,13 +28,7 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
       text={text}
       indentation={indentation}
       fadedIndices={fadedIndices}
-      innerProps={(index) => {
-        const i = Math.floor(index / 2);
-        return {
-          onChange: (e) => setInput(i, e.target.value),
-          value: currentInputs[i] ? currentInputs[i] : '',
-        };
-      }}
+      innerProps={(index) => defaultInnerProps(currentInputs, index, setInput)}
       {...attributes}
       {...listeners}
     />
@@ -64,12 +62,21 @@ const toFadedChildren = (text, fadedIndices, innerProps) => {
               type="text"
               className={'bg-stone-200 rounded-full px-1 mx-2'}
               style={{ width: '10ch' }}
+              data-no-dnd={'true'}
               {...(innerProps ? innerProps(index) : null)}
             />
           ),
       )}
     </p>
   );
+};
+
+export const defaultInnerProps = (currentInputs, index, setInput) => {
+  const i = Math.floor(index / 2);
+  return {
+    onChange: (e) => setInput(i, e.target.value),
+    value: currentInputs[i] ? currentInputs[i] : '',
+  };
 };
 
 export default Block;

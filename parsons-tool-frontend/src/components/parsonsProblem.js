@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { DndContext, DragOverlay, MouseSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import update from 'immutability-helper';
-import { PresentationalBlock } from './blocks/Block';
+import { defaultInnerProps, PresentationalBlock } from './blocks/Block';
 import { useLogging } from '../loggers/logContext';
 
 function ParsonsProblem({ problem, problemId }) {
@@ -123,11 +123,16 @@ function ParsonsProblem({ problem, problemId }) {
           setInput={setInput}
           enableHorizontal={true}
         />
-        <DragOverlay>
+        <DragOverlay dropAnimation={null}>
           {activeId ? (
             <PresentationalBlock
-              innerProps={(i) => ({ value: state.blocks[activeId].currentInputs[Math.floor(i / 2)] })}
-              {...state.blocks[activeId]}
+              innerProps={(i) =>
+                defaultInnerProps(state.blocks[activeId].currentInputs, i, (index, val) =>
+                  setInput(activeId, index, val),
+                )
+              }
+              style={{ transform: `translateX(${state.blocks[activeId].indentation * 40}px)` }}
+              {...stripExtraObjectProperties(state.blocks[activeId])}
             />
           ) : null}
         </DragOverlay>
@@ -145,6 +150,13 @@ const getPos = (state, id) => {
     s++;
   }
   return [spaces[s - 1], index];
+};
+
+const stripExtraObjectProperties = (obj) => {
+  const newObject = { ...obj };
+  delete newObject.currentInputs;
+  delete newObject.correctIndentation;
+  return newObject;
 };
 
 export default ParsonsProblem;
