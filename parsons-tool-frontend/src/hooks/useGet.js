@@ -19,8 +19,7 @@ export default function useGet(url, initialState = null, reset = null) {
         setData(response.data);
         setLoading(false);
       } catch (error) {
-        console.log(error);
-        setError(true);
+        setError(error);
         setLoading(false);
       }
     }

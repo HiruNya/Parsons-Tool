@@ -18,7 +18,6 @@ export const ProblemContextProvider = ({ children }) => {
 
   function nextProblem() {
     if (problems && problemIndex < problems.length - 1) {
-      console.log('[problemCTX]> ', problemIndex + 1, problems[problemIndex + 1]);
       setProblemIndex(problemIndex + 1);
       setCurrentProblem(problems[problemIndex + 1]);
     } else if (problemIndex === problems.length - 1) {
@@ -37,7 +36,6 @@ export const ProblemContextProvider = ({ children }) => {
   // Should set the first problem when problems loads for the first time
   useEffect(() => {
     if (problems && currentProblem === undefined) {
-      console.log('CHECK');
       setCurrentProblem(problems[problemIndex]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

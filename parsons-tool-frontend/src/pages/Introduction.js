@@ -1,15 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../data/AuthContext';
 import { useProblems } from '../data/ProblemContext';
 
 function Introduction() {
   const { currentProblem, finish } = useProblems();
+  const { userRecord } = useAuth();
 
   const navigate = useNavigate();
 
   function startHandle() {
-    console.log('[Intro.js]> currentProblem is: ', currentProblem);
-    navigate('/solve', { state: { problem: currentProblem } });
+    if (currentProblem) {
+      console.log('[Intro.js]> currentProblem is: ', currentProblem.name);
+      navigate('/solve', { state: { problem: currentProblem } });
+    } else {
+      console.error('[Intro.js]> currentProblem not found: ', currentProblem);
+      console.log('[Intro.js]> current userRecord is: ', userRecord);
+    }
   }
   return (
     <>
