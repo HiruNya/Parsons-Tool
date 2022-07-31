@@ -53,6 +53,7 @@ export const BackendContextProvider = ({ children }) => {
     isLoading: executionIsLoading,
     error: executionError,
     postData: sendExecutionRequest,
+    clearData: executionClear,
   } = usePost(apiServerUrl + '/solve');
 
   const {
@@ -79,6 +80,7 @@ export const BackendContextProvider = ({ children }) => {
     executionResponse,
     executionIsLoading,
     executionError,
+    executionClear,
     sendExecutionRequest,
     submissionResponse,
     submissionIsLoading,

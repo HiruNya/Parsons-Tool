@@ -20,5 +20,9 @@ export default function usePost(url) {
     }
   }
 
-  return { isLoading, error, response, postData };
+  function clearData() {
+    setResponse(null);
+  }
+
+  return { isLoading, error, response, postData, clearData };
 }
