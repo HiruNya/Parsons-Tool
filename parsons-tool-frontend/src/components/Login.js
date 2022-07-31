@@ -1,22 +1,18 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useAuth } from '../data/AuthContext';
 
 export default function Login() {
-  const { signIn, auth } = useAuth();
-  // eslint-disable-next-line no-unused-vars
-  const [user, loading, error] = useAuthState(auth);
+  const { signIn, userRecord } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loading) {
-      //maybe trigger a loading
-      return;
+    if (userRecord) {
+      console.log('[Login.js]> User Record found: ', userRecord);
+      navigate('/intro');
     }
-    if (user) navigate('/intro');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, loading]);
+  }, [userRecord]);
   return (
     <div>
       <button

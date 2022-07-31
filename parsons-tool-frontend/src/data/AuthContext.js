@@ -79,6 +79,7 @@ export const AuthContextProvider = ({ children }) => {
   const context = {
     isLoggedIn,
     isLecturer,
+    userRecord,
     group,
     uid,
     auth,
