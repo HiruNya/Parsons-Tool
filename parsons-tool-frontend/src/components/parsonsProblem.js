@@ -1,6 +1,6 @@
 import Space from './space/Space';
 import React, { useCallback, useEffect, useState } from 'react';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { DndContext, DragOverlay, MouseSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import update from 'immutability-helper';
 import { PresentationalBlock } from './blocks/Block';
@@ -8,6 +8,14 @@ import { useLogging } from '../loggers/logContext';
 
 function ParsonsProblem({ problem, problemId }) {
   const { logBlockDrag, logInputSet, setState: setLoggerState } = useLogging();
+
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 5,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor);
 
   const [state, setState] = useState(() => ({
     initialProblem: problemId,
@@ -107,7 +115,7 @@ function ParsonsProblem({ problem, problemId }) {
 
   return (
     <div className="App flex w-full">
-      <DndContext onDragEnd={dragEnd} onDragStart={dragStart} onDragCancel={() => setActiveId(null)}>
+      <DndContext sensors={sensors} onDragEnd={dragEnd} onDragStart={dragStart} onDragCancel={() => setActiveId(null)}>
         <Space name={'problem'} blocks={state.problem.map((val) => state.blocks[val])} setInput={setInput} />
         <Space
           name={'solution'}
