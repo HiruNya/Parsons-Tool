@@ -7,7 +7,7 @@ import { useProblems } from '../data/ProblemContext';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
-  const { state, dataEvents } = useLogging();
+  const { state, dataEvents, reset: resetLogging } = useLogging();
   const { sendSubmissionRequest, sendExecutionRequest, executionResponse, executionIsLoading } = useBackend();
   const { uid } = useAuth();
   const { nextProblem } = useProblems();
@@ -31,6 +31,7 @@ export default function ProblemEvaluation() {
     //POST users interaction to the server
     sendSubmissionRequest(newDataLog, postCallback);
     nextProblem();
+    resetLogging();
     navigate('/summary');
   };
 

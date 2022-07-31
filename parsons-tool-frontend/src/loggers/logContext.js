@@ -9,6 +9,7 @@ const LogContext = React.createContext({
   logSubmission: () => {},
   logBlockDrag: () => {},
   logInputSet: () => {},
+  reset: () => {},
 });
 
 export const useLogging = () => useContext(LogContext);
@@ -28,6 +29,10 @@ export const LoggingProvider = ({ children }) => {
   const logBlockDrag = useCallback((event) => log(logBlockDragInner(event)), [log]);
   const logInputSet = useCallback((event) => log(logInputSetInnner(event)), [log]);
   const logSubmission = useCallback(() => log(logSubmissionInner(state)), [log, state]);
+  const reset = useCallback(() => {
+    setDataEvents([]);
+    setState(null);
+  }, [setDataEvents, setState]);
   children = useMemo(() => children, [children]);
   console.log('Data Log', dataEvents);
 
@@ -39,6 +44,7 @@ export const LoggingProvider = ({ children }) => {
         logSubmission,
         logBlockDrag,
         logInputSet,
+        reset,
         state,
         dataEvents,
       }}

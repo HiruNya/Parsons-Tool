@@ -7,13 +7,13 @@ export default function StudentBrowseProblems() {
   const [selected, setSelected] = useState();
 
   // Use context to retrieve problem list from server
-  const { problems } = useBackend();
+  const { allProblems } = useBackend();
 
   return (
     <div className="flex flex-row h-full">
       <div className="flex flex-col bg-sky-600 w-full h-min mx-12 my-12 rounded-xl">
-        {problems && problems.length > 0 ? (
-          problems.map((problem, i) => (
+        {allProblems && allProblems.length > 0 ? (
+          allProblems.map((problem, i) => (
             <ProblemInfoListCard problem={problem} setSelected={(problem) => setSelected(problem)} key={i} />
           ))
         ) : (

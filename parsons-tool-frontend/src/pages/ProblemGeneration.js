@@ -4,7 +4,6 @@ import { useBackend } from '../data/BackendContext';
 import { generateParsons } from '../generators/naiveGenerator';
 import TextAreaInput from '../components/TextAreaInput';
 import TestCaseCreation from '../components/testCases/TestCaseCreation';
-import { useNavigate } from 'react-router-dom';
 
 export default function ProblemGeneration() {
   const [name, setName] = useState('');
@@ -15,11 +14,6 @@ export default function ProblemGeneration() {
   const [, setStrategy] = useState([]);
   const [testSet, setTestSet] = useState([]);
   const [groupNumber, setGroupNumber] = useState(0);
-
-  const navigate = useNavigate();
-  const goToView = () => {
-    navigate('/student');
-  };
 
   const { sendProblemCreation } = useBackend();
 
@@ -73,7 +67,6 @@ export default function ProblemGeneration() {
     //Callback function to print to console - checking that problem is created
     const postCallback = () => {
       console.log(newProblem, groupNumber);
-      goToView();
     };
     //POST problem to the server
     sendProblemCreation({ newProblem: newProblem, group: groupNumber }, postCallback);
