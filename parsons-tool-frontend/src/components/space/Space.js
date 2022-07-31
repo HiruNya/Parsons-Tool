@@ -25,7 +25,10 @@ const Space = ({ name, blocks, matches, enableHorizontal, setInput }) => {
     [enableHorizontal, setInput],
   );
   return (
-    <div className="p-2 ml-2 mr-2 w-1/2 h-96 border-solid rounded-lg border-2 border-gray-400" ref={setNodeRef}>
+    <div
+      className="p-2 ml-2 mr-2 w-1/2 h-96 overflow-auto border-solid rounded-lg border-2 border-gray-400"
+      ref={setNodeRef}
+    >
       <SortableContext items={blocks} id={name}>
         {blocks.map(renderCard)}
       </SortableContext>
