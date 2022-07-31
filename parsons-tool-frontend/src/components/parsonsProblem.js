@@ -3,10 +3,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
   DndContext,
   DragOverlay,
-  MouseSensor as LibMouseSensor,
-  KeyboardSensor as LibKeyboardSensor,
-  useSensors,
-  useSensor,
+  // MouseSensor as LibMouseSensor,
+  // KeyboardSensor as LibKeyboardSensor,
+  // useSensors,
+  // useSensor,
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import update from 'immutability-helper';
@@ -16,7 +16,7 @@ import { useLogging } from '../loggers/logContext';
 function ParsonsProblem({ problem, problemId }) {
   const { logBlockDrag, logInputSet, setState: setLoggerState } = useLogging();
 
-  useSensors(useSensor(MouseSensor), useSensor(KeyboardSensor));
+  // useSensors(useSensor(MouseSensor), useSensor(KeyboardSensor));
 
   const [state, setState] = useState(() => ({
     initialProblem: problemId,
@@ -124,7 +124,7 @@ function ParsonsProblem({ problem, problemId }) {
           setInput={setInput}
           enableHorizontal={true}
         />
-        <DragOverlay>
+        <DragOverlay dropAnimation={null}>
           {activeId ? (
             <PresentationalBlock
               innerProps={(i) =>
@@ -132,6 +132,7 @@ function ParsonsProblem({ problem, problemId }) {
                   setInput(activeId, index, val),
                 )
               }
+              style={{ transform: `translateX(${state.blocks[activeId].indentation * 40}px)` }}
               {...stripExtraObjectProperties(state.blocks[activeId])}
             />
           ) : null}
@@ -159,40 +160,40 @@ const stripExtraObjectProperties = (obj) => {
   return newObject;
 };
 
-/** Taken from https://github.com/clauderic/dnd-kit/issues/477 **/
-export class MouseSensor extends LibMouseSensor {
-  static activators = [
-    {
-      eventName: 'onMouseDown',
-      handler: ({ nativeEvent: event }) => {
-        return shouldHandleEvent(event.target);
-      },
-    },
-  ];
-}
-
-export class KeyboardSensor extends LibKeyboardSensor {
-  static activators = [
-    {
-      eventName: 'onKeyDown',
-      handler: ({ nativeEvent: event }) => {
-        return shouldHandleEvent(event.target);
-      },
-    },
-  ];
-}
-
-function shouldHandleEvent(element) {
-  let cur = element;
-
-  while (cur) {
-    if (cur.dataset && cur.dataset.noDnd) {
-      return false;
-    }
-    cur = cur.parentElement;
-  }
-
-  return true;
-}
+// /** Taken from https://github.com/clauderic/dnd-kit/issues/477 **/
+// export class MouseSensor extends LibMouseSensor {
+//   static activators = [
+//     {
+//       eventName: 'onMouseDown',
+//       handler: ({ nativeEvent: event }) => {
+//         return shouldHandleEvent(event.target);
+//       },
+//     },
+//   ];
+// }
+//
+// export class KeyboardSensor extends LibKeyboardSensor {
+//   static activators = [
+//     {
+//       eventName: 'onKeyDown',
+//       handler: ({ nativeEvent: event }) => {
+//         return shouldHandleEvent(event.target);
+//       },
+//     },
+//   ];
+// }
+//
+// function shouldHandleEvent(element) {
+//   let cur = element;
+//
+//   while (cur) {
+//     if (cur.dataset && cur.dataset.noDnd) {
+//       return false;
+//     }
+//     cur = cur.parentElement;
+//   }
+//
+//   return true;
+// }
 
 export default ParsonsProblem;

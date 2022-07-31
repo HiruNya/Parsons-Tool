@@ -5,15 +5,19 @@ import { forwardRef } from 'react';
 const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setInput, enableHorizontal }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
   const opacity = isDragging ? 0 : undefined;
+  let transformX = null;
 
-  if (transform && enableHorizontal) {
-    transform.x = Math.floor(transform.x / 40) * 40;
+  if (indentation && enableHorizontal) {
+    if (transform) {
+      transform.x = 4 + indentation * 40 + 'px';
+    } else {
+      transformX = 4 + indentation * 40 + 'px';
+    }
   }
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: transformX ? `translateX(${transformX})` : CSS.Transform.toString(transform),
     transition,
-    paddingLeft: indentation && enableHorizontal ? 4 + indentation * 40 + 'px' : undefined,
     opacity,
   };
 
