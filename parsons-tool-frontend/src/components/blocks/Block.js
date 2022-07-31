@@ -70,12 +70,7 @@ const toFadedChildren = (text, fadedIndices, innerProps) => {
 export const defaultInnerProps = (currentInputs, index, setInput) => {
   const i = Math.floor(index / 2);
   return {
-    onChange: (e) => {
-      console.log('HI');
-      console.log(this);
-      e.preventDefault();
-      setInput(i, e.target.value);
-    },
+    onChange: (e) => setInput(i, e.target.value),
     value: currentInputs[i] ? currentInputs[i] : '',
   };
 };
