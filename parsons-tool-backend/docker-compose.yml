@@ -10,12 +10,14 @@ services:
     ports:
       - 3001:3001
     environment:
-      - MONGO_DB=mongodb://db/parsons
+      - "MONGO_DB=${MONGO_URL-mongodb://db/parsons}"
       - PORT=3001
       - JOBE_URL=http://jobe
   db:
     image: mongo:latest
     restart: always
+    profiles:
+      - local
     ports:
       - 27017:27017
   jobe:
