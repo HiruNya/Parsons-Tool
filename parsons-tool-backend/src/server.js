@@ -8,6 +8,8 @@ const app = express();
 const port = process.env.PORT || 3001;
 const mongoDbUrl = process.env.MONGO_DB || 'mongodb://localhost:27017/parsons';
 
+console.log('Using MongoDB URL', mongoDbUrl);
+
 // Setup JSON parsing for request body
 app.use(express.json());
 
