@@ -25,7 +25,7 @@ function Home() {
         your best effort and submit your attempt when you feel like you have finished.
         <br />
         <br />
-        When you are ready, please login with your university email through the google popup that appears after
+        When you are ready, please login with your university email through the Google popup that appears after
         selecting the button below. If you have any questions please forward them to: <br /> <br />
         <i>ffro805@aucklanduni.ac.nz</i> <br /> <br />
         with "faded parsons problem" in the subject line
