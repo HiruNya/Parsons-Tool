@@ -1,11 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../data/AuthContext';
 import { useProblems } from '../data/ProblemContext';
 
 function Summary() {
   const { currentProblem, problemIndex, problemTotal, isDone, finish } = useProblems();
-  const { group } = useAuth();
 
   const navigate = useNavigate();
 
@@ -43,8 +41,7 @@ function Summary() {
             >
               https://docs.google.com/forms/d/e/1FAIpQLSfh2QhZeWG0AgIUqDq2idDSYvOttxHLz8vhIXOqD3EQ5gzONg/viewform?usp=sf_link
             </a>
-            <br />
-            <br /> If you do decide to fill it out, for the <b>Group</b> field, please enter the number <b>"{group}"</b>
+            <br />{' '}
           </p>
         )}
 
