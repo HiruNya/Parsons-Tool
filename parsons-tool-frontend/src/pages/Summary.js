@@ -41,7 +41,7 @@ function Summary() {
             >
               https://docs.google.com/forms/d/e/1FAIpQLSfh2QhZeWG0AgIUqDq2idDSYvOttxHLz8vhIXOqD3EQ5gzONg/viewform?usp=sf_link
             </a>
-            <br />{' '}
+            <br />
           </p>
         )}
 
