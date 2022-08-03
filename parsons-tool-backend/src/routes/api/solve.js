@@ -40,8 +40,8 @@ router.post('/', async (req, res) => {
   console.log('[solve.js]> actual>', actual);
   const testResult = expectedOutput.map((v, i) => ({
     result: v === actual[i] ? 'correct' : 'incorrect',
-    actual: actual[i],
-    expected: v,
+    actual: stripNone(actual[i]),
+    expected: stripNone(v),
   }));
   console.log('[solve.js]> results>', testResult);
   return res.status(200).json(testResult);
@@ -132,6 +132,13 @@ const blockToLine = ({ text, fadedIndices, currentInputs, indentation }) => {
   text = text.trimStart(' ');
   text = ' '.repeat(2 * indentation) + text;
   return text;
+};
+
+const stripNone = (str) => {
+  if (!str) {
+    return '';
+  }
+  return str.startsWith('None') ? str.substring('None'.length).trim() : str;
 };
 
 export default router;
