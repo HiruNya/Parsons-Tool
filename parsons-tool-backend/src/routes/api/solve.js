@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
     expected: v,
   }));
   console.log('[solve.js]> results>', testResult);
-  return testResult;
+  return res.status(200).json(testResult);
 });
 
 // POST request for data logging submission

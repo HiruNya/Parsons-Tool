@@ -4,6 +4,7 @@ import { useBackend } from '../data/BackendContext';
 import { useAuth } from '../data/AuthContext';
 import { useLogging } from '../loggers/logContext';
 import { useProblems } from '../data/ProblemContext';
+import ResultComponent from '../components/testCases/ResultComponent';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
@@ -64,7 +65,8 @@ export default function ProblemEvaluation() {
           </div>
           <div className="mx-auto bg-stone-400 rounded-lg p-1 mt-5 w-10/12">
             <p className="mx-auto bg-stone-700 w-full text-white rounded p-2">Result console</p>
-            {(executionIsLoading && 'Loading...') || (executionResponse && renderResult(executionResponse.data))}
+            {(executionIsLoading && 'Loading...') ||
+              (executionResponse && executionResponse.data.map((result) => <ResultComponent result={result} />))}
           </div>
         </div>
       ) : (
