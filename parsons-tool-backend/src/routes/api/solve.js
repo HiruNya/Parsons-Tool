@@ -25,19 +25,26 @@ router.post('/', async (req, res) => {
     return res.status(401);
   }
   const tests = (await ProblemSchema.findById(req.body.initialProblem)).problem.tests;
-  const testRunnerScript = tests.map(({ inputs }) => `print(${inputs[0]}(${inputs[1]}))`).join('\n');
-  const expectedOutput = tests.map(({ outputs }) => outputs).join('\n');
+  const testRunnerScript = tests
+    .map(
+      ({ inputs, outputs }) =>
+        inputs.splice(1).join('\n') + `\nprint(${inputs[0]})\n` + outputs.filter((v, i) => i % 2 === 1).join('\n'),
+    )
+    .join('\nprint("$$$")\n');
+  const expectedOutput = tests.map(({ outputs }) => outputs.filter((v, i) => i % 2 === 0).join('\n'));
   const code = solutionBlocks.map(blockToLine).join('\n') + '\n' + testRunnerScript;
   console.log('[solve.js]> code>', code);
   console.log('[solve.js]> expected>', expectedOutput);
   const { error, result } = await executeOnJobe(code);
-  const actual = result.stdout.trimEnd('\n');
+  const actual = result.stdout.trimEnd('\n').split('\n$$$\n');
   console.log('[solve.js]> actual>', actual);
-  if (actual === expectedOutput) {
-    return res.json({ result: 'correct' });
-  } else {
-    return res.json({ result: 'incorrect', expected: expectedOutput, actual });
-  }
+  const testResult = expectedOutput.map((v, i) => ({
+    result: v === actual[i] ? 'correct' : 'incorrect',
+    actual: stripNone(actual[i]),
+    expected: stripNone(v),
+  }));
+  console.log('[solve.js]> results>', testResult);
+  return res.status(200).json(testResult);
 });
 
 // POST request for data logging submission
@@ -125,6 +132,13 @@ const blockToLine = ({ text, fadedIndices, currentInputs, indentation }) => {
   text = text.trimStart(' ');
   text = ' '.repeat(2 * indentation) + text;
   return text;
+};
+
+const stripNone = (str) => {
+  if (!str) {
+    return '';
+  }
+  return str.startsWith('None') ? str.substring('None'.length).trim() : str;
 };
 
 export default router;
