@@ -116,12 +116,18 @@ function ParsonsProblem({ problem, problemId }) {
   return (
     <div className="App flex w-full">
       <DndContext sensors={sensors} onDragEnd={dragEnd} onDragStart={dragStart} onDragCancel={() => setActiveId(null)}>
-        <Space name={'problem'} blocks={state.problem.map((val) => state.blocks[val])} setInput={setInput} />
+        <Space
+          name={'problem'}
+          blocks={state.problem.map((val) => state.blocks[val])}
+          setInput={setInput}
+          height={problem.blocks.length}
+        />
         <Space
           name={'solution'}
           blocks={state.solution.map((val) => state.blocks[val])}
           setInput={setInput}
           enableHorizontal={true}
+          height={problem.blocks.length}
         />
         <DragOverlay dropAnimation={null}>
           {activeId ? (

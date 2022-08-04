@@ -4,7 +4,7 @@ import Block from '../blocks/Block';
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
 
-const Space = ({ name, blocks, matches, enableHorizontal, setInput }) => {
+const Space = ({ name, blocks, matches, enableHorizontal, setInput, height }) => {
   const { setNodeRef } = useDroppable({
     id: name,
   });
@@ -26,7 +26,8 @@ const Space = ({ name, blocks, matches, enableHorizontal, setInput }) => {
   );
   return (
     <div
-      className="p-2 ml-2 mr-2 w-1/2 h-96 overflow-auto border-solid rounded-lg border-2 border-gray-400"
+      className="p-2 ml-2 mr-2 w-1/2 overflow-auto border-solid rounded-lg border-2 border-gray-400"
+      style={{ height: height * 3.45 + 'rem' }}
       ref={setNodeRef}
     >
       <SortableContext items={blocks} id={name}>
