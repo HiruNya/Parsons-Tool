@@ -23,6 +23,7 @@ export default function ProblemEvaluation() {
       initialProblem: problem,
       blockState: state,
       dataEvents: dataEvents,
+      timestamp: Date.now(),
     };
 
     //Callback function to print to console - checking that it is submitted

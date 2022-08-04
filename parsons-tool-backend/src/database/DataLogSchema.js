@@ -13,6 +13,10 @@ const dataLogSchema = new Schema({
   blockState: {
     type: Schema.Types.Mixed,
   },
+  timestamp: {
+    type: Date,
+    required: true,
+  },
   dataEvents: {
     type: [
       {
