@@ -56,18 +56,18 @@ export default function ProblemEvaluation() {
           <div className="mx-auto  w-9/12 my-2">
             <ParsonsProblem problem={problem.problem} problemId={problem['_id']} />
           </div>
-          <div className="mt-6 pl-8 mx-auto flex flex-row space-between">
+          <div className="mt-6 mx-auto flex flex-row items-center">
             <button
-              className="px-3 py-1 mr-2 border-2 border-solid border-yellow-400 bg-yellow-400 rounded-full hover:bg-yellow-500"
+              className="px-3 py-2 text-xl  bg-green-400 rounded-full hover:bg-green-500 "
               onClick={() => sendExecutionRequest(state, executionResultCallback)}
             >
-              Test Solution
+              Test My Code
             </button>
             <button
-              className="px-3 py-1 mr-2 border-2 border-solid border-green-400 bg-green-400 rounded-full hover:bg-green-500"
+              className="px-3 py-1 absolute left-3/4  bg-orange-300 rounded-full hover:bg-orange-400"
               onClick={submitSolution}
             >
-              Submit Solution
+              Next Problem
             </button>
           </div>
           <div className="mx-auto bg-stone-400 rounded-lg p-1 mt-5 w-10/12">
