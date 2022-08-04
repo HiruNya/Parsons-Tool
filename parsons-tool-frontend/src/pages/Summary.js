@@ -26,23 +26,32 @@ function Summary() {
         {!isDone ? (
           <p className="mb-4">Well done, please continue with the next problem by clicking the button below </p>
         ) : (
-          <p className="text-center w-8/12">
-            Thank you so much for taking the time to use our tool, and we hope it was an interesting and different
-            problem format to what you have tried before.
-            <br />
-            <br />
-            We would be extremely grateful if you have the time to fill out this short survey about your experience with
-            the tool.
-            <br />
-            <br />
-            <a
-              className="text-blue-500 hover:text-blue-600 hover:underline"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSfh2QhZeWG0AgIUqDq2idDSYvOttxHLz8vhIXOqD3EQ5gzONg/viewform?usp=sf_link"
+          <>
+            <p className="text-center w-8/12">
+              Thank you so much for taking the time to use our tool, and we hope it was an interesting and different
+              problem format to what you have tried before.
+              <br />
+              <br />
+              We would be extremely grateful if you have the time to fill out this short survey about your experience
+              with the tool.
+              <br />
+              <br />
+              <a
+                className="text-blue-500 hover:text-blue-600 hover:underline"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfh2QhZeWG0AgIUqDq2idDSYvOttxHLz8vhIXOqD3EQ5gzONg/viewform?usp=sf_link"
+              >
+                Google form link
+              </a>
+              <br />
+            </p>
+            <iframe
+              title="Google form"
+              src="https://docs.google.com/forms/d/e/1FAIpQLSfh2QhZeWG0AgIUqDq2idDSYvOttxHLz8vhIXOqD3EQ5gzONg/viewform?embedded=true"
+              className="w-10/12 h-96 text-center"
             >
-              https://docs.google.com/forms/d/e/1FAIpQLSfh2QhZeWG0AgIUqDq2idDSYvOttxHLz8vhIXOqD3EQ5gzONg/viewform?usp=sf_link
-            </a>
-            <br />
-          </p>
+              Loading…
+            </iframe>
+          </>
         )}
 
         <p className="mt-8 mb-4 text-lg font-bold">
