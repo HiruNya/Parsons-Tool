@@ -8,7 +8,7 @@ import ResultComponent from '../components/testCases/ResultComponent';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
-  const { state, dataEvents, reset: resetLogging } = useLogging();
+  const { state, dataEvents, reset: resetLogging, logSubmission } = useLogging();
   const { sendSubmissionRequest, sendExecutionRequest, executionResponse, executionIsLoading, executionClear } =
     useBackend();
   const { uid } = useAuth();
@@ -39,6 +39,12 @@ export default function ProblemEvaluation() {
     navigate('/summary');
   };
 
+  const executionResultCallback = () => {
+    if (executionResponse) {
+      logSubmission(executionResponse);
+    }
+  };
+
   return (
     <>
       {problem ? (
@@ -53,7 +59,7 @@ export default function ProblemEvaluation() {
           <div className="mt-6 pl-8 mx-auto flex flex-row space-between">
             <button
               className="px-3 py-1 mr-2 border-2 border-solid border-yellow-400 bg-yellow-400 rounded-full hover:bg-yellow-500"
-              onClick={() => sendExecutionRequest(state)}
+              onClick={() => sendExecutionRequest(state, executionResultCallback)}
             >
               Test Solution
             </button>
