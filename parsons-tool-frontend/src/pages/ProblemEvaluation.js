@@ -71,7 +71,7 @@ export default function ProblemEvaluation() {
             </button>
           </div>
           <div className="mx-auto bg-stone-400 rounded-lg p-1 mt-5 w-10/12">
-            <p className="mx-auto bg-stone-700 w-full text-white rounded p-2">Result console</p>
+            <p className="mx-auto bg-stone-700 w-full text-white rounded p-2">Results: </p>
             {(executionIsLoading && 'Loading...') ||
               (executionResponse && executionResponse.data.map((result) => <ResultComponent result={result} />))}
           </div>
