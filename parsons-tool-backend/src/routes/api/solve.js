@@ -25,12 +25,11 @@ router.post('/', async (req, res) => {
     return res.status(401);
   }
   const tests = (await ProblemSchema.findById(req.body.initialProblem)).problem.tests;
-  const testRunnerScript = tests
-    .map(
-      ({ inputs, outputs }) =>
-        inputs.splice(1).join('\n') + `\nprint(${inputs[0]})\n` + outputs.filter((v, i) => i % 2 === 1).join('\n'),
-    )
-    .join('\nprint("$$$")\n');
+  const testRunners = tests.map(
+    ({ inputs, outputs }) =>
+      inputs.slice(1).join('\n') + `\nprint(${inputs[0]})\n` + outputs.filter((v, i) => i % 2 === 1).join('\n'),
+  );
+  const testRunnerScript = testRunners.join('\nprint("$$$")\n');
   const expectedOutput = tests.map(({ outputs }) => outputs.filter((v, i) => i % 2 === 0).join('\n'));
   const code = solutionBlocks.map(blockToLine).join('\n') + '\n' + testRunnerScript;
   console.log('[solve.js]> code>', code);
@@ -41,7 +40,7 @@ router.post('/', async (req, res) => {
   const testResult = expectedOutput.map((v, i) => ({
     result: v === actual[i] ? 'correct' : 'incorrect',
     actual: stripNone(actual[i]),
-    expected: stripNone(v),
+    test: tests[i],
   }));
   console.log('[solve.js]> results>', testResult);
   return res.status(200).json(testResult);
