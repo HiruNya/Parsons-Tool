@@ -37,6 +37,11 @@ router.post('/', async (req, res) => {
   console.log('[solve.js]> code>', code);
   console.log('[solve.js]> expected>', expectedOutput);
   const { error, result } = await executeOnJobe(code);
+  const errorMsg = (error && `Error: Status code ${error} received from Jobe`) || result.cmpinfo;
+  if (errorMsg) {
+    console.log('[solve.js]> errorMsg>', errorMsg);
+    return res.status(200).json(errorMsg);
+  }
   const actual = result.stdout.trimEnd('\n').split('\n$$$\n');
   console.log('[solve.js]> actual>', actual);
   const testResult = expectedOutput.map((v, i) => ({

@@ -76,20 +76,25 @@ export default function ProblemEvaluation() {
           <div className="mx-auto bg-stone-400 rounded-lg p-1 mt-5 w-10/12">
             <p className="mx-auto bg-stone-700 w-full text-white rounded p-2">Results: </p>
             {(executionIsLoading && 'Loading...') ||
-              (executionResponse && (
-                <table className="w-full table-auto">
-                  <tr className="bg-orange-300">
-                    <th className="p-2 text-left">Name</th>
-                    <th className="p-2 text-left">Status</th>
-                    <th className="p-2 text-left">Input</th>
-                    <th className="p-2 text-left">Expected Output</th>
-                    <th className="p-2 text-left">Actual Output</th>
-                  </tr>
-                  {executionResponse.data.map((result) => (
-                    <ResultComponent result={result} />
-                  ))}
-                </table>
-              ))}
+              (executionResponse &&
+                ((Array.isArray(executionResponse.data) && (
+                  <table className="w-full table-auto">
+                    <tr className="bg-orange-300">
+                      <th className="p-2 text-left">Name</th>
+                      <th className="p-2 text-left">Status</th>
+                      <th className="p-2 text-left">Input</th>
+                      <th className="p-2 text-left">Expected Output</th>
+                      <th className="p-2 text-left">Actual Output</th>
+                    </tr>
+                    {executionResponse.data.map((result) => (
+                      <ResultComponent result={result} />
+                    ))}
+                  </table>
+                )) || (
+                  <div className="bg-red-300 p-2 rounded">
+                    <code>{stripSorryAtStart(executionResponse.data)}</code>
+                  </div>
+                )))}
           </div>
         </div>
       ) : (
@@ -98,3 +103,13 @@ export default function ProblemEvaluation() {
     </>
   );
 }
+
+const stripTokenAtStart = (token) => (str) => {
+  let newStr = str;
+  if (!newStr) {
+    return '';
+  }
+  return newStr.startsWith(token) ? newStr.substring(token.length).trimStart() : newStr;
+};
+
+const stripSorryAtStart = (str) => stripTokenAtStart('Sorry: ')(str);
