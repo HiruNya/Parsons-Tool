@@ -27,7 +27,9 @@ router.post('/', async (req, res) => {
   const tests = (await ProblemSchema.findById(req.body.initialProblem)).problem.tests;
   const testRunners = tests.map(
     ({ inputs, outputs }) =>
-      inputs.slice(1).join('\n') + `\nprint(${inputs[0]})\n` + outputs.filter((v, i) => i % 2 === 1).join('\n'),
+      inputs.slice(1).join('\n') +
+      `\ntry:\n  print(${inputs[0]})\nexcept BaseException as err:\n  print(err)\n` +
+      outputs.filter((v, i) => i % 2 === 1).join('\n'),
   );
   const testRunnerScript = testRunners.join('\nprint("$$$")\n');
   const expectedOutput = tests.map(({ outputs }) => outputs.filter((v, i) => i % 2 === 0).join('\n'));
