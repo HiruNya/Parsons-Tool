@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ParsonsProblem from '../components/parsonsProblem';
 import { useBackend } from '../data/BackendContext';
@@ -17,6 +18,13 @@ export default function ProblemEvaluation() {
   const problem = location.state.problem;
 
   const navigate = useNavigate();
+
+  const executionResultCallback = useCallback(
+    (res) => {
+      logExecution(res.data);
+    },
+    [logExecution],
+  );
 
   const submitSolution = () => {
     logSubmission();
@@ -38,12 +46,6 @@ export default function ProblemEvaluation() {
     resetLogging();
     executionClear();
     navigate('/summary');
-  };
-
-  const executionResultCallback = () => {
-    if (executionResponse) {
-      logExecution(executionResponse.data);
-    }
   };
 
   return (
