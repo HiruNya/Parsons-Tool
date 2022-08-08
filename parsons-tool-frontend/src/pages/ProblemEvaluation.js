@@ -8,7 +8,7 @@ import ResultComponent from '../components/testCases/ResultComponent';
 
 export default function ProblemEvaluation() {
   const location = useLocation();
-  const { state, dataEvents, reset: resetLogging, logSubmission } = useLogging();
+  const { state, dataEvents, reset: resetLogging, logSubmission, logExecution } = useLogging();
   const { sendSubmissionRequest, sendExecutionRequest, executionResponse, executionIsLoading, executionClear } =
     useBackend();
   const { uid } = useAuth();
@@ -19,6 +19,7 @@ export default function ProblemEvaluation() {
   const navigate = useNavigate();
 
   const submitSolution = () => {
+    logSubmission();
     const newDataLog = {
       userId: uid,
       initialProblem: problem,
@@ -41,7 +42,7 @@ export default function ProblemEvaluation() {
 
   const executionResultCallback = () => {
     if (executionResponse) {
-      logSubmission(executionResponse);
+      logExecution(executionResponse.data);
     }
   };
 

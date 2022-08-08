@@ -2,10 +2,12 @@ import React, { useCallback, useContext, useMemo, useState } from 'react';
 import logBlockDragInner from './logBlockDrag';
 import logInputSetInnner from './logInputSet';
 import logSubmissionInner from './logSubmission';
+import logExecutionInner from './logExecution';
 import update from 'immutability-helper';
 
 const LogContext = React.createContext({
   setState: () => {},
+  logExecution: () => {},
   logSubmission: () => {},
   logBlockDrag: () => {},
   logInputSet: () => {},
@@ -29,6 +31,7 @@ export const LoggingProvider = ({ children }) => {
   const logBlockDrag = useCallback((event) => log(logBlockDragInner(event)), [log]);
   const logInputSet = useCallback((event) => log(logInputSetInnner(event)), [log]);
   const logSubmission = useCallback(() => log(logSubmissionInner(state)), [log, state]);
+  const logExecution = useCallback((event) => log(logExecutionInner(event)), [log]);
   const reset = useCallback(() => {
     setDataEvents([]);
     setState(null);
@@ -41,6 +44,7 @@ export const LoggingProvider = ({ children }) => {
       children={children}
       value={{
         setState,
+        logExecution,
         logSubmission,
         logBlockDrag,
         logInputSet,
