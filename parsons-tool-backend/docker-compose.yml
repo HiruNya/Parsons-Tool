@@ -21,3 +21,4 @@ services:
       - 27017:27017
   jobe:
     image: trampgeek/jobeinabox
+    restart: always
