@@ -22,7 +22,7 @@ const dataLogSchema = new Schema({
       {
         eventType: {
           type: String,
-          enum: ['BLOCK_DRAG', 'INPUT', 'SUBMISSION'],
+          enum: ['BLOCK_DRAG', 'INPUT', 'SUBMISSION', 'EXECUTION'],
           required: true,
         },
         timestamp: {
