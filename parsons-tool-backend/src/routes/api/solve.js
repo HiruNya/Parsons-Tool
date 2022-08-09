@@ -27,7 +27,9 @@ router.post('/', async (req, res) => {
   const tests = (await ProblemSchema.findById(req.body.initialProblem)).problem.tests;
   const testRunners = tests.map(
     ({ inputs, outputs }) =>
-      inputs.slice(1).join('\n') + `\nprint(${inputs[0]})\n` + outputs.filter((v, i) => i % 2 === 1).join('\n'),
+      inputs.slice(1).join('\n') +
+      `\ntry:\n  print(${inputs[0]})\nexcept BaseException as err:\n  print(err)\n` +
+      outputs.filter((v, i) => i % 2 === 1).join('\n'),
   );
   const testRunnerScript = testRunners.join('\nprint("$$$")\n');
   const expectedOutput = tests.map(({ outputs }) => outputs.filter((v, i) => i % 2 === 0).join('\n'));
@@ -35,6 +37,11 @@ router.post('/', async (req, res) => {
   console.log('[solve.js]> code>', code);
   console.log('[solve.js]> expected>', expectedOutput);
   const { error, result } = await executeOnJobe(code);
+  const errorMsg = (error && `Error: Status code ${error} received from Jobe`) || result.cmpinfo;
+  if (errorMsg) {
+    console.log('[solve.js]> errorMsg>', errorMsg);
+    return res.status(200).json(errorMsg);
+  }
   const actual = result.stdout.trimEnd('\n').split('\n$$$\n');
   console.log('[solve.js]> actual>', actual);
   const testResult = expectedOutput.map((v, i) => ({
