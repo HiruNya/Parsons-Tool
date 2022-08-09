@@ -13,7 +13,7 @@ export default function usePost(url) {
       const res = await axios.post(url, data);
       setResponse(res);
       setLoading(false);
-      postCallback();
+      postCallback(res);
     } catch {
       setLoading(false);
       setError(true);
