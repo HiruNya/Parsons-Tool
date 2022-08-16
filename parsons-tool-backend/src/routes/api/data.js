@@ -36,3 +36,5 @@ router.get('/', async (req, res) => {
     res.status(500).json('An issue has occurred on the server end');
   }
 });
+
+export default router;
