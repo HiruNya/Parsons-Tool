@@ -1,4 +1,6 @@
 import DataLog from '../../database/DataLogSchema';
+import Users from '../../database/UserSchema';
+import Problems from '../../database/ProblemSchema';
 import express from 'express';
 
 const router = express.Router();
@@ -29,8 +31,17 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const dataLogs = await DataLog.find({});
-    res.json(dataLogs);
+    const aggregate = DataLog.aggregate([
+      { $lookup: { from: Users.collection.name, localField: 'userId', foreignField: '_id', as: 'user' } },
+      { $unwind: '$user' },
+      { $lookup: { from: Problems.collection.name, localField: 'initialProblem', foreignField: '_id', as: 'problem' } },
+      { $unwind: '$problem' },
+    ]);
+    for await (const doc of aggregate) {
+      console.log(doc);
+    }
+
+    res.json(aggregate);
   } catch (error) {
     console.log('[data.js]>', error);
     res.status(500).json('An issue has occurred on the server end');

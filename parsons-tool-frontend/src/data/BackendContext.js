@@ -70,6 +70,8 @@ export const BackendContextProvider = ({ children }) => {
     postData: sendProblemCreation,
   } = usePost(apiServerUrl + '/problems/create');
 
+  const { data: dataLogs, isLoading: dataLogIsLoading, error: dataLogError } = useGet(apiServerUrl + '/data/', []);
+
   const context = {
     allProblems,
     allProblemsIsLoading,
@@ -90,6 +92,9 @@ export const BackendContextProvider = ({ children }) => {
     problemCreationIsLoading,
     problemCreationError,
     sendProblemCreation,
+    dataLogs,
+    dataLogIsLoading,
+    dataLogError,
   };
 
   return <BackendContext.Provider value={context}>{children}</BackendContext.Provider>;
