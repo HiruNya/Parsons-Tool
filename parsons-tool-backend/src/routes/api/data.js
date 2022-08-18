@@ -31,17 +31,27 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const aggregate = DataLog.aggregate([
-      { $lookup: { from: Users.collection.name, localField: 'userId', foreignField: '_id', as: 'user' } },
-      { $unwind: '$user' },
-      { $lookup: { from: Problems.collection.name, localField: 'initialProblem', foreignField: '_id', as: 'problem' } },
-      { $unwind: '$problem' },
-    ]);
-    for await (const doc of aggregate) {
-      console.log(doc);
-    }
-
-    res.json(aggregate);
+    DataLog.aggregate([
+      { $addFields: { problem_id: { $toObjectId: '$initialProblem' } } },
+      { $addFields: { user_id: { $toObjectId: '$userId' } } },
+      { $lookup: { from: Users.collection.name, localField: 'user_id', foreignField: '_id', as: 'user' } },
+      {
+        $lookup: {
+          from: Problems.collection.name,
+          localField: 'problem_id',
+          foreignField: '_id',
+          as: 'parsonsProblem',
+        },
+      },
+    ]).exec(function (error, datalogs) {
+      if (datalogs) {
+        console.log('[data.js]> sending datalog');
+        res.json(datalogs);
+        return;
+      }
+      console.log('[data.js] error > ', datalogs);
+      res.json(error);
+    });
   } catch (error) {
     console.log('[data.js]>', error);
     res.status(500).json('An issue has occurred on the server end');
