@@ -24,19 +24,15 @@ router.post('/', async (req, res) => {
   if (solutionBlocks.indexOf(undefined) !== -1) {
     return res.status(401);
   }
-  const tests = (await ProblemSchema.findById(req.body.initialProblem)).problem.tests;
-  const testRunners = tests.map(
-    ({ inputs, outputs }) =>
-      inputs.slice(1).join('\n') +
-      `\ntry:\n  print(${inputs[0]})\nexcept BaseException as err:\n  print(err)\n` +
-      outputs.filter((v, i) => i % 2 === 1).join('\n'),
-  );
-  const testRunnerScript = testRunners.join('\nprint("$$$")\n');
+  const problem = await ProblemSchema.findById(req.body.initialProblem);
+  const language = problem.language;
+  const tests = problem.problem.tests;
+  const testRunnerScript = testRunnerGenerator(language)(tests);
   const expectedOutput = tests.map(({ outputs }) => outputs.filter((v, i) => i % 2 === 0).join('\n'));
   const code = solutionBlocks.map(blockToLine).join('\n') + '\n' + testRunnerScript;
   console.log('[solve.js]> code>', code);
   console.log('[solve.js]> expected>', expectedOutput);
-  const { error, result } = await executeOnJobe(code);
+  const { error, result } = await executeOnJobe(code, { language });
   const errorMsg = (error && `Error: Status code ${error} received from Jobe`) || result.cmpinfo;
   if (errorMsg) {
     console.log('[solve.js]> errorMsg>', errorMsg);
@@ -112,13 +108,13 @@ const createDataLogRecord = async (obj) => {
   }
 };
 
-const executeOnJobe = (sourceCode) =>
+const executeOnJobe = (sourceCode, { language }) =>
   axios({
     url: jobeUrl + '/jobe/index.php/restapi/runs',
     method: 'POST',
     data: {
       run_spec: {
-        language_id: 'python3',
+        language_id: language.toLowerCase() || 'python3',
         sourcecode: sourceCode,
       },
     },
@@ -145,6 +141,32 @@ const stripNone = (str) => {
     return '';
   }
   return str.startsWith('None') ? str.substring('None'.length).trim() : str;
+};
+
+const testRunnerGenerator = (language) => {
+  switch (language) {
+    case 'C':
+      return (tests) => {
+        const testRunners = tests.map(
+          ({ inputs, outputs }) =>
+            inputs.slice(1).join('\n') +
+            `\nprintf("%d", ${inputs[0]});\nprintf("\\n");\n` +
+            outputs.filter((v, i) => i % 2 === 1).join('\n'),
+        );
+        return '#include <stdio.h>\n' + 'int main() {\n' + testRunners.join('\nprintf("$$$\\n");\n') + '\n}';
+      };
+    case 'Python':
+    default:
+      return (tests) => {
+        const testRunners = tests.map(
+          ({ inputs, outputs }) =>
+            inputs.slice(1).join('\n') +
+            `\ntry:\n  print(${inputs[0]})\nexcept BaseException as err:\n  print(err)\n` +
+            outputs.filter((v, i) => i % 2 === 1).join('\n'),
+        );
+        return testRunners.join('\nprint("$$$")\n');
+      };
+  }
 };
 
 export default router;

@@ -92,7 +92,7 @@ export default function ProblemEvaluation() {
                   </table>
                 )) || (
                   <div className="bg-red-300 p-2 rounded">
-                    <code>{stripSorryAtStart(executionResponse.data)}</code>
+                    <code className="whitespace-pre">{stripSorryAtStart(executionResponse.data)}</code>
                   </div>
                 )))}
           </div>
