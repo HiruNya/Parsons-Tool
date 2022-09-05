@@ -9,10 +9,8 @@ function DataAnalytics() {
   const [data, setData] = useState([]);
   const [selectedLog, setSelectedLog] = useState();
   const [questionData, setQuestionData] = useState();
-  const [questionMapData, setQuestionMapData] = useState(new Map());
 
   const groupMap = new Map();
-  const questionMapRaw = new Map();
   const questionMap = new Map();
 
   useEffect(() => {
@@ -45,14 +43,6 @@ function DataAnalytics() {
           groupMap.set(group, [newData]);
         }
 
-        // add to a hashmap of logs for each experiment group
-        const problemRaw = newData.parsonsProblem.name;
-        if (questionMapRaw.has(problemRaw)) {
-          questionMapRaw.set(problemRaw, [...questionMapRaw.get(problemRaw), newData]);
-        } else {
-          questionMapRaw.set(problemRaw, [newData]);
-        }
-
         // add to a hashmap of logs for each question
         const problemName = newData.parsonsProblem.name;
         if (questionMap.has(problemName)) {
@@ -75,7 +65,6 @@ function DataAnalytics() {
           a.parsonsProblem.name > b.parsonsProblem.name ? 1 : b.parsonsProblem.name > a.parsonsProblem.name ? -1 : 0,
         ),
       );
-      setQuestionMapData(questionMapRaw);
       const questionArray = Array.from(questionMap, ([key, value]) => ({ key, value }));
       // sort based on key/problem name
       questionArray.sort((a, b) => (a.key > b.key ? 1 : b.key > a.key ? -1 : 0));
