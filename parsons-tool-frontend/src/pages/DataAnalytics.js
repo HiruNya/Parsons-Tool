@@ -7,6 +7,7 @@ import AverageTimeGraph from '../components/analytics/AverageTimeGraph';
 function DataAnalytics() {
   const { dataLogs } = useBackend();
   const [data, setData] = useState([]);
+  const [selectedLog, setSelectedLog] = useState();
   const [questionData, setQuestionData] = useState();
   const [questionMapData, setQuestionMapData] = useState(new Map());
 
@@ -34,7 +35,7 @@ function DataAnalytics() {
         const timeSeconds = (end - start) / 1000;
         const timeMin = timeSeconds / 60;
         newData.timeMin = timeMin.toFixed(3);
-        newData.timeSec = timeMin.toFixed(3);
+        newData.timeSec = timeSeconds.toFixed(3);
 
         // add to a hashmap of logs for each experiment group
         const group = newData.user.experimentGroup;
@@ -61,14 +62,19 @@ function DataAnalytics() {
         }
 
         // remove some unused data from objects
-        newData.dataEvents = [];
-        newData.blockState = [];
+        //newData.dataEvents = [];
+        //newData.blockState = [];
         newData.parsonsProblem.description = '';
         newData.parsonsProblem.problem = {};
+        newData.parsonsProblem.difficulty = '';
 
         return newData;
       });
-      setData(proccessedData);
+      setData(
+        proccessedData.sort((a, b) =>
+          a.parsonsProblem.name > b.parsonsProblem.name ? 1 : b.parsonsProblem.name > a.parsonsProblem.name ? -1 : 0,
+        ),
+      );
       setQuestionMapData(questionMapRaw);
       const questionArray = Array.from(questionMap, ([key, value]) => ({ key, value }));
       // sort based on key/problem name
@@ -83,15 +89,104 @@ function DataAnalytics() {
     const newAvgMin = newTotalTime / newNumber;
     return { totalTime: newTotalTime, total: newNumber, avgMin: newAvgMin };
   }
+
+  function formatDateTime(datetime) {
+    const date = new Date(datetime);
+    return `${date.getHours()}:${date.getMinutes()}:${date.getMilliseconds()}`;
+  }
+
+  function renderEventContext(type, context) {
+    if (typeof context === 'string' || context instanceof String) {
+      return (
+        <tr className="bg-red-400">
+          <td>= Error: {context}</td>
+        </tr>
+      );
+    }
+    if (type.includes('EXECUTION')) {
+      return (
+        <>
+          {context ? (
+            context.map((test) => {
+              return (
+                <tr className={test.result.includes('incorrect') ? 'bg-red-300 ' : 'bg-green-300'}>
+                  <td> = Actual: {test.actual}</td> <td className="pl-5">Result: {test.result}</td>{' '}
+                  <td>Expected: {test.test.outputs.length > 1 ? test.test.outputs[2] : test.test.outputs[0]}</td>
+                </tr>
+              );
+            })
+          ) : (
+            <span>No context</span>
+          )}
+        </>
+      );
+    }
+    return;
+  }
+
   return (
     <div>
-      <p>Data Test</p>
       {questionData ? <AverageTimeGraph problemMap={questionData} /> : <p>No data yet</p>}
-      {/*data && data.length > 0 ? (
-        data.map((dataPoint, index) => <DataLogObject key={`data-point-${index}`} dataLog={dataPoint} />)
-      ) : (
-        <p>No Data found</p>
-      )*/}
+      <div className="flex flex-row">
+        <table className="bg-slate-300">
+          <tr className="border-b">
+            <th>Problem Name</th>
+            <th className="pl-4">Group</th>
+            <th className="pl-4">Time (min)</th>
+            <th className="pl-4 pr-3">Time (sec)</th>
+          </tr>
+
+          {data && data.length > 0 ? (
+            data.map((dataPoint, index) => (
+              <DataLogObject
+                key={`data-point-${index}`}
+                dataLog={dataPoint}
+                setSelected={(log) => setSelectedLog(log)}
+              />
+            ))
+          ) : (
+            <p>No Data found</p>
+          )}
+        </table>
+        <div className="pl-4">
+          {selectedLog ? (
+            <div className="px-4 py-2 bg-blue-200 rounded-lg">
+              <p>
+                Problem: <b>{selectedLog.parsonsProblem.name} </b>
+              </p>
+              <p>
+                Time taken (min): <b>{selectedLog.timeMin}</b>, (sec): <b>{selectedLog.timeSec}</b>
+              </p>
+              <p>
+                data events (<b>{selectedLog.dataEvents.length}</b>):{' '}
+              </p>
+              <div className="px-3 py-2 bg-blue-300 rounded-lg">
+                <table className="">
+                  <tr className="border-b ">
+                    <th>EVENT TYPE</th>
+                    <th>MESSAGE</th>
+                    <th className="pl-4">TIME</th>
+                  </tr>
+                  {selectedLog.dataEvents.map((event) => {
+                    return (
+                      <>
+                        <tr>
+                          <td>[ {event.eventType} ]</td>
+                          <td className="pl-6">[ {event.eventMsg} ]</td>
+                          <td>[ {formatDateTime(event.timestamp)} ]</td>
+                        </tr>
+                        {renderEventContext(event.eventType, event.context)}
+                      </>
+                    );
+                  })}
+                </table>
+              </div>
+            </div>
+          ) : (
+            <p>No log selected</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

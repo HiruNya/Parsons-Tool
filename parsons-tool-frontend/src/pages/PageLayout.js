@@ -14,7 +14,7 @@ export default function PageLayout() {
   return (
     <>
       <div className="h-screen">
-        <nav className="relative px-3 py-3 top-0 left-0">
+        <nav className="relative px-3 py-3 top-0 left-0 hidden">
           <NavLink to="student">Student Problems </NavLink>
           {isLecturer ? <NavLink to="create">| Create Problem </NavLink> : ''}
           {isLecturer ? <NavLink to="data"> | Data </NavLink> : ''}
