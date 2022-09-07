@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
     return res.status(401);
   }
   const problem = await ProblemSchema.findById(req.body.initialProblem);
-  const language = problem.language;
+  const language = problem.language === 'Python' ? 'python3' : problem.language;
   const tests = problem.problem.tests;
   const testRunnerScript = testRunnerGenerator(language)(tests);
   const expectedOutput = tests.map(({ outputs }) => outputs.filter((v, i) => i % 2 === 0).join('\n'));
