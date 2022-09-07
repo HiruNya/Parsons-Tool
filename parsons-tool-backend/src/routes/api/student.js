@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     res.json(problems);
   } catch (error) {
     console.log('[student.js]>', error);
-    res.status(500).json('An issue has occured on the server end');
+    res.status(500).json('An issue has occurred on the server end');
   }
 });
 

@@ -4,6 +4,7 @@ import PageLayout from './pages/PageLayout';
 import StudentBrowseProblems from './pages/StudentBrowseProblems';
 import ProblemEvaluation from './pages/ProblemEvaluation';
 import ProblemGeneration from './pages/ProblemGeneration';
+import DataAnalytics from './pages/DataAnalytics';
 import { LoggingProvider } from './loggers/logContext';
 import { BackendContextProvider } from './data/BackendContext';
 import { AuthContextProvider } from './data/AuthContext';
@@ -30,6 +31,14 @@ function App() {
                     </ProtectedRoute>
                   }
                 >
+                  <Route
+                    path="data"
+                    element={
+                      <ProtectedRoute requiredRole={true}>
+                        <DataAnalytics />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route path="intro" element={<Introduction />} />
                   <Route path="summary" element={<Summary />} />
                   <Route path="student" element={<StudentBrowseProblems />} />
