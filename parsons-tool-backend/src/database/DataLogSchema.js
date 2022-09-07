@@ -17,6 +17,7 @@ const dataLogSchema = new Schema({
     type: Date,
     required: true,
   },
+  result: String,
   dataEvents: {
     type: [
       {
