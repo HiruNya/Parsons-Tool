@@ -9,9 +9,9 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
 
   if (indentation && enableHorizontal) {
     if (transform) {
-      transform.x = 4 + indentation * 40 + 'px';
+      transform.x = indentation * 40 + 'px';
     } else {
-      transformX = 4 + indentation * 40 + 'px';
+      transformX = indentation * 40 + 'px';
     }
   }
 
@@ -19,6 +19,7 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
     transform: transformX ? `translateX(${transformX})` : CSS.Transform.toString(transform),
     transition,
     opacity,
+    zIndex: 1,
   };
 
   return (
