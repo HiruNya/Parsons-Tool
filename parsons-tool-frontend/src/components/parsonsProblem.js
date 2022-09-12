@@ -111,11 +111,28 @@ function ParsonsProblem({ problem, problemId }) {
       }),
     [logInputSet],
   );
+  const [draggedGuidePosition, setDraggedGuidePosition] = useState(null);
+  const dragMove = useCallback(({ active, delta }) => {
+    if (active.data.current.sortable.containerId === 'problem') {
+      return setDraggedGuidePosition(null);
+    }
+    let dx = delta.x % 40;
+    if (dx < 0) {
+      dx = 40 + dx;
+    }
+    setDraggedGuidePosition(Math.max(dx, 8));
+  }, []);
   useEffect(() => setLoggerState(state), [state, setLoggerState]);
 
   return (
     <div className="App flex w-full">
-      <DndContext sensors={sensors} onDragEnd={dragEnd} onDragStart={dragStart} onDragCancel={() => setActiveId(null)}>
+      <DndContext
+        sensors={sensors}
+        onDragEnd={dragEnd}
+        onDragStart={dragStart}
+        onDragMove={dragMove}
+        onDragCancel={() => setActiveId(null)}
+      >
         <Space
           name={'problem'}
           blocks={state.problem.map((val) => state.blocks[val])}
@@ -131,15 +148,22 @@ function ParsonsProblem({ problem, problemId }) {
         />
         <DragOverlay dropAnimation={null}>
           {activeId ? (
-            <PresentationalBlock
-              innerProps={(i) =>
-                defaultInnerProps(state.blocks[activeId].currentInputs, i, (index, val) =>
-                  setInput(activeId, index, val),
-                )
-              }
-              style={{ transform: `translateX(${state.blocks[activeId].indentation * 40}px)` }}
-              {...stripExtraObjectProperties(state.blocks[activeId])}
-            />
+            <div style={{ transform: `translateX(${state.blocks[activeId].indentation * 40}px)` }}>
+              <PresentationalBlock
+                innerProps={(i) =>
+                  defaultInnerProps(state.blocks[activeId].currentInputs, i, (index, val) =>
+                    setInput(activeId, index, val),
+                  )
+                }
+                {...stripExtraObjectProperties(state.blocks[activeId])}
+              />
+              {draggedGuidePosition !== null && (
+                <div
+                  className="absolute h-full w-0 border-[1px] border-gray-400 top-0"
+                  style={{ left: -draggedGuidePosition + 'px' }}
+                ></div>
+              )}
+            </div>
           ) : null}
         </DragOverlay>
       </DndContext>

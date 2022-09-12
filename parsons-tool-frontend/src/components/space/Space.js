@@ -4,7 +4,7 @@ import Block from '../blocks/Block';
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
 
-const Space = ({ name, blocks, matches, enableHorizontal, setInput, height }) => {
+const Space = ({ name, blocks, matches, enableHorizontal, setInput, height, showGuildelines }) => {
   const { setNodeRef } = useDroppable({
     id: name,
   });
@@ -33,7 +33,7 @@ const Space = ({ name, blocks, matches, enableHorizontal, setInput, height }) =>
       <SortableContext items={blocks} id={name}>
         {blocks.map(renderCard)}
       </SortableContext>
-      {enableHorizontal && <div style={guidelines}></div>}
+      {showGuildelines && enableHorizontal && <div style={guidelines}></div>}
     </div>
   );
 };
