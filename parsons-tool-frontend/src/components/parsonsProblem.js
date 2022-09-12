@@ -25,6 +25,19 @@ function ParsonsProblem({ problem, problemId }) {
       problem.blocks.map((block) => [block.id, { currentInputs: block.fadedIndices.map(() => ''), ...block }]),
     ),
   }));
+
+  // Acts as a force refresh if the problem has changed, and the component needs to reset with new data
+  useEffect(() => {
+    setState({
+      initialProblem: problemId,
+      problem: problem.blocks.map((block) => block.id),
+      solution: [],
+      blocks: Object.fromEntries(
+        problem.blocks.map((block) => [block.id, { currentInputs: block.fadedIndices.map(() => ''), ...block }]),
+      ),
+    });
+  }, [problem, problemId]);
+
   const [activeId, setActiveId] = useState(null);
   const dragEnd = useCallback(
     ({ active, over, delta }) => {

@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 import { useBackend } from './BackendContext';
 
 const ProblemContext = React.createContext({
@@ -15,14 +17,17 @@ export const ProblemContextProvider = ({ children }) => {
   const [isDone, setIsDone] = useState(false);
   const { problems } = useBackend();
   const { stateChange, signOut } = useAuth();
+  const navigate = useNavigate();
 
   function nextProblem() {
     if (problems && problemIndex < problems.length - 1) {
       setProblemIndex(problemIndex + 1);
       setCurrentProblem(problems[problemIndex + 1]);
+      navigate('/solve');
     } else if (problemIndex === problems.length - 1) {
       setProblemIndex(problems.length);
       setIsDone(true);
+      navigate('/summary');
     }
   }
 
