@@ -1,5 +1,4 @@
-import { useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 import ParsonsProblem from '../components/parsonsProblem';
 import { useBackend } from '../data/BackendContext';
 import { useAuth } from '../data/AuthContext';
@@ -8,16 +7,13 @@ import { useProblems } from '../data/ProblemContext';
 import ResultComponent from '../components/testCases/ResultComponent';
 
 export default function ProblemEvaluation() {
-  const location = useLocation();
   const { state, dataEvents, reset: resetLogging, logSubmission, logExecution } = useLogging();
   const { sendSubmissionRequest, sendExecutionRequest, executionResponse, executionIsLoading, executionClear } =
     useBackend();
   const { uid } = useAuth();
-  const { nextProblem } = useProblems();
+  const { nextProblem, currentProblem } = useProblems();
 
-  const problem = location.state.problem;
-
-  const navigate = useNavigate();
+  const [problem, setProblem] = useState(null);
 
   const executionResultCallback = useCallback(
     (res) => {
@@ -25,6 +21,12 @@ export default function ProblemEvaluation() {
     },
     [logExecution],
   );
+
+  useEffect(() => {
+    if (currentProblem) {
+      setProblem(currentProblem);
+    }
+  }, [currentProblem]);
 
   const submitSolution = () => {
     logSubmission();
@@ -42,10 +44,11 @@ export default function ProblemEvaluation() {
     };
     //POST users interaction to the server
     sendSubmissionRequest(newDataLog, postCallback);
+
+    //Reset page state, and set next problem
     nextProblem();
     resetLogging();
     executionClear();
-    navigate('/summary');
   };
 
   return (

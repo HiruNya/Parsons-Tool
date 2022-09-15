@@ -12,7 +12,7 @@ function Introduction() {
   function startHandle() {
     if (currentProblem) {
       console.log('[Intro.js]> currentProblem is: ', currentProblem.name);
-      navigate('/solve', { state: { problem: currentProblem } });
+      navigate('/solve');
     } else {
       console.error('[Intro.js]> currentProblem not found: ', currentProblem);
       console.log('[Intro.js]> current userRecord is: ', userRecord);
