@@ -32,6 +32,7 @@ function ParsonsProblem({ problem, problemId }) {
         return;
       }
       setActiveId(null);
+      setDraggedGuidePosition(null);
       return setState((state) => {
         const [oldSpace, oldIndex] = getPos(state, active.id);
         let [newSpace, newIndex_] = getPos(state, over.id);
@@ -112,16 +113,17 @@ function ParsonsProblem({ problem, problemId }) {
     [logInputSet],
   );
   const [draggedGuidePosition, setDraggedGuidePosition] = useState(null);
-  const dragMove = useCallback(({ active, delta }) => {
-    if (active.data.current.sortable.containerId === 'problem') {
-      return setDraggedGuidePosition(null);
-    }
-    let dx = delta.x % 40;
-    if (dx < 0) {
-      dx = 40 + dx;
-    }
-    setDraggedGuidePosition(Math.max(dx, 8));
-  }, []);
+  const dragMove = useCallback(
+    ({ active, delta }) => {
+      if (active.data.current.sortable.containerId === 'problem') {
+        return setDraggedGuidePosition(null);
+      }
+      const dx = Math.floor(delta.x / 40);
+      const posX = state.blocks[active.id].indentation + dx;
+      setDraggedGuidePosition(Math.max(Math.min(posX, 8), 0));
+    },
+    [state],
+  );
   useEffect(() => setLoggerState(state), [state, setLoggerState]);
 
   return (
@@ -145,6 +147,7 @@ function ParsonsProblem({ problem, problemId }) {
           setInput={setInput}
           enableHorizontal={true}
           height={problem.blocks.length}
+          draggedGuidePosition={draggedGuidePosition}
         />
         <DragOverlay dropAnimation={null}>
           {activeId ? (
@@ -157,12 +160,6 @@ function ParsonsProblem({ problem, problemId }) {
                 }
                 {...stripExtraObjectProperties(state.blocks[activeId])}
               />
-              {draggedGuidePosition !== null && (
-                <div
-                  className="absolute h-full w-0 border-[1px] border-gray-400 top-0"
-                  style={{ left: -draggedGuidePosition + 'px' }}
-                ></div>
-              )}
             </div>
           ) : null}
         </DragOverlay>

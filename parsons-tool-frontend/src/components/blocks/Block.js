@@ -30,7 +30,7 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
       indentation={enableHorizontal ? indentation : 0}
       fadedIndices={fadedIndices}
       innerProps={(index) => defaultInnerProps(currentInputs, index, setInput)}
-      showGuideline={true}
+      showGuideline={false}
       {...attributes}
       {...listeners}
     />
@@ -41,8 +41,8 @@ export const PresentationalBlock = forwardRef(({ text, fadedIndices, innerProps,
   <div className={'flex relative'} ref={ref} {...otherProps}>
     {otherProps.showGuideline && !!otherProps.indentation && (
       <div
-        className="absolute top-0 border-gray-400 border-[1px] h-full"
-        style={{ left: `${otherProps.guideDragOffset ? -otherProps.guideDragOffset : 0}px` }}
+        className="absolute top-0 border-gray-400 border-[1px] h-1/3 top-1/3 mb-8 opacity-50"
+        style={{ left: `${(otherProps.guideDragOffset ? -otherProps.guideDragOffset : 0) - 10}px` }}
       ></div>
     )}
     {toFadedChildren(text, fadedIndices, innerProps)}

@@ -4,7 +4,16 @@ import Block from '../blocks/Block';
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
 
-const Space = ({ name, blocks, matches, enableHorizontal, setInput, height, showGuildelines }) => {
+const Space = ({
+  name,
+  blocks,
+  matches,
+  enableHorizontal,
+  setInput,
+  height,
+  showGuildelines,
+  draggedGuidePosition,
+}) => {
   const { setNodeRef } = useDroppable({
     id: name,
   });
@@ -34,6 +43,12 @@ const Space = ({ name, blocks, matches, enableHorizontal, setInput, height, show
         {blocks.map(renderCard)}
       </SortableContext>
       {showGuildelines && enableHorizontal && <div style={guidelines}></div>}
+      {!!draggedGuidePosition && (
+        <div
+          className="absolute h-full w-0 border-[1px] border-dashed border-gray-400 top-0"
+          style={{ left: draggedGuidePosition * 40 + 8 + 'px' }}
+        ></div>
+      )}
     </div>
   );
 };
