@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { getAuthHeader } from './auth';
 
-export default function usePost(url) {
+export default function usePost(url, useAuth = false) {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [response, setResponse] = useState(null);
@@ -10,7 +11,7 @@ export default function usePost(url) {
     setLoading(true);
     setError(false);
     try {
-      const res = await axios.post(url, data);
+      const res = await axios.post(url, data, { headers: await getAuthHeader(useAuth) });
       setResponse(res);
       setLoading(false);
       postCallback(res);
