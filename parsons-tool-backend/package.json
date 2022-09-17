@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Backend for the Parsons tool for handling requests for problems and log data",
   "main": "./src/server.js",
+  "type": "module",
   "scripts": {
-    "start": "node -r esm ./src/server.js",
+    "start": "node --experimental-specifier-resolution=node ./src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "docker": "docker-compose up",
     "init-db": "node -r esm ./src/init-db.js",
