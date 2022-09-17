@@ -40,13 +40,13 @@ export const BackendContextProvider = ({ children }) => {
     data: allProblems,
     isLoading: allProblemsIsLoading,
     error: allProblemsError,
-  } = useGet(apiServerUrl + '/student/', []);
+  } = useGet(apiServerUrl + '/student/', [], null, true);
 
   const {
     data: problems,
     isLoading: isLoadingProblems,
     error: problemsErrorState,
-  } = useGet(apiServerUrl + '/student/problems/' + group, [], stateChange);
+  } = useGet(apiServerUrl + '/student/problems/' + group, [], stateChange, true);
 
   const {
     response: executionResponse,
