@@ -45,6 +45,7 @@ function ParsonsProblem({ problem, problemId }) {
         return;
       }
       setActiveId(null);
+      setDraggedGuidePosition(null);
       return setState((state) => {
         const [oldSpace, oldIndex] = getPos(state, active.id);
         let [newSpace, newIndex_] = getPos(state, over.id);
@@ -124,11 +125,29 @@ function ParsonsProblem({ problem, problemId }) {
       }),
     [logInputSet],
   );
+  const [draggedGuidePosition, setDraggedGuidePosition] = useState(null);
+  const dragMove = useCallback(
+    ({ active, delta }) => {
+      if (active.data.current.sortable.containerId === 'problem') {
+        return setDraggedGuidePosition(null);
+      }
+      const dx = Math.floor(delta.x / 40);
+      const posX = state.blocks[active.id].indentation + dx;
+      setDraggedGuidePosition(Math.max(Math.min(posX, 8), 0));
+    },
+    [state],
+  );
   useEffect(() => setLoggerState(state), [state, setLoggerState]);
 
   return (
     <div className="App flex w-full">
-      <DndContext sensors={sensors} onDragEnd={dragEnd} onDragStart={dragStart} onDragCancel={() => setActiveId(null)}>
+      <DndContext
+        sensors={sensors}
+        onDragEnd={dragEnd}
+        onDragStart={dragStart}
+        onDragMove={dragMove}
+        onDragCancel={() => setActiveId(null)}
+      >
         <Space
           name={'problem'}
           blocks={state.problem.map((val) => state.blocks[val])}
@@ -141,18 +160,20 @@ function ParsonsProblem({ problem, problemId }) {
           setInput={setInput}
           enableHorizontal={true}
           height={problem.blocks.length}
+          draggedGuidePosition={draggedGuidePosition}
         />
         <DragOverlay dropAnimation={null}>
           {activeId ? (
-            <PresentationalBlock
-              innerProps={(i) =>
-                defaultInnerProps(state.blocks[activeId].currentInputs, i, (index, val) =>
-                  setInput(activeId, index, val),
-                )
-              }
-              style={{ transform: `translateX(${state.blocks[activeId].indentation * 40}px)` }}
-              {...stripExtraObjectProperties(state.blocks[activeId])}
-            />
+            <div style={{ transform: `translateX(${state.blocks[activeId].indentation * 40}px)` }}>
+              <PresentationalBlock
+                innerProps={(i) =>
+                  defaultInnerProps(state.blocks[activeId].currentInputs, i, (index, val) =>
+                    setInput(activeId, index, val),
+                  )
+                }
+                {...stripExtraObjectProperties(state.blocks[activeId])}
+              />
+            </div>
           ) : null}
         </DragOverlay>
       </DndContext>

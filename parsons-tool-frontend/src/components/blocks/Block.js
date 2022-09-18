@@ -9,9 +9,9 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
 
   if (indentation && enableHorizontal) {
     if (transform) {
-      transform.x = 4 + indentation * 40 + 'px';
+      transform.x = indentation * 40 + 'px';
     } else {
-      transformX = 4 + indentation * 40 + 'px';
+      transformX = indentation * 40 + 'px';
     }
   }
 
@@ -19,6 +19,7 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
     transform: transformX ? `translateX(${transformX})` : CSS.Transform.toString(transform),
     transition,
     opacity,
+    zIndex: 1,
   };
 
   return (
@@ -26,9 +27,10 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
       ref={setNodeRef}
       style={style}
       text={text}
-      indentation={indentation}
+      indentation={enableHorizontal ? indentation : 0}
       fadedIndices={fadedIndices}
       innerProps={(index) => defaultInnerProps(currentInputs, index, setInput)}
+      showGuideline={false}
       {...attributes}
       {...listeners}
     />
@@ -36,7 +38,13 @@ const Block = ({ id, text, index, fadedIndices, indentation, currentInputs, setI
 };
 
 export const PresentationalBlock = forwardRef(({ text, fadedIndices, innerProps, ...otherProps }, ref) => (
-  <div className={'flex'} ref={ref} {...otherProps}>
+  <div className={'flex relative'} ref={ref} {...otherProps}>
+    {otherProps.showGuideline && !!otherProps.indentation && (
+      <div
+        className="absolute top-0 border-gray-400 border-[1px] h-1/3 top-1/3 mb-8 opacity-50"
+        style={{ left: `${(otherProps.guideDragOffset ? -otherProps.guideDragOffset : 0) - 10}px` }}
+      ></div>
+    )}
     {toFadedChildren(text, fadedIndices, innerProps)}
   </div>
 ));
