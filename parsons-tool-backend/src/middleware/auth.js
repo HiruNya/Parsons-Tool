@@ -20,6 +20,9 @@ export const firebaseAuth =
         console.log(err);
       }
     }
+    if (requireAuth && !req.currentUser) {
+      return res.sendStatus(401);
+    }
 
     next();
   };
