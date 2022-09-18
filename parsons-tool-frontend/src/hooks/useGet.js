@@ -25,7 +25,7 @@ export default function useGet(url, initialState = null, reset = null, useAuth =
       }
     }
     fetchData();
-  }, [url]);
+  }, [url, useAuth]);
 
   // Used to refresh state on logout, so that data from previous user is not kept
   useEffect(() => {

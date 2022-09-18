@@ -10,7 +10,6 @@ export const firebaseAuth =
   (requireAuth = false) =>
   async (req, res, next) => {
     // https://fireship.io/snippets/express-middleware-auth-token-firebase/
-    console.log(req);
     if (req.headers && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
       const idToken = req.headers.authorization.split('Bearer ')[1];
 
