@@ -7,7 +7,7 @@ import { firebaseAuth } from '../../middleware/auth';
 const router = express.Router();
 
 // Add middleware
-router.use(firebaseAuth());
+router.use(firebaseAuth(true));
 
 // Get a list of all problems in the database
 router.get('/', async (req, res) => {
