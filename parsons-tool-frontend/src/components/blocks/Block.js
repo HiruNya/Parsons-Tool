@@ -71,7 +71,7 @@ const toFadedChildren = (text, fadedIndices, innerProps) => {
             <input
               key={index}
               type="text"
-              className={'bg-stone-200 rounded-full px-3 mx-2'}
+              className={'bg-stone-200 rounded-full px-3 mx-2 font-mono'}
               style={{ width: '10ch' }}
               data-no-dnd={'true'}
               {...(innerProps ? innerProps(index) : null)}
@@ -87,8 +87,8 @@ export const defaultInnerProps = (currentInputs, index, setInput) => {
   return {
     onChange: (e) => {
       setInput(i, e.target.value);
-      if (e.target.value.length > 10) {
-        e.target.style.width = `${e.target.value.length}ch`;
+      if (e.target.value.length > 7) {
+        e.target.style.width = `${e.target.value.length + 3}ch`;
       } else {
         e.target.style.width = '10ch';
       }
