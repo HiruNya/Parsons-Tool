@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import ParsonsProblem from '../components/parsonsProblem';
 import { useBackend } from '../data/BackendContext';
 import { useAuth } from '../data/AuthContext';
@@ -16,9 +16,14 @@ export default function ProblemEvaluation() {
 
   const [problem, setProblem] = useState(null);
 
+  const resultRef = useRef(null);
+
   const executionResultCallback = useCallback(
     (res) => {
       logExecution(res.data);
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behaviour: 'smooth' });
+      }, 200);
     },
     [logExecution],
   );
@@ -105,6 +110,7 @@ export default function ProblemEvaluation() {
       ) : (
         'It seems something went wrong when trying to load the problems'
       )}
+      <div className="h-1" ref={resultRef} />
     </>
   );
 }
