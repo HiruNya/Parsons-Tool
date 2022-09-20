@@ -15,7 +15,7 @@ export default function ProblemEvaluation() {
   const { nextProblem, currentProblem } = useProblems();
 
   const [problem, setProblem] = useState(null);
-  const [isFaded, setIsFaded] = useState(false);
+  const isFaded = currentProblem.problem.blocks.some((block) => block && block.fadedIndices.length > 0);
 
   const resultRef = useRef(null);
 
@@ -32,11 +32,6 @@ export default function ProblemEvaluation() {
   useEffect(() => {
     if (currentProblem) {
       setProblem(currentProblem);
-      currentProblem.problem.blocks.forEach((block) => {
-        if (block && block.fadedIndices.length > 0) {
-          setIsFaded(true);
-        }
-      });
     }
   }, [currentProblem]);
 
@@ -58,7 +53,6 @@ export default function ProblemEvaluation() {
     sendSubmissionRequest(newDataLog, postCallback);
 
     //Reset page state, and set next problem
-    setIsFaded(false);
     nextProblem();
     resetLogging();
     executionClear();
