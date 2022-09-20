@@ -15,6 +15,7 @@ export default function ProblemEvaluation() {
   const { nextProblem, currentProblem } = useProblems();
 
   const [problem, setProblem] = useState(null);
+  const isFaded = currentProblem.problem.blocks.some((block) => block && block.fadedIndices.length > 0);
 
   const resultRef = useRef(null);
 
@@ -64,8 +65,17 @@ export default function ProblemEvaluation() {
           <div className="my-4">
             <ProblemProgressTracker questionProgress={1} totalQuestions={4} />
             <h1 className="mx-auto text-center my-4 font-semibold text-lg">{problem.name}</h1>
-            <p className="w-10/12 flex-wrap mx-auto my-4 bg-stone-200 p-2 rounded-lg">{problem.description}</p>
+            <p className="w-10/12 flex-wrap mx-auto my-2 bg-stone-200 p-2 rounded-lg">{problem.description}</p>
           </div>
+          {isFaded ? (
+            <div className=" w-max-10/12 mx-auto bg-blue-100 rounded-full px-3 py-1 mb-2">
+              Fill out the blank sections{' '}
+              <span className="bg-gray-200 rounded-full px-10 mx-2 border-gray-500 border-2" /> by clicking on them and
+              entering the correct code to complete the problem.
+            </div>
+          ) : (
+            ''
+          )}
           <div className="mx-auto  w-9/12 my-2">
             <ParsonsProblem problem={problem.problem} problemId={problem['_id']} />
           </div>
