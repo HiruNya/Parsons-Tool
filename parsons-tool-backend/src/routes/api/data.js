@@ -2,8 +2,12 @@ import DataLog from '../../database/DataLogSchema';
 import Users from '../../database/UserSchema';
 import Problems from '../../database/ProblemSchema';
 import express from 'express';
+import { firebaseAuth } from '../../middleware/auth.js';
 
 const router = express.Router();
+
+// Add middleware
+router.use(firebaseAuth(true));
 
 // GET request for retreiving a data logging submission
 // Expects: an id in the request parameter, corresponding to id of submission
@@ -31,6 +35,10 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
+    const user = await Users.findOne({ email: req.currentUser.email });
+    if (!user?.roles.any((r) => ['lecturer', 'researcher'].includes(r))) {
+      return res.sendStatus(403);
+    }
     DataLog.aggregate([
       { $addFields: { problem_id: { $toObjectId: '$initialProblem' } } },
       { $addFields: { user_id: { $toObjectId: '$userId' } } },

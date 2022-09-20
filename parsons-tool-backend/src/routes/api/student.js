@@ -2,13 +2,22 @@ import express from 'express';
 import ParsonsProblems from '../../database/ProblemSchema';
 import Users from '../../database/UserSchema';
 import Courses from '../../database/CourseSchema';
+import { firebaseAuth } from '../../middleware/auth';
 
 const router = express.Router();
 
+// Add middleware
+router.use(firebaseAuth(true));
+
 // Get a list of all problems in the database
 router.get('/', async (req, res) => {
+  if (!req.currentUser) {
+    return res.sendStatus(401);
+  }
   try {
-    const problems = await ParsonsProblems.find({});
+    const user = await Users.find({ email: req.currentUser.email });
+    const courses = await Courses.find({ groupNumber: user.experimentGroup });
+    const problems = await ParsonsProblems.find({ _id: { $in: courses } });
     res.json(problems);
   } catch (error) {
     console.log('[student.js]>', error);
@@ -20,10 +29,17 @@ router.get('/', async (req, res) => {
 router.get('/problems/:group', async (req, res) => {
   const { group } = req.params;
   try {
+    if (!req.currentUser) {
+      return res.sendStatus(401);
+    }
+    const user = await Users.findOne({ email: req.currentUser.email });
+    if (group != user.experimentGroup) {
+      return res.sendStatus(403);
+    }
     const course = await Courses.findOne({ groupNumber: group });
     const problems = await ParsonsProblems.find({ _id: { $in: [...course.problems] } });
     if (!problems) {
-      res.json([]);
+      return res.sendStatus(404);
     }
     res.json(problems);
   } catch (error) {
