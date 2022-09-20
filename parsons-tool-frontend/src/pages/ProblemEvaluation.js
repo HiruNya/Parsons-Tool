@@ -5,7 +5,6 @@ import { useAuth } from '../data/AuthContext';
 import { useLogging } from '../loggers/logContext';
 import { useProblems } from '../data/ProblemContext';
 import ResultComponent from '../components/testCases/ResultComponent';
-import ProblemProgressTracker from '../components/ProblemProgressTracker';
 
 export default function ProblemEvaluation() {
   const { state, dataEvents, reset: resetLogging, logSubmission, logExecution } = useLogging();
@@ -63,7 +62,6 @@ export default function ProblemEvaluation() {
       {problem ? (
         <div className="flex flex-col ">
           <div className="my-4">
-            <ProblemProgressTracker questionProgress={1} totalQuestions={4} />
             <h1 className="mx-auto text-center my-4 font-semibold text-lg">{problem.name}</h1>
             <p className="w-10/12 flex-wrap mx-auto my-2 bg-stone-200 p-2 rounded-lg">{problem.description}</p>
           </div>
