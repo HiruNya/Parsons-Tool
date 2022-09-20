@@ -32,7 +32,7 @@ export default function ProblemEvaluation() {
   useEffect(() => {
     if (currentProblem) {
       setProblem(currentProblem);
-      currentProblem.problem.blocks.map((block) => {
+      currentProblem.problem.blocks.forEach((block) => {
         if (block && block.fadedIndices.length > 0) {
           setIsFaded(true);
         }
