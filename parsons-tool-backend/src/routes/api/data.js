@@ -36,8 +36,10 @@ router.get('/:id', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const user = await Users.findOne({ email: req.currentUser.email });
+    if (!user?.roles.any((r) => ['lecturer', 'researcher'].includes(r))) {
+      return res.sendStatus(403);
+    }
     DataLog.aggregate([
-      { $match: { userId: user._id.toString() } },
       { $addFields: { problem_id: { $toObjectId: '$initialProblem' } } },
       { $addFields: { user_id: { $toObjectId: '$userId' } } },
       { $lookup: { from: Users.collection.name, localField: 'user_id', foreignField: '_id', as: 'user' } },
