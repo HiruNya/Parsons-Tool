@@ -10,6 +10,7 @@ const dataLogSchema = new Schema({
     type: String,
     required: true,
   },
+  problemName: String,
   blockState: {
     type: Schema.Types.Mixed,
   },
@@ -17,7 +18,13 @@ const dataLogSchema = new Schema({
     type: Date,
     required: true,
   },
+  totalTime: {
+    min: Number,
+    sec: Number,
+  },
   result: String,
+  totalTests: Number,
+  passedTests: Number,
   dataEvents: {
     type: [
       {
@@ -45,6 +52,14 @@ const dataLogSchema = new Schema({
         },
       },
     ],
+  },
+  group: Number,
+  eventDistribution: {
+    numEvents: Number,
+    numMoved: Number,
+    numInputs: Number,
+    numSubmission: Number,
+    numExecution: Number,
   },
 });
 
