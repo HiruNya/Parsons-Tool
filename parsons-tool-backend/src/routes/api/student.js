@@ -6,78 +6,99 @@ import { firebaseAuth } from '../../middleware/auth';
 
 const router = express.Router();
 
-// Add middleware
-router.use(firebaseAuth(true));
-
 // Get a list of all problems in the database
-router.get('/', async (req, res) => {
-  if (!req.currentUser) {
-    return res.sendStatus(401);
-  }
-  try {
-    const user = await Users.find({ email: req.currentUser.email });
-    const courses = await Courses.find({ groupNumber: user.experimentGroup });
-    const problems = await ParsonsProblems.find({ _id: { $in: courses } });
-    res.json(problems);
-  } catch (error) {
-    console.log('[student.js]>', error);
-    res.status(500).json('An issue has occurred on the server end');
-  }
-});
-
-// Get a list of problems for a specific group/course
-router.get('/problems/:group', async (req, res) => {
-  const { group } = req.params;
-  try {
+router.get(
+  '/',
+  async (req, res) => {
     if (!req.currentUser) {
       return res.sendStatus(401);
     }
-    const user = await Users.findOne({ email: req.currentUser.email });
-    if (group != user.experimentGroup) {
-      return res.sendStatus(403);
+    try {
+      const user = await Users.find({ email: req.currentUser.email });
+      const courses = await Courses.find({ groupNumber: user.experimentGroup });
+      const problems = await ParsonsProblems.find({ _id: { $in: courses } });
+      res.json(problems);
+    } catch (error) {
+      console.log('[student.js]>', error);
+      res.status(500).json('An issue has occurred on the server end');
     }
-    const course = await Courses.findOne({ groupNumber: group });
-    const problems = await ParsonsProblems.find({ _id: { $in: [...course.problems] } });
-    if (!problems) {
-      return res.sendStatus(404);
+  },
+  firebaseAuth(true),
+);
+
+// Get a list of problems for a specific group/course
+router.get(
+  '/problems/:group',
+  async (req, res) => {
+    const { group } = req.params;
+    try {
+      if (!req.currentUser) {
+        return res.sendStatus(401);
+      }
+      const user = await Users.findOne({ email: req.currentUser.email });
+      if (group != user.experimentGroup) {
+        return res.sendStatus(403);
+      }
+      const course = await Courses.findOne({ groupNumber: group });
+      const problems = await ParsonsProblems.find({ _id: { $in: [...course.problems] } });
+      if (!problems) {
+        return res.sendStatus(404);
+      }
+      res.json(problems);
+    } catch (error) {
+      console.log('[student.js]>', error);
+      res.status(500).json('An issue has occured on the server end');
     }
-    res.json(problems);
-  } catch (error) {
-    console.log('[student.js]>', error);
-    res.status(500).json('An issue has occured on the server end');
-  }
-});
+  },
+  firebaseAuth(true),
+);
 
 // Get a list of all users in the database
-router.get('/all', async (req, res) => {
-  try {
-    const users = await Users.find({});
-    res.json(users);
-  } catch (error) {
-    console.log('[student.js]>', error);
-    res.status(500).json('An issue has occured on the server end');
-  }
-});
+router.get(
+  '/all',
+  async (req, res) => {
+    const user = await Users.find({ email: req.currentUser.email });
+    if (!user?.roles.any((r) => ['lecturer', 'researcher'].includes(r))) {
+      return res.sendStatus(403);
+    }
+    try {
+      const users = await Users.find({});
+      res.json(users);
+    } catch (error) {
+      console.log('[student.js]>', error);
+      res.status(500).json('An issue has occured on the server end');
+    }
+  },
+  firebaseAuth(true),
+);
 
 // Get a particular student based on their email
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const user = await Users.findOne({ email: id });
-    if (user) {
-      console.log(`[student.js]> Student '${id}' found`);
-      res.json(user);
-    } else {
-      // Respond with 404 Not Found if user id not found
-      console.log(`[student.js]> Student with ${id} not found`);
-      res.sendStatus(404);
+router.get(
+  '/:id',
+  async (req, res) => {
+    const { id } = req.params;
+    const thisUser = await Users.find({ email: req.currentUser.email });
+    if (!thisUser?.roles.any((r) => ['lecturer', 'researcher'].includes(r))) {
+      return res.sendStatus(403);
     }
-  } catch (error) {
-    // Respond with 400 Bad Request if id causes exception
-    console.log('[student.js]>', error);
-    res.status(400).json(error);
-  }
-});
+    try {
+      const user = await Users.findOne({ email: id });
+      if (user) {
+        console.log(`[student.js]> Student '${id}' found`);
+        res.json(user);
+      } else {
+        // Respond with 404 Not Found if user id not found
+        console.log(`[student.js]> Student with ${id} not found`);
+        res.sendStatus(404);
+      }
+    } catch (error) {
+      // Respond with 400 Bad Request if id causes exception
+      console.log('[student.js]>', error);
+      res.status(400).json(error);
+    }
+  },
+  firebaseAuth(true),
+);
 
 // Create a new user
 router.post('/new', async (req, res) => {
