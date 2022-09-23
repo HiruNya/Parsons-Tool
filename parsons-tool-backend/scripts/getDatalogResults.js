@@ -5,8 +5,7 @@ import UserSchema from '../src/database/UserSchema';
 import axios from 'axios';
 
 const mongoDbUrl = process.env.MONGO_DB || 'mongodb://localhost:27017/parsons';
-//const apiUrl = process.env.API_URL || 'https://api.parsons.hiru.dev/';
-const apiUrl = 'http://localhostL:3001/';
+const apiUrl = process.env.API_URL || 'https://api.parsons.hiru.dev/';
 
 const solveUrl = apiUrl + 'solve';
 const args = process.argv.slice(2);
