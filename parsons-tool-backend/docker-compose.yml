@@ -12,15 +12,13 @@ services:
       - "MONGO_DB=${MONGO_URL-mongodb://db/parsons}"
       - PORT=3001
       - JOBE_URL=http://jobe
-#  db:
-#    image: mongo:latest
-#    restart: always
-#    profiles:
-#      - local
-#    ports:
-#      - 27017:27017
+  db:
+    image: mongo:latest
+    restart: always
+    profiles:
+      - local
+    ports:
+      - 27017:27017
   jobe:
     image: trampgeek/jobeinabox
     restart: always
-    ports:
-      - 4000:4000
