@@ -6,6 +6,7 @@ import { useLogging } from '../loggers/logContext';
 import { useProblems } from '../data/ProblemContext';
 import ResultComponent from '../components/testCases/ResultComponent';
 import update from 'immutability-helper';
+import Modal from '../components/Modal';
 
 export default function ProblemEvaluation() {
   const { state, dataEvents, reset: resetLogging, logSubmission, logExecution } = useLogging();
@@ -113,7 +114,7 @@ export default function ProblemEvaluation() {
       addModal('failedTests', {
         title: "Some of your tests don't seem to have passed!",
         description:
-          'If you haven\'t tested your code yet, it might help to click the "Test Code" button to test it. ' +
+          'If you haven\'t tested your code yet, click the "Test Code" button to test it. ' +
           'Otherwise, you may have not passed all the tests. ' +
           'Remember, you will not be able to revisit this problem if you go to the next one. ' +
           'Do you still want to go to the next problem?',
@@ -216,30 +217,3 @@ const stripTokenAtStart = (token) => (str) => {
 };
 
 const stripSorryAtStart = (str) => stripTokenAtStart('Sorry: ')(str);
-
-const Modal = ({ open, title, description, buttons }) => {
-  return (
-    <>
-      {open && (
-        <div className={'modal modal-open'}>
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">{title}</h3>
-            <p className="py-4">{description}</p>
-            <div className="modal-action">
-              {Object.entries(buttons || {}).map(([key, { name, classes, onClick }]) => (
-                <button
-                  key={key}
-                  htmlFor="modal"
-                  className={'btn' + (classes ? ' ' + classes.join(' ') : '')}
-                  onClick={onClick}
-                >
-                  {name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
