@@ -5,6 +5,7 @@ import { useAuth } from '../data/AuthContext';
 import { useLogging } from '../loggers/logContext';
 import { useProblems } from '../data/ProblemContext';
 import ResultComponent from '../components/testCases/ResultComponent';
+import update from 'immutability-helper';
 
 export default function ProblemEvaluation() {
   const { state, dataEvents, reset: resetLogging, logSubmission, logExecution } = useLogging();
@@ -15,6 +16,13 @@ export default function ProblemEvaluation() {
 
   const [problem, setProblem] = useState(null);
   const isFaded = currentProblem.problem.blocks.some((block) => block && block.fadedIndices.length > 0);
+
+  const [modals, setModals] = useState({});
+  const addModal = useCallback(
+    (key, modal) => setModals((modals) => update(modals, { [key]: { $set: modal } })),
+    [setModals],
+  );
+  const removeModal = useCallback((key) => setModals((modals) => update(modals, { $unset: [key] })), [setModals]);
 
   const resultRef = useRef(null);
 
@@ -33,6 +41,35 @@ export default function ProblemEvaluation() {
       setProblem(currentProblem);
     }
   }, [currentProblem]);
+
+  const sendExecutionRequestOuter = useCallback(
+    (state, executionResultCallback) => {
+      if (state.solution.length < 1) {
+        addModal('emptySolution', {
+          title: 'Congrats',
+          description: 'Take the W',
+          buttons: {
+            yes: {
+              name: 'Yes, Test It!',
+              classes: ['bg-red-300'],
+              onClick: () => {
+                sendExecutionRequest(state, executionResultCallback);
+                removeModal('emptySolution');
+              },
+            },
+            no: {
+              name: 'No, take me back',
+              classes: ['bg-green-300'],
+              onClick: () => removeModal('emptySolution'),
+            },
+          },
+        });
+        return;
+      }
+      sendExecutionRequest(state, executionResultCallback);
+    },
+    [sendExecutionRequest, addModal, removeModal],
+  );
 
   const submitSolution = () => {
     logSubmission();
@@ -80,7 +117,7 @@ export default function ProblemEvaluation() {
           <div className="mt-6 mx-auto flex flex-row items-center">
             <button
               className="px-3 py-2 text-xl  bg-green-400 rounded-full hover:bg-green-500 "
-              onClick={() => sendExecutionRequest(state, executionResultCallback)}
+              onClick={() => sendExecutionRequestOuter(state, executionResultCallback)}
             >
               Test My Code
             </button>
@@ -119,6 +156,9 @@ export default function ProblemEvaluation() {
         'It seems something went wrong when trying to load the problems'
       )}
       <div className="h-1" ref={resultRef} />
+      {Object.entries(modals).map(([k, v]) => (
+        <Modal key={k} open={true} {...v} />
+      ))}
     </>
   );
 }
@@ -132,3 +172,30 @@ const stripTokenAtStart = (token) => (str) => {
 };
 
 const stripSorryAtStart = (str) => stripTokenAtStart('Sorry: ')(str);
+
+const Modal = ({ open, title, description, buttons }) => {
+  return (
+    <>
+      {open && (
+        <div className={'modal modal-open'}>
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">{title}</h3>
+            <p className="py-4">{description}</p>
+            <div className="modal-action">
+              {Object.entries(buttons || {}).map(([key, { name, classes, onClick }]) => (
+                <button
+                  key={key}
+                  htmlFor="modal"
+                  className={'btn' + (classes ? ' ' + classes.join(' ') : '')}
+                  onClick={onClick}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
