@@ -72,7 +72,7 @@ export default function ProblemEvaluation() {
     [sendExecutionRequest, addModal, removeModal],
   );
 
-  const submitSolution = () => {
+  const submitSolution = useCallback(() => {
     logSubmission();
     const newDataLog = {
       userId: uid,
@@ -93,7 +93,50 @@ export default function ProblemEvaluation() {
     nextProblem();
     resetLogging();
     executionClear();
-  };
+  }, [
+    dataEvents,
+    executionClear,
+    logSubmission,
+    nextProblem,
+    problem,
+    resetLogging,
+    sendSubmissionRequest,
+    state,
+    uid,
+  ]);
+  const submitSolutionOuter = useCallback(() => {
+    if (
+      !executionResponse ||
+      !Array.isArray(executionResponse.data) ||
+      executionResponse.data.some((r) => r.result !== 'correct')
+    ) {
+      addModal('failedTests', {
+        title: "Some of your tests don't seem to have passed!",
+        description:
+          'If you haven\'t tested your code yet, it might help to click the "Test Code" button to test it. ' +
+          'Otherwise, you may have not passed all the tests. ' +
+          'Remember, you will not be able to revisit this problem if you go to the next one. ' +
+          'Do you still want to go to the next problem?',
+        buttons: {
+          yes: {
+            name: 'Yes, Submit It!',
+            classes: ['bg-red-300'],
+            onClick: () => {
+              submitSolution();
+              removeModal('failedTests');
+            },
+          },
+          no: {
+            name: 'No, take me back',
+            classes: ['bg-green-300'],
+            onClick: () => removeModal('failedTests'),
+          },
+        },
+      });
+      return;
+    }
+    return submitSolution();
+  }, [submitSolution, addModal, executionResponse, removeModal]);
 
   return (
     <>
@@ -124,7 +167,7 @@ export default function ProblemEvaluation() {
             </button>
             <button
               className="px-3 py-1 absolute left-3/4  bg-orange-300 rounded-full hover:bg-orange-400"
-              onClick={submitSolution}
+              onClick={submitSolutionOuter}
             >
               Next Problem
             </button>
