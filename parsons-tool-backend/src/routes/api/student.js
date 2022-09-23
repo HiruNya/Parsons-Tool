@@ -3,6 +3,7 @@ import ParsonsProblems from '../../database/ProblemSchema';
 import Users from '../../database/UserSchema';
 import Courses from '../../database/CourseSchema';
 import { firebaseAuth } from '../../middleware/auth';
+import DataLogSchema from '../../database/DataLogSchema';
 
 const router = express.Router();
 
@@ -32,13 +33,22 @@ router.get('/problems/:group', firebaseAuth(true), async (req, res) => {
     }
     const course = await Courses.findOne({ groupNumber: group });
     const problems = await ParsonsProblems.find({ _id: { $in: [...course.problems] } });
+    const doneProblems = await DataLogSchema.find(
+      { initialProblem: { $in: [...course.problems] }, userId: user._id },
+      { initialProblem: true },
+    );
     if (!problems) {
       return res.sendStatus(404);
     }
-    res.json(problems);
+    res.json(
+      // problems.map((p) =>
+      //   doneProblems.some((d) => d._doc.initialProblem == p._doc._id) ? { ...p._doc, done: true } : p._doc,
+      // ),
+      problems.filter((p) => !doneProblems.some((d) => d._doc.initialProblem == p._doc._id)),
+    );
   } catch (error) {
     console.log('[student.js]>', error);
-    res.status(500).json('An issue has occured on the server end');
+    res.status(500).json('An issue has occurred on the server end');
   }
 });
 
