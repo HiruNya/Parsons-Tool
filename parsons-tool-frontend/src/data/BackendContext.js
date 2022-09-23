@@ -70,7 +70,11 @@ export const BackendContextProvider = ({ children }) => {
     postData: sendProblemCreation,
   } = usePost(apiServerUrl + '/problems/create');
 
-  const { data: dataLogs, isLoading: dataLogIsLoading, error: dataLogError } = useGet(apiServerUrl + '/data/', []);
+  const {
+    data: dataLogs,
+    isLoading: dataLogIsLoading,
+    error: dataLogError,
+  } = useGet(apiServerUrl + '/data/', [], null, true);
 
   const context = {
     allProblems,
