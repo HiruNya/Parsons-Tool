@@ -46,8 +46,9 @@ export default function ProblemEvaluation() {
     (state, executionResultCallback) => {
       if (state.solution.length < 1) {
         addModal('emptySolution', {
-          title: 'Congrats',
-          description: 'Take the W',
+          title: "Your solution space doesn't have any blocks in it!",
+          description:
+            'Only the code on the solution space (right side) will be executed - are you sure you want to continue?',
           buttons: {
             yes: {
               name: 'Yes, Test It!',
