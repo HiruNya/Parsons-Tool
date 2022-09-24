@@ -6,11 +6,8 @@ import { firebaseAuth } from '../../middleware/auth';
 
 const router = express.Router();
 
-// Add middleware
-router.use(firebaseAuth(true));
-
 // Get a list of all problems in the database
-router.get('/', async (req, res) => {
+router.get('/', firebaseAuth(true), async (req, res) => {
   if (!req.currentUser) {
     return res.sendStatus(401);
   }
@@ -26,12 +23,9 @@ router.get('/', async (req, res) => {
 });
 
 // Get a list of problems for a specific group/course
-router.get('/problems/:group', async (req, res) => {
+router.get('/problems/:group', firebaseAuth(true), async (req, res) => {
   const { group } = req.params;
   try {
-    if (!req.currentUser) {
-      return res.sendStatus(401);
-    }
     const user = await Users.findOne({ email: req.currentUser.email });
     if (group != user.experimentGroup) {
       return res.sendStatus(403);
@@ -49,19 +43,27 @@ router.get('/problems/:group', async (req, res) => {
 });
 
 // Get a list of all users in the database
-router.get('/all', async (req, res) => {
+router.get('/all', firebaseAuth(true), async (req, res) => {
+  const user = await Users.find({ email: req.currentUser.email });
+  if (!user?.roles.any((r) => ['lecturer', 'researcher'].includes(r))) {
+    return res.sendStatus(403);
+  }
   try {
     const users = await Users.find({});
     res.json(users);
   } catch (error) {
     console.log('[student.js]>', error);
-    res.status(500).json('An issue has occured on the server end');
+    res.status(500).json('An issue has occurred on the server end');
   }
 });
 
 // Get a particular student based on their email
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
+  // const thisUser = await Users.find({ email: req.currentUser.email });
+  // if (!thisUser?.roles.any((r) => ['lecturer', 'researcher'].includes(r))) {
+  //   return res.sendStatus(403);
+  // }
   try {
     const user = await Users.findOne({ email: id });
     if (user) {
