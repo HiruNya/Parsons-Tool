@@ -5,6 +5,8 @@ import { useAuth } from '../data/AuthContext';
 import { useLogging } from '../loggers/logContext';
 import { useProblems } from '../data/ProblemContext';
 import ResultComponent from '../components/testCases/ResultComponent';
+import update from 'immutability-helper';
+import Modal from '../components/Modal';
 
 export default function ProblemEvaluation() {
   const { state, dataEvents, reset: resetLogging, logSubmission, logExecution } = useLogging();
@@ -15,6 +17,13 @@ export default function ProblemEvaluation() {
 
   const [problem, setProblem] = useState(null);
   const isFaded = currentProblem.problem.blocks.some((block) => block && block.fadedIndices.length > 0);
+
+  const [modals, setModals] = useState({});
+  const addModal = useCallback(
+    (key, modal) => setModals((modals) => update(modals, { [key]: { $set: modal } })),
+    [setModals],
+  );
+  const removeModal = useCallback((key) => setModals((modals) => update(modals, { $unset: [key] })), [setModals]);
 
   const resultRef = useRef(null);
 
@@ -34,7 +43,37 @@ export default function ProblemEvaluation() {
     }
   }, [currentProblem]);
 
-  const submitSolution = () => {
+  const sendExecutionRequestOuter = useCallback(
+    (state, executionResultCallback) => {
+      if (state.solution.length < 1) {
+        addModal('emptySolution', {
+          title: "Your solution space doesn't have any blocks in it!",
+          description:
+            'Only the code on the solution space (right side) will be executed - are you sure you want to continue?',
+          buttons: {
+            yes: {
+              name: 'Yes, Test It!',
+              classes: ['bg-red-300'],
+              onClick: () => {
+                sendExecutionRequest(state, executionResultCallback);
+                removeModal('emptySolution');
+              },
+            },
+            no: {
+              name: 'No, take me back',
+              classes: ['bg-green-300'],
+              onClick: () => removeModal('emptySolution'),
+            },
+          },
+        });
+        return;
+      }
+      sendExecutionRequest(state, executionResultCallback);
+    },
+    [sendExecutionRequest, addModal, removeModal],
+  );
+
+  const submitSolution = useCallback(() => {
     logSubmission();
     const newDataLog = {
       userId: uid,
@@ -55,7 +94,50 @@ export default function ProblemEvaluation() {
     nextProblem();
     resetLogging();
     executionClear();
-  };
+  }, [
+    dataEvents,
+    executionClear,
+    logSubmission,
+    nextProblem,
+    problem,
+    resetLogging,
+    sendSubmissionRequest,
+    state,
+    uid,
+  ]);
+  const submitSolutionOuter = useCallback(() => {
+    if (
+      !executionResponse ||
+      !Array.isArray(executionResponse.data) ||
+      executionResponse.data.some((r) => r.result !== 'correct')
+    ) {
+      addModal('failedTests', {
+        title: "Some of your tests don't seem to have passed!",
+        description:
+          'If you haven\'t tested your code yet, click the "Test Code" button to test it. ' +
+          'Otherwise, you may have not passed all the tests. ' +
+          'Remember, you will not be able to revisit this problem if you go to the next one. ' +
+          'Do you still want to go to the next problem?',
+        buttons: {
+          yes: {
+            name: 'Yes, Submit It!',
+            classes: ['bg-red-300'],
+            onClick: () => {
+              submitSolution();
+              removeModal('failedTests');
+            },
+          },
+          no: {
+            name: 'No, take me back',
+            classes: ['bg-green-300'],
+            onClick: () => removeModal('failedTests'),
+          },
+        },
+      });
+      return;
+    }
+    return submitSolution();
+  }, [submitSolution, addModal, executionResponse, removeModal]);
 
   return (
     <>
@@ -80,13 +162,13 @@ export default function ProblemEvaluation() {
           <div className="mt-6 mx-auto flex flex-row items-center">
             <button
               className="px-3 py-2 text-xl  bg-green-400 rounded-full hover:bg-green-500 "
-              onClick={() => sendExecutionRequest(state, executionResultCallback)}
+              onClick={() => sendExecutionRequestOuter(state, executionResultCallback)}
             >
               Test My Code
             </button>
             <button
               className="px-3 py-1 absolute left-3/4  bg-orange-300 rounded-full hover:bg-orange-400"
-              onClick={submitSolution}
+              onClick={submitSolutionOuter}
             >
               Next Problem
             </button>
@@ -119,6 +201,9 @@ export default function ProblemEvaluation() {
         'It seems something went wrong when trying to load the problems'
       )}
       <div className="h-1" ref={resultRef} />
+      {Object.entries(modals).map(([k, v]) => (
+        <Modal key={k} open={true} {...v} />
+      ))}
     </>
   );
 }
