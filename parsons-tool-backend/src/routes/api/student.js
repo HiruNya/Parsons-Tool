@@ -40,11 +40,13 @@ router.get('/problems/:group', firebaseAuth(true), async (req, res) => {
     if (!problems) {
       return res.sendStatus(404);
     }
-    res.json(
+    const filteredProblems = problems.filter((p) => !doneProblems.some((d) => d._doc.initialProblem == p._doc._id));
+    return res.json(
       // problems.map((p) =>
       //   doneProblems.some((d) => d._doc.initialProblem == p._doc._id) ? { ...p._doc, done: true } : p._doc,
-      // ),
-      problems.filter((p) => !doneProblems.some((d) => d._doc.initialProblem == p._doc._id)),
+      filteredProblems.length === 0 && problems.length > 0
+        ? problems.map((p) => ({ ...p._doc, done: true }))
+        : filteredProblems,
     );
   } catch (error) {
     console.log('[student.js]>', error);
