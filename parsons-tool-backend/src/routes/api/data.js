@@ -9,7 +9,7 @@ const router = express.Router();
 // Add middleware
 router.use(firebaseAuth(true));
 
-// GET request for retreiving a data logging submission
+// GET request for retrieving a data logging submission
 // Expects: an id in the request parameter, corresponding to id of submission
 // Returns: 200 OK if found, 404 Not found, and 400 if bad request
 

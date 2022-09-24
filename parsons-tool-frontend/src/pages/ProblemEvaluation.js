@@ -7,13 +7,20 @@ import { useProblems } from '../data/ProblemContext';
 import ResultComponent from '../components/testCases/ResultComponent';
 import update from 'immutability-helper';
 import Modal from '../components/Modal';
+import ProblemProgressTracker from '../components/ProblemProgressTracker';
 
 export default function ProblemEvaluation() {
   const { state, dataEvents, reset: resetLogging, logSubmission, logExecution } = useLogging();
-  const { sendSubmissionRequest, sendExecutionRequest, executionResponse, executionIsLoading, executionClear } =
-    useBackend();
+  const {
+    sendSubmissionRequest,
+    sendExecutionRequest,
+    executionResponse,
+    executionIsLoading,
+    executionClear,
+    problems,
+  } = useBackend();
   const { uid } = useAuth();
-  const { nextProblem, currentProblem } = useProblems();
+  const { nextProblem, currentProblem, problemIndex } = useProblems();
 
   const [problem, setProblem] = useState(null);
   const isFaded = currentProblem.problem.blocks.some((block) => block && block.fadedIndices.length > 0);
@@ -144,6 +151,7 @@ export default function ProblemEvaluation() {
       {problem ? (
         <div className="flex flex-col ">
           <div className="my-4">
+            <ProblemProgressTracker questionProgress={4 - problems.length + problemIndex} totalQuestions={4} />
             <h1 className="mx-auto text-center my-4 font-semibold text-lg">{problem.name}</h1>
             <p className="w-10/12 flex-wrap mx-auto my-2 bg-stone-200 p-2 rounded-lg">{problem.description}</p>
           </div>
