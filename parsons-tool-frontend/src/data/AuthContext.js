@@ -15,6 +15,7 @@ export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRecord, setUserRecord] = useState(null);
   const [isLecturer, setIsLecturer] = useState(false);
+  const [email, setEmail] = useState('');
   const [group, setGroup] = useState(0);
   const [uid, setUid] = useState('');
   const [stateChange, setStateChange] = useState(false);
@@ -24,13 +25,18 @@ export const AuthContextProvider = ({ children }) => {
   }
 
   async function signIn() {
-    await signInWithGoogle(setChangeState);
+    try {
+      await signInWithGoogle(setChangeState);
+    } catch (error) {
+      throw error;
+    }
   }
 
   function signOut() {
     logout();
     setIsLoggedIn(false);
     setIsLecturer(false);
+    setEmail('');
     setUid('');
     setGroup(0);
   }
@@ -51,6 +57,12 @@ export const AuthContextProvider = ({ children }) => {
       } else {
         setGroup(0);
       }
+      const email = userRecord.email;
+      if (email !== null) {
+        setEmail(email);
+      } else {
+        setEmail('');
+      }
     }
   }, [userRecord]);
 
@@ -61,10 +73,12 @@ export const AuthContextProvider = ({ children }) => {
 
       if (userRecord) {
         setUserRecord(userRecord);
+        setEmail(userRecord.email);
         setUid(userRecord.uid);
       }
     } else {
       setUserRecord(null);
+      setEmail('');
       setUid('');
     }
   }, [isLoggedIn, stateChange]);
@@ -80,6 +94,7 @@ export const AuthContextProvider = ({ children }) => {
     isLoggedIn,
     isLecturer,
     userRecord,
+    email,
     group,
     uid,
     auth,

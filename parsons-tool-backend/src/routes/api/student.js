@@ -102,7 +102,11 @@ router.post('/new', async (req, res) => {
     res.status(201).header('location', `/student/${result._id}`).send();
   } else {
     console.log('[student.js]>', error);
-    res.status(500).json(error);
+    if (error === 'Invalid Domain') {
+      res.status(400).json(error);
+    } else {
+      res.status(500).json(error);
+    }
   }
 });
 
@@ -118,6 +122,9 @@ const createNewUser = async (obj) => {
   try {
     if (obj.email === undefined || obj.email === null) {
       err = 'Invalid or Missing email';
+    }
+    if (obj.email.indexOf('@aucklanduni.ac.nz') === -1) {
+      err = 'Invalid Domain';
     }
 
     if (err !== '') {

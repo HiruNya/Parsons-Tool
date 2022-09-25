@@ -30,12 +30,13 @@ const signInWithGoogle = async (setChangeState) => {
     }
     localStorage.setItem(
       'userRecord',
-      JSON.stringify({ uid: result._id, group: result.experimentGroup, roles: result.roles }),
+      JSON.stringify({ uid: result._id, group: result.experimentGroup, roles: result.roles, email: result.email }),
     );
     setChangeState();
     return result;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
