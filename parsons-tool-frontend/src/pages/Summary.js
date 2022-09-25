@@ -8,7 +8,7 @@ function Summary() {
 
   return (
     <>
-      <div className="top-6 right-10 absolute flex flex-col">
+      <div className="pt-3 right-10 2xl:absolute flex flex-col items-center">
         <button onClick={() => finish()} className="mx-auto py-1 w-24 pb-2 rounded-full bg-red-300 hover:bg-red-400">
           Quit
         </button>
