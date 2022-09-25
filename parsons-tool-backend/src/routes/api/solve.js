@@ -97,9 +97,18 @@ const executeOnJobe = (sourceCode, { language }) =>
         sourcecode: sourceCode,
       },
     },
-  }).then((resp) => {
-    if (resp.status < 200 && resp.status >= 300) {
+  }).then(async (resp) => {
+    if (resp.status < 200 || resp.status >= 300) {
       return { error: resp.status };
+    }
+    const runId = resp.data.run_id;
+    let exponentialInterval = 1;
+    while (resp.status == 202 || resp.status == 204) {
+      await new Promise((r) => setTimeout(r, 5_000 * exponentialInterval));
+      resp = await axios({
+        url: jobeUrl + '/jobe/index.php/restapi/runresults/' + runId,
+      });
+      exponentialInterval *= 2;
     }
     return { result: resp.data };
   });
