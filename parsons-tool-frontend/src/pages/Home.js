@@ -30,8 +30,9 @@ function Home() {
         <br /> <br />
         <b>
           We recommend that you do not use incognito and allow popups if asked. If you do encounter issues logging in,
-          then please try using incognito / private browsing mode to log in. Please note that this tool was mainly
-          tested on Chrome so we strongly recommend trying this on Chrome if you encounter any issues when logging in.
+          please try using incognito / private browsing mode to log in and/or try clearing the site data for this site.
+          Please note that this tool was mainly tested on Chrome so we strongly recommend trying this on Chrome if you
+          encounter any issues when logging in.
         </b>
         <br /> <br />
         If you have any questions please forward them to: <br /> <br />
