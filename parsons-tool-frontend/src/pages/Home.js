@@ -26,7 +26,14 @@ function Home() {
         <br />
         <br />
         When you are ready, please login with your university email through the google popup that appears after
-        selecting the button below. If you have any questions please forward them to: <br /> <br />
+        selecting the button below.
+        <br /> <br />
+        <b>
+          We recommend that you do not use incognito and allow popups if asked. Please note that this tool was mainly
+          tested on Chrome so we strongly recommend trying this on Chrome if you encounter any issues when logging in.
+        </b>
+        <br /> <br />
+        If you have any questions please forward them to: <br /> <br />
         <i>ffro805@aucklanduni.ac.nz</i> <br /> <br />
         with "faded parsons problem" in the subject line
       </p>
