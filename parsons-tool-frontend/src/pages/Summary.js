@@ -1,17 +1,19 @@
 import React from 'react';
+import { useAuth } from '../data/AuthContext';
 import { useProblems } from '../data/ProblemContext';
 
 function Summary() {
+  const { email } = useAuth();
   const { finish } = useProblems();
 
   return (
     <>
-      <button
-        onClick={() => finish()}
-        className="absolute top-6 right-6 px-7 py-1 pb-2 rounded-full bg-red-300 hover:bg-red-400"
-      >
-        Quit
-      </button>
+      <div className="top-6 right-10 absolute flex flex-col">
+        <button onClick={() => finish()} className="mx-auto py-1 w-24 pb-2 rounded-full bg-red-300 hover:bg-red-400">
+          Quit
+        </button>
+        <p>Logged in with {email}</p>
+      </div>
       <img className="mt-3 w-6/12 mx-auto" src="upp-logo.svg" alt="logo for site" />
 
       <div className="flex flex-col h-full items-center">

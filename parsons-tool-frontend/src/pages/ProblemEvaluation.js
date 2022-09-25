@@ -60,7 +60,7 @@ export default function ProblemEvaluation() {
           buttons: {
             yes: {
               name: 'Yes, Test It!',
-              classes: ['bg-red-300'],
+              classes: ['bg-red-300  border-none'],
               onClick: () => {
                 sendExecutionRequest(state, executionResultCallback);
                 removeModal('emptySolution');
@@ -68,7 +68,7 @@ export default function ProblemEvaluation() {
             },
             no: {
               name: 'No, take me back',
-              classes: ['bg-green-300'],
+              classes: ['bg-green-300 border-none'],
               onClick: () => removeModal('emptySolution'),
             },
           },
@@ -128,7 +128,7 @@ export default function ProblemEvaluation() {
         buttons: {
           yes: {
             name: 'Yes, Submit It!',
-            classes: ['bg-red-300'],
+            classes: ['bg-red-300 border-none'],
             onClick: () => {
               submitSolution();
               removeModal('failedTests');
@@ -136,7 +136,7 @@ export default function ProblemEvaluation() {
           },
           no: {
             name: 'No, take me back',
-            classes: ['bg-green-300'],
+            classes: ['bg-green-300 border-none'],
             onClick: () => removeModal('failedTests'),
           },
         },
