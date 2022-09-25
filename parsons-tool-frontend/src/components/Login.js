@@ -44,6 +44,22 @@ export default function Login() {
             },
           },
         });
+      } else {
+        addModal('loginError', {
+          title: 'Error while creating an account',
+          description: `An issue has occured during the account creation, 
+          please refresh the page and try again, if this keeps occuring please send an email to
+          "ffro805@aucklanduni.ac.nz" with the following message attached ERROR: ${error}`,
+          buttons: {
+            yes: {
+              name: 'I understand',
+              classes: ['bg-orange-300 border-none'],
+              onClick: () => {
+                removeModal('loginError');
+              },
+            },
+          },
+        });
       }
     }
   };
