@@ -69,6 +69,22 @@ router.get('/all', firebaseAuth(true), async (req, res) => {
   }
 });
 
+// GET all the problems a user has completed
+router.get('/completedProblems', firebaseAuth(true), async (req, res) => {
+  const user = await Users.findOne({ email: req.currentUser.email });
+  console.log('user', user);
+  if (!user) {
+    return res.sendStatus(403);
+  }
+  const problems = await Courses.find({ groupNumber: user.experimentGroup });
+  const completedProblems = new Set(await DataLogSchema.distinct('initialProblem', { userId: user._id.toString() }));
+  console.log(
+    'problems',
+    problems.map((p) => p),
+  );
+  return res.json(problems.problems.map((p) => ({ ...p._doc, done: completedProblems.has(p._doc._id) })));
+});
+
 // Get a particular student based on their email
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
