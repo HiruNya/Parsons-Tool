@@ -72,17 +72,47 @@ router.get('/all', firebaseAuth(true), async (req, res) => {
 // GET all the problems a user has completed
 router.get('/completedProblems', firebaseAuth(true), async (req, res) => {
   const user = await Users.findOne({ email: req.currentUser.email });
-  console.log('user', user);
   if (!user) {
     return res.sendStatus(403);
   }
-  const problems = await Courses.find({ groupNumber: user.experimentGroup });
-  const completedProblems = new Set(await DataLogSchema.distinct('initialProblem', { userId: user._id.toString() }));
-  console.log(
-    'problems',
-    problems.map((p) => p),
-  );
-  return res.json(problems.problems.map((p) => ({ ...p._doc, done: completedProblems.has(p._doc._id) })));
+  const problems = await Courses.aggregate([
+    { $match: { groupNumber: user.experimentGroup } },
+    { $unwind: '$problems' },
+    { $addFields: { problemObjectId: { $toObjectId: '$problems' } } },
+    {
+      $lookup: {
+        from: 'parsonsproblems',
+        localField: 'problemObjectId',
+        foreignField: '_id',
+        as: 'problemObject',
+      },
+    },
+    {
+      $lookup: {
+        from: 'datalogs',
+        localField: 'problems',
+        foreignField: 'initialProblem',
+        as: 'datalogs',
+        pipeline: [{ $match: { userId: user._id.toString() } }],
+      },
+    },
+    {
+      $set: {
+        completedTime: {
+          $max: '$datalogs.timestamp',
+        },
+      },
+    },
+    {
+      $project: {
+        _id: true,
+        problemId: '$problemObjectId',
+        problemName: { $first: '$problemObject.name' },
+        completedTime: true,
+      },
+    },
+  ]);
+  return res.json(problems);
 });
 
 // Get a particular student based on their email
