@@ -19,7 +19,9 @@ const SubmissionState = () => {
               <div>{s.problemName}</div>
               <div className="text-end">
                 {(s.completedTime &&
-                  `Completed at ${datetime.getHours()}:${datetime.getMinutes()} on ${datetime.getDate()}/${datetime.getMonth()}`) ||
+                  `Completed at ${datetime.getHours()}:${datetime.getMinutes()} on ${datetime.getDate()}/${
+                    datetime.getMonth() + 1
+                  }`) ||
                   'Not yet completed'}
               </div>
             </li>
