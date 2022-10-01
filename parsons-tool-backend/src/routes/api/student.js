@@ -99,7 +99,7 @@ router.get('/completedProblems', firebaseAuth(true), async (req, res) => {
     {
       $set: {
         completedTime: {
-          $max: '$datalogs.timestamp',
+          $min: '$datalogs.timestamp',
         },
       },
     },
