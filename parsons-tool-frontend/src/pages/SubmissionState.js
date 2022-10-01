@@ -15,7 +15,7 @@ const SubmissionState = () => {
         {submissionState.map((s) => {
           const datetime = new Date(s.completedTime);
           return (
-            <li key={s._id} className={'p-4 border flex-col' + (s.completedTime ? ' bg-green-400' : '')}>
+            <li key={s._id} className={'p-4 border flex-col rounded-2xl' + (s.completedTime ? ' bg-green-400' : '')}>
               <div>{s.problemName}</div>
               <div className="text-end">
                 {(s.completedTime &&

@@ -48,7 +48,7 @@ function Introduction() {
           </button>
           <button
             onClick={() => navigate('/submissions')}
-            className="mx-auto px-7 py-1 pb-2 text-2xl bg-yellow-500 hover:bg-yellow-600 text-white rounded-full"
+            className="mx-auto px-7 mb-3 py-1 pb-2 text-2xl bg-yellow-400 hover:bg-yellow-500 text-white rounded-full"
           >
             Submissions
           </button>
