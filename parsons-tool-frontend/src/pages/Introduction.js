@@ -39,12 +39,20 @@ function Introduction() {
           <br />
           When you are ready press the button below to get started!
         </p>
-        <button
-          onClick={() => startHandle()}
-          className="mx-auto px-7 py-1 pb-2 text-2xl bg-green-400 hover:bg-green-500 text-white rounded-full"
-        >
-          Start
-        </button>
+        <div className="flex flex-col gap-5">
+          <button
+            onClick={() => startHandle()}
+            className="mx-auto px-7 py-1 pb-2 text-2xl bg-green-400 hover:bg-green-500 text-white rounded-full"
+          >
+            Start
+          </button>
+          <button
+            onClick={() => navigate('/submissions')}
+            className="mx-auto px-7 py-1 pb-2 text-2xl bg-yellow-400 hover:bg-green-500 text-white rounded-full"
+          >
+            Submissions
+          </button>
+        </div>
       </div>
     </>
   );
