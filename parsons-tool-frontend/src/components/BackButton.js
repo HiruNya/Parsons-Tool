@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-export default function BackButton() {
+export default function BackButton({ text }) {
   const navigate = useNavigate();
 
   return (
-    <button className="text-2xl bg-yellow-200 w-8 rounded-lg absolute left-5" onClick={() => navigate(-1)}>
-      ←
+    <button className="bg-yellow-200 p-2 rounded-lg absolute left-5" onClick={() => navigate(-1)}>
+      {text || '←'}
     </button>
   );
 }
