@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import useGet from '../hooks/useGet';
 import usePost from '../hooks/usePost';
 import { useAuth } from './AuthContext';
+import useGetRequest from '../hooks/useGetRequest';
 
 const apiServerUrl = process.env.REACT_APP_API_SERVER_URL || 'http://localhost:3001';
 
@@ -77,6 +78,13 @@ export const BackendContextProvider = ({ children }) => {
     error: dataLogError,
   } = useGet(apiServerUrl + '/data/', [], null, true);
 
+  const {
+    data: submissionState,
+    isLoading: submissionStateIsLoading,
+    error: submissionStateError,
+    fetchData: fetchSubmissionState,
+  } = useGetRequest(apiServerUrl + '/student/completedProblems', [], null, true);
+
   const context = {
     allProblems,
     allProblemsIsLoading,
@@ -100,6 +108,10 @@ export const BackendContextProvider = ({ children }) => {
     dataLogs,
     dataLogIsLoading,
     dataLogError,
+    submissionState,
+    submissionStateIsLoading,
+    submissionStateError,
+    fetchSubmissionState,
   };
 
   return <BackendContext.Provider value={context}>{children}</BackendContext.Provider>;

@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import Introduction from './pages/Introduction';
 import { ProblemContextProvider } from './data/ProblemContext';
 import Summary from './pages/Summary';
+import SubmissionState from './pages/SubmissionState';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
+                  <Route path="submissions" element={<SubmissionState />} />
                 </Route>
               </Routes>
             </LoggingProvider>
