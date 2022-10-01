@@ -1,5 +1,6 @@
 import { useBackend } from '../data/BackendContext';
 import { useEffect } from 'react';
+import BackButton from '../components/BackButton';
 
 const SubmissionState = () => {
   const { submissionState, fetchSubmissionState } = useBackend();
@@ -8,6 +9,7 @@ const SubmissionState = () => {
   }, [fetchSubmissionState]);
   return (
     <div className="flex flex-col items-center gap-4 pt-4">
+      <BackButton />
       <h1 className="text-lg">Problems</h1>
       <ul className="flex flex-col gap-4">
         {submissionState.map((s) => (
