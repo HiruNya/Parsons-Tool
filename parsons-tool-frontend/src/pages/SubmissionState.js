@@ -12,14 +12,19 @@ const SubmissionState = () => {
       <BackButton />
       <h1 className="text-lg">Problems</h1>
       <ul className="flex flex-col gap-4">
-        {submissionState.map((s) => (
-          <li key={s._id} className={'p-4 border flex-col' + (s.completedTime ? ' bg-green-400' : '')}>
-            <div>{s.problemName}</div>
-            <div className="text-end">
-              {(s.completedTime && `Completed at ${s.completedTime}`) || 'Not yet completed'}
-            </div>
-          </li>
-        ))}
+        {submissionState.map((s) => {
+          const datetime = new Date(s.completedTime);
+          return (
+            <li key={s._id} className={'p-4 border flex-col' + (s.completedTime ? ' bg-green-400' : '')}>
+              <div>{s.problemName}</div>
+              <div className="text-end">
+                {(s.completedTime &&
+                  `Completed at ${datetime.getHours()}:${datetime.getMinutes()} on ${datetime.getDate()}/${datetime.getMonth()}`) ||
+                  'Not yet completed'}
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
