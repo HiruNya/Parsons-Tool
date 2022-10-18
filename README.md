@@ -7,8 +7,35 @@
 
 ## Setup
 
+### Javascript Packages
+
 ```sh
 yarn
+```
+### Set up Firebase
+
+This project uses Firebase for authentication and authorization.
+To set this up go to the [Firebase Website](https://firebase.google.com)
+and set up a new project.
+
+Go to `Project Settings > Service Accounts > Firebase Admin SDK > Generate new private key`
+and save the file to `parsons-tool-backend/src/middleware/firebaseConfig.json`.
+
+Go to `Project Settings > General`,
+scroll down to your apps (and add one if neccesary).
+Then copy and paste the piece of the code shown that is in the same format as below into
+the relevant position in the code at `parsons-tool-frontend/src/firebase.js`.
+The piece of config code should look something like this:
+```js
+const firebaseConfig = {
+  apiKey: "AIzaSyBhui9Z9rMWx8jDAAPRvcr1rPQ6F87YuoM",
+  authDomain: "unamed-parsons-problems.firebaseapp.com",
+  projectId: "unamed-parsons-problems",
+  storageBucket: "unamed-parsons-problems.appspot.com",
+  messagingSenderId: "1084557798122",
+  appId: "1:1084557798122:web:a83b20ddf84e46b7260593"
+};
+
 ```
 
 ## Start Frontend
@@ -21,13 +48,6 @@ yarn start-frontend
 
 Ensure that Docker Compose (or Podman Compose) is installed on your system.0
 
-### Set up Firebase
-
-This project uses Firebase for authentication and authorization.
-To set this up go to the [Firebase Website](https://firebase.google.com)
-and set up a new project.
-Go to `Project Settings > Service Accounts > Firebase Admin SDK > Generate new private key`
-and save the file to `parsons-tool-backend/src/middleware/firebaseConfig.json`.
 
 ### To set up a database running locally as well
 
