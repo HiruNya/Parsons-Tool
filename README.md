@@ -81,3 +81,14 @@ when running the backend using docker or yarn.
 yarn start-backend
 ```
 
+---
+
+## Hosting
+
+This service was deployed for use in the epxeriment.
+The frontend was deployed to Netify, a CDN, that can handle static sites like our easily.
+THe backend (API and Jobe server) was run on a Linux server hosted by Linode.
+Caddy, a reverse-proxy that manages TLS certicates, was used to provide the HTTPS functionality.
+Systemd was used to restart the service on failure / shutdown.
+The Mongo database was hosted on Mongo Atlas Serverless, Mongo's hosted serverless solution.
+
